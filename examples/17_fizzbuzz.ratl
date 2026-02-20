@@ -1,0 +1,11 @@
+#RosettaCode:https://rosettacode.org/wiki/FizzBuzz
+#R:for(iin1:20){ if(i##15==0)cat('FizzBuzz')...}
+1 20:(
+  L
+  M15%0=v ?'FizzBuzz'p }
+  M15%0=v ~?
+    M3%0=v ?'Fizz'p }
+    M5%0=v ?'Buzz'p }
+    M3%0=v ~? M5%0=v ~? Mp }}
+  }
+)

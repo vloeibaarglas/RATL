@@ -1,0 +1,5 @@
+# Rosetta Code: https://rosettacode.org/wiki/Palindrome
+# R: is_palindrome <- function(s) s == paste(rev(strsplit(s, "")[[1]]), collapse="")
+'racecar' D
+  D '' S R '' J
+  = ? 'Palindrome' p } x

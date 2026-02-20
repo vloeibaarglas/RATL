@@ -1,0 +1,3 @@
+#RosettaCode:https://rosettacode.org/wiki/Code_Golf
+#R:{.=0;for(`~1`inc(1,2,3,4,5,6,7,8,9,10)){.=c(.,`~1`,recursive=F)};print(unname(.[drop=T]));rm(.)}
+0 10:

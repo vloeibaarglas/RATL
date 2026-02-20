@@ -1,0 +1,5 @@
+#RosettaCode:https://rosettacode.org/wiki/Fibonacci_sequence
+#R:a=0;b=1;for(iin1:10){ print(b);t=a+b;a=b;b=t}
+0 1
+1 10:( Dp DL +M w)
+xx

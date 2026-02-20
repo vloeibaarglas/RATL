@@ -1,0 +1,3 @@
+#RosettaCode:https://rosettacode.org/wiki/Write_to_a_file
+#R:writeLines("HelloRATL","test_write.txt")
+'test_write.txt''HelloRATL'W

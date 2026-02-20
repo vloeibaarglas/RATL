@@ -1,0 +1,11 @@
+# Rosetta Code: https://rosettacode.org/wiki/Leap_year
+# R: is_leap <- function(y) (y%%4==0 && y%%100!=0) || (y%%400==0)
+2024 D 
+  D 400 % 0 = vA ? 'Leap' p }
+  D 400 % 0 = vA ~ ?
+    D 100 % 0 = vA ? 'Common' p }
+    D 100 % 0 = vA ~ ?
+      D 4 % 0 = vA ? 'Leap' p }
+      D 4 % 0 = vA ~ ? 'Common' p }
+    }
+  } x

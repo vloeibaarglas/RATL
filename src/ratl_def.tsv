@@ -1,0 +1,129 @@
+src	r_code	n_in	n_out	desc
++	$2 + $1	2	1	Add
+-	$2 - $1	2	1	Subtract
+*	$2 * $1	2	1	Multiply
+/	$2 / $1	2	1	Divide
+!	t($1)	1	1	Transpose
+D	list($1, $1)	1	2	Duplicate
+s	sum($1)	1	1	Sum
+p	ratl_print($1)	1	0	Print
+P	prod($1)	1	1	Product
+i	scan(ratl_stdin, what=character(), n=1, quiet=TRUE)	0	1	Input
+r	runif($1)	1	1	Random (n)
+:	seq($2, $1)	2	1	Sequence
+=	$2 == $1	2	1	Equal
+<	$2 < $1	2	1	Less
+>	$2 > $1	2	1	Greater
+~	!$1	1	1	Not
+v	var($1)	1	1	Variance
+vA	all($1)	1	1	All
+&	$2 %o% $1	2	1	Outer Product
+|	$2 | $1	2	1	Or
+#	$2[$1]	2	1	Filter
+μ	mean($1)	1	1	Mean
+σ	sd($1)	1	1	Standard Deviation
+ς	var($1)	1	1	Variance
+η	median($1)	1	1	Median
+ϙ	quantile($1)	1	1	Quantile
+τ	t.test($2, $1)	2	1	T-Test
+ν	rnorm($1)	1	1	Random Normal
+δ	dnorm($1)	1	1	Density Normal
+ω	summary($1)	1	1	Summary
+λ	lm($1)	1	1	Linear Model
+α	anova($1)	1	1	Anova
+ρ	cor($2, $1)	2	1	Correlation
+κ	cov($2, $1)	2	1	Covariance
+ζ	scale($1)	1	1	Scale
+x	NULL	1	0	Delete
+w	list($1, $2)	2	2	Swap
+Xp	mean($1)	1	1	Mean
+Xm	median($1)	1	1	Median
+Xo	ratl_mode($1)	1	1	Mode
+Xr	ratl_rms($1)	1	1	RMS
+Xs	sd($1)	1	1	Std Dev
+%	$2 %% $1	2	1	Modulo
+^	$2 ^ $1	2	1	Power
+l	length($1)	1	1	Length
+Ls	length(stack)	0	1	Stack Length
+O	sort($1)	1	1	Sort
+R	rev($1)	1	1	Reverse
+C	paste0($2, $1)	2	1	Concat
+j	paste($2, $1)	2	1	Join
+J	paste($2, collapse=$1)	2	1	Join List
+U	for(x in $1) stack[[length(stack)+1]] <- x	1	0	Unpack
+n	as.numeric($1)	1	1	To Number
+a	as.character($1)	1	1	To String
+Xc	chartr($1, $2, $3)	3	1	Char Translate
+Xb	ratl_bin($1)	1	1	To Binary
+Xk	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE
+Xg	ratl_gcd($2, $1)	2	1	GCD
+Xl	ratl_lcm($2, $1)	2	1	LCM
+Xq	ratl_is_prime($1)	1	1	Is Prime
+Xf	ratl_factors($1)	1	1	Factors
+S	strsplit($2, $1)[[1]]	2	1	Split String
+u	unique($1)	1	1	Unique
+A	utf8ToInt($1)	1	1	To ASCII
+c	intToUtf8($1)	1	1	To Char
+F	readLines($1)	1	1	Read File
+W	writeLines(as.character($2), $1); NULL	2	0	Write File
+Ym	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix
+Y*	$2 %*% $1	2	1	Matrix Mult
+Yi	diag($1)	1	1	Identity Matrix
+T	as.numeric(Sys.time())	0	1	Time Epoch
+Xd	as.Date($1)	1	1	To Date
+Xn	choose($2, $1)	2	1	Choose (nCr)
+XC	cumsum($1)	1	1	CumSum
+Xt	tolower($1)	1	1	ToLower
+XP	ratl_prime_factors($1)	1	1	Prime Factors
+XSD	ratl_cum_sd($1)	1	1	CumSD
+,	c($2, $1)	2	1	Concat Vectors
+Bm	mean($1)	1	1	Mean
+Bd	median($1)	1	1	Median
+Bs	sd($1)	1	1	Standard Deviation
+Bv	var($1)	1	1	Variance
+Ba	mad($1)	1	1	MAD
+Bn	min($1)	1	1	Min
+Bx	max($1)	1	1	Max
+Br	range($1)	1	1	Range
+Bq	quantile($1)	1	1	Quantile
+Bi	IQR($1)	1	1	IQR
+BS	summary($1)	1	1	Summary
+B5	fivenum($1)	1	1	FiveNum
+Bc	cor($2, $1)	2	1	Correlation
+BC	cov($2, $1)	2	1	Covariance
+Bz	scale($1)	1	1	Scale
+Vrn	rnorm($1)	1	1	Random Normal
+Vdn	dnorm($1)	1	1	Density Normal
+Vpn	pnorm($1)	1	1	Prob Normal
+Vqn	qnorm($1)	1	1	Quantile Normal
+Vru	runif($1)	1	1	Random Uniform
+Vrb	rbinom($1, size=1, prob=0.5)	1	1	Random Binomial
+Vrp	rpois($1, lambda=1)	1	1	Random Poisson
+Vre	rexp($1)	1	1	Random Exp
+Ktt	t.test($2, $1)	2	1	T-Test
+Kch	chisq.test($1)	1	1	Chi-Square Test
+Kwx	wilcox.test($2, $1)	2	1	Wilcoxon Test
+Kpr	prop.test($2, $1)	2	1	Prop Test
+Kct	cor.test($2, $1)	2	1	Cor Test
+Kft	fisher.test($1)	1	1	Fisher Test
+Ksw	shapiro.test($1)	1	1	Shapiro-Wilk
+Kks	ks.test($2, $1)	2	1	KS Test
+Kvt	var.test($2, $1)	2	1	F-Test Var
+Kan	anova($1)	1	1	Anova
+Kkw	kruskal.test($1)	1	1	Kruskal-Wallis
+Kbt	bartlett.test($1)	1	1	Bartlett Test
+Klm	lm($1)	1	1	Linear Model
+Kgl	glm($1)	1	1	GLM
+Kav	aov($1)	1	1	AOV
+Klo	loess($1)	1	1	Loess
+Knl	nls($1)	1	1	NLS
+Kep	predict($2, $1)	2	1	Predict
+Ker	residuals($1)	1	1	Residuals
+Kcf	coef($1)	1	1	Coef
+Kft	fitted($1)	1	1	Fitted
+Kai	AIC($1)	1	1	AIC
+Kbi	BIC($1)	1	1	BIC
+Kll	logLik($1)	1	1	LogLik
+Kvc	vcov($1)	1	1	VCov
+Vpc	prcomp($1)	1	1	PCA
+Vde	density($1)	1	1	Density
