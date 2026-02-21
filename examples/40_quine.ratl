@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Quine
-#R:cat(readLines(commandArgs()[4]))% simplified
-'examples/40_quine.ratl'F
+'examples/40_quine.ratl' F

@@ -1,12 +1,7 @@
 ratl_bin <- function(x) {
   if (x == 0) return("0")
-  # intToBits returns 32 bits (raw). 
-  # rev puts MSB first.
-  # as.integer converts raw to 0/1 integers.
   bits <- as.integer(rev(intToBits(x)))
-  # Collapse to string
   s <- paste(bits, collapse="")
-  # Remove leading zeros
   sub("^0+", "", s)
 }
 
@@ -20,7 +15,7 @@ ratl_rms <- function(x) {
 }
 
 ratl_gcd <- function(x, y) {
-  while(y) {
+  while(y != 0) {
     temp = y
     y = x %% y
     x = temp
@@ -35,21 +30,19 @@ ratl_lcm <- function(x, y) {
 
 ratl_is_prime <- function(n) {
   if (n <= 1) return(FALSE)
-  if (n == 2) return(TRUE)
+  if (n <= 3) return(TRUE)
   if (n %% 2 == 0) return(FALSE)
-  for (i in seq(3, sqrt(n), by = 2)) {
+  i <- 3L
+  while (i * i <= n) {
     if (n %% i == 0) return(FALSE)
+    i <- i + 2L
   }
-  return(TRUE)
+  TRUE
 }
 
 ratl_factors <- function(n) {
   if (n == 0) return(numeric(0))
-  f <- c()
-  for (i in 1:abs(n)) {
-    if (n %% i == 0) f <- c(f, i)
-  }
-  return(f)
+  Filter(function(i) n %% i == 0, 1:abs(n))
 }
 
 ratl_prime_factors <- function(n) {
@@ -71,4 +64,14 @@ ratl_prime_factors <- function(n) {
 
 ratl_cum_sd <- function(x) {
   sapply(seq_along(x), function(i) if(i==1) NA else sd(x[1:i]))
+}
+
+ratl_print <- function(x) {
+  if (is.list(x)) {
+    print(x)
+  } else if (is.atomic(x) && length(x) <= 100) {
+    cat(paste(x, collapse = " "), "\n", sep = "")
+  } else {
+    print(x)
+  }
 }

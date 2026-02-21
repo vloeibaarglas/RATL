@@ -21,9 +21,18 @@ The compiler works in R 3.0.0 or newer.
 
 ## Architecture
 
-1.  **Parser (`src/ratl_parse.R`)**: Tokenizes input into literals and symbols.
-2.  **Compiler (`src/ratl_compile.R`)**: Translates tokens into R code via `src/ratl_def.tsv`.
-3.  **Library (`src/ratl_lib.R`)**: Provides extended statistical and helper functions.
+1.  **Parser (`src/ratl_parse.R`)**: Tokenizes input into literals and blocks.
+2.  **Evaluator (`src/ratl_eval.R`)**: Tree-walking interpreter that executes tokens on a live stack.
+3.  **Dispatch (`src/ratl_dispatch.R`)**: Hashed environment for O(1) symbol lookup.
+4.  **Stack (`src/ratl_stack.R`)**: Pointer-based stack implementation for performance.
+5.  **Library (`src/ratl_lib.R`)**: Statistical and helper functions.
+
+## Testing
+
+Run all tests and example checks:
+```bash
+./tests/test_ratl.sh
+```
 
 ## License
 MIT

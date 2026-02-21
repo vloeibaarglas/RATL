@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Primality_test
-#R:is_prime<-function(n)n >1&&all(n##2:sqrt(n)!=0)
-97Xq
+97 mp

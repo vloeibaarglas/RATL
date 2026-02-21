@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Sum_of_squares
-#R:sum((1:10)^2)
-1 10:2^s
+1 10: 2 ^ v.sum

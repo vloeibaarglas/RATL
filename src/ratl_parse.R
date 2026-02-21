@@ -1,101 +1,96 @@
-RATL <- function(code, defs) {
-  code_chars <- strsplit(code, "")[[1]]
-  all_symbols <- c(defs$src, "?", "\"", "(", ")", "`", "}", "H", "G", "L", "M")
-  # Sort symbols by length (descending) for greedy matching
-  all_symbols <- all_symbols[order(nchar(all_symbols), decreasing = TRUE)]
+ratl_parse <- function(code, defs) {
+  known_symbols <- if(is.data.frame(defs)) defs$src else names(defs)
+  known_symbols <- known_symbols[order(nchar(known_symbols), decreasing = TRUE)]
+  sym_lens <- nchar(known_symbols)
+  unique_lens <- sort(unique(sym_lens), decreasing = TRUE)
+  sym_by_len <- split(known_symbols, sym_lens)
+  len <- nchar(code)
   
-  parse_inner <- function(chars, start_idx, terminator = NULL) {
+  parse_inner <- function(start_idx, terminators = NULL) {
     tokens <- list()
     i <- start_idx
-    len <- length(chars)
-    
     while (i <= len) {
-      char <- chars[i]
+      char <- substr(code, i, i)
       
-      # Comment: '#' at absolute start or start of line ONLY
-      if (char == "#" && (i == 1 || chars[i-1] == "\n")) {
-        while (i <= len && chars[i] != "\n") i <- i + 1
-        i <- i + 1
-        next
-      }
-
-      # Skip whitespace
-      if (grepl("\\s", char)) {
-        i <- i + 1
-        next
+      if (char == "#") {
+        while (i <= len && substr(code, i, i) != "\n") i <- i + 1
+        i <- i + 1; next
       }
       
-      # Terminator for recursion
-      if (!is.null(terminator) && char == terminator) {
-        return(list(tokens=tokens, next_idx=i + 1))
-      }
+      if (grepl("[ \t\n\r]", char)) { i <- i + 1; next }
       
-      # Number
-      if (grepl("[0-9]", char) || (char == "-" && i < len && grepl("[0-9]", chars[i+1]))) {
-        num_str <- ""
-        if (char == "-") {
-          num_str <- "-"
-          i <- i + 1
+      if (!is.null(terminators) && char %in% terminators) return(list(tokens = tokens, next_idx = i + 1, terminator = char))
+      
+      prev_char <- if (i > 1) substr(code, i-1, i-1) else " "
+      is_neg_sign <- char == "-" && i < len && grepl("[0-9]", substr(code, i+1, i+1)) && grepl("[\\s\\[\\{\\(\\?\\`\\\"]", prev_char, perl = TRUE)
+      
+      if (grepl("[0-9]", char) || is_neg_sign) {
+        num_match <- regexpr("^-?[0-9]*\\.?[0-9]+", substr(code, i, len))
+        if (num_match > 0) {
+          num_str <- substr(code, i, i + attr(num_match, "match.length") - 1)
+          tokens <- c(tokens, list(list(type = "literal", value = as.numeric(num_str))))
+          i <- i + attr(num_match, "match.length"); next
         }
-        while (i <= len && grepl("[0-9\\.]", chars[i])) {
-          num_str <- paste0(num_str, chars[i])
-          i <- i + 1
-        }
-        tokens <- c(tokens, list(list(type="literal", value=as.numeric(num_str))))
-        next
       }
       
-      # String
       if (char == "'") {
         str_val <- ""
-        i <- i + 1
-        while (i <= len && chars[i] != "'") {
-          str_val <- paste0(str_val, chars[i])
-          i <- i + 1
+        curr <- i + 1
+        while (curr <= len) {
+          if (substr(code, curr, curr) == "'") {
+            if (curr < len && substr(code, curr + 1, curr + 1) == "'") {
+              str_val <- paste0(str_val, "'"); curr <- curr + 2
+            } else {
+              curr <- curr + 1; break
+            }
+          } else {
+            str_val <- paste0(str_val, substr(code, curr, curr)); curr <- curr + 1
+          }
         }
-        tokens <- c(tokens, list(list(type="literal", value=str_val)))
-        i <- i + 1
-        next
+        tokens <- c(tokens, list(list(type = "literal", value = str_val))); i <- curr; next
       }
       
-      # Vector/List
       if (char == "[") {
-        res <- parse_inner(chars, i + 1, "]")
-        tokens <- c(tokens, list(list(type="vector_literal", value=res$tokens)))
-        i <- res$next_idx
-        next
+        res <- parse_inner(i + 1, "]"); tokens <- c(tokens, list(list(type = "vector_block", value = res$tokens))); i <- res$next_idx; next
       }
       if (char == "{") {
-        res <- parse_inner(chars, i + 1, "}")
-        tokens <- c(tokens, list(list(type="list_literal", value=res$tokens)))
-        i <- res$next_idx
+        res <- parse_inner(i + 1, "}"); tokens <- c(tokens, list(list(type = "block", value = res$tokens))); i <- res$next_idx; next
+      }
+      if (char == "(") {
+        res <- parse_inner(i + 1, ")"); tokens <- c(tokens, list(list(type = "foreach_block", value = res$tokens))); i <- res$next_idx; next
+      }
+      if (char == "?") {
+        res_if <- parse_inner(i + 1, c(";", "]"))
+        if (res_if$terminator == ";") {
+          res_else <- parse_inner(res_if$next_idx, "]")
+          tokens <- c(tokens, list(list(type = "ifelse_block", if_val = res_if$tokens, else_val = res_else$tokens)))
+          i <- res_else$next_idx
+        } else {
+          tokens <- c(tokens, list(list(type = "if_block", value = res_if$tokens)))
+          i <- res_if$next_idx
+        }
         next
       }
+      if (char == "\"") {
+        res <- parse_inner(i + 1, "\""); tokens <- c(tokens, list(list(type = "while_block", value = res$tokens))); i <- res$next_idx; next
+      }
+      if (char == "`") {
+        res <- parse_inner(i + 1, "`"); tokens <- c(tokens, list(list(type = "infinite_block", value = res$tokens))); i <- res$next_idx; next
+      }
       
-      # Greedy Symbol Matching
       matched <- FALSE
-      for (sym in all_symbols) {
-        sym_len <- nchar(sym)
-        if (i + sym_len - 1 <= len) {
-          candidate <- paste(chars[i:(i + sym_len - 1)], collapse = "")
-          if (candidate == sym) {
-            tokens <- c(tokens, list(list(type="symbol", value=sym)))
-            i <- i + sym_len
-            matched <- TRUE
-            break
+      for (slen in unique_lens) {
+        if (i + slen - 1 <= len) {
+          candidate <- substr(code, i, i + slen - 1)
+          if (candidate %in% sym_by_len[[as.character(slen)]]) {
+            tokens <- c(tokens, list(list(type = "symbol", value = candidate)))
+            i <- i + slen; matched <- TRUE; break
           }
         }
       }
-      
-      if (!matched) {
-        # Default fallback for unknown single character symbols
-        tokens <- c(tokens, list(list(type="symbol", value=char)))
-        i <- i + 1
-      }
+      if (!matched) { tokens <- c(tokens, list(list(type = "symbol", value = char))); i <- i + 1 }
     }
-    return(list(tokens=tokens, next_idx=i))
+    return(list(tokens = tokens, next_idx = i))
   }
-  
-  full_res <- parse_inner(code_chars, 1, NULL)
-  return(full_res$tokens)
+  return(parse_inner(1, NULL)$tokens)
 }

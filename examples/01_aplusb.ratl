@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/A#2BB
-#R:cat(as.numeric(readLines('stdin',n=1))+ as.numeric(readLines('stdin',n=1)))
-in in +
+i n i n +

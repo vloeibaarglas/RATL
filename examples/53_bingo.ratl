@@ -1,0 +1,10 @@
+# Code Golf: Bingo Square Equivalence
+# Input: A 5x5 Bingo Square (permutation of 1-25)
+# Output: All 16 equivalent bingo squares
+
+1 25 : 5 5 YM # Identity bingo square as input
+D BT .. (
+  D ! .. (
+    D p R9 D p R9 D p R9 p
+  )
+)

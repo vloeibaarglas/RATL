@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Random_numbers
-#R:runif(5)
-5r
+5 v.rand

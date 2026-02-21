@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Factors_of_an_integer
-#R:factors<-function(n){ f<-c();for(iin1:n)if(n##i==0)f=c(f,i);return(f)}
-60Xf
+60 m.factor

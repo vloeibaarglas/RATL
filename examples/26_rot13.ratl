@@ -1,3 +1,2 @@
 # Rosetta Code: https://rosettacode.org/wiki/Rot-13
-# R: chartr("A-Za-z", "N-ZA-Mn-za-m", "Hello World")
-'Hello World''A-Za-z''N-ZA-Mn-za-m'Xc
+'Hello World' 'A-Za-z' 'N-ZA-Mn-za-m' S!

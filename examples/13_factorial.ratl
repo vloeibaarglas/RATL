@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Factorial
-#R:prod(1:5)
-1 5:P
+5 m!

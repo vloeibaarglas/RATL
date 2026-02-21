@@ -1,3 +1,20 @@
 # Rosetta Code: https://rosettacode.org/wiki/99_bottles_of_beer
-# R: for(i in 99:1) { cat(i, "bottles..."); ... }
-99D"L MD1=?'1 bottle'}M1=~?Ma' bottles'C}' of beer on the wall, 'Cp MD1=?'1 bottle'}M1=~?Ma' bottles'C}' of beer.'Cp'Take one down and pass it around, 'p M1-L MD0=?'No more bottles'}M0=~?MD1=?'1 bottle'}M1=~?Ma' bottles'C}}' of beer on the wall.'Cp''p M"x
+99 D "
+  L
+  M D 1 = ? '1 bottle' ]
+  M 1 = ~ ? M a ' bottles' C ]
+  ' of beer on the wall, ' C p
+  M D 1 = ? '1 bottle' ]
+  M 1 = ~ ? M a ' bottles' C ]
+  ' of beer.' C p
+  'Take one down and pass it around, ' p
+  M 1 - L
+  M D 0 = ? 'No more bottles' ]
+  M 0 = ~ ?
+    M D 1 = ? '1 bottle' ]
+    M 1 = ~ ? M a ' bottles' C ]
+  ]
+  ' of beer on the wall.' C p
+  '' p
+  M
+" x

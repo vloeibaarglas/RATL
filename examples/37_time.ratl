@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/System_time
-#R:as.numeric(Sys.time())
-T
+zt

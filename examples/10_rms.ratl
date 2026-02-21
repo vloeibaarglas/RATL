@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Averages/Root_mean_square
-#R:sqrt(mean(c(1,2,3,4)^2))
-1 4:Xr
+1 4: stat.rms

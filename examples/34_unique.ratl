@@ -1,3 +1,2 @@
 #RosettaCode:https://rosettacode.org/wiki/Unique_elements
-#R:unique(c(1,2,2,3,3,3))
-[1 2 2 3 3 3]u
+[1 2 2 3 3 3] v.unique
