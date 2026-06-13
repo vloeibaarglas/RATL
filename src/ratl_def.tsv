@@ -20,20 +20,19 @@ vA	all($1)	1	1	All
 &	$2 %o% $1	2	1	Outer Product
 |	$2 | $1	2	1	Or
 #	$2[$1]	2	1	Filter
-μ	mean($1)	1	1	Mean
-σ	sd($1)	1	1	Standard Deviation
-ς	var($1)	1	1	Variance
-η	median($1)	1	1	Median
-ϙ	quantile($1)	1	1	Quantile
-τ	t.test($2, $1)	2	1	T-Test
-ν	rnorm($1)	1	1	Random Normal
-δ	dnorm($1)	1	1	Density Normal
-ω	summary($1)	1	1	Summary
-λ	lm($1)	1	1	Linear Model
-α	anova($1)	1	1	Anova
-ρ	cor($2, $1)	2	1	Correlation
-κ	cov($2, $1)	2	1	Covariance
-ζ	scale($1)	1	1	Scale
+m	mean($1)	1	1	Mean
+sd	sd($1)	1	1	Standard Deviation
+V	var($1)	1	1	Variance
+h	median($1)	1	1	Median
+Q	quantile($1)	1	1	Quantile
+tt	t.test($2, $1)	2	1	T-Test
+N	rnorm($1)	1	1	Random Normal
+sm	summary($1)	1	1	Summary
+lm	lm($1)	1	1	Linear Model
+av	anova($1)	1	1	Anova
+cr	cor($2, $1)	2	1	Correlation
+cv	cov($2, $1)	2	1	Covariance
+sc	scale($1)	1	1	Scale
 x	NULL	1	0	Delete
 w	list($1, $2)	2	2	Swap
 Xp	mean($1)	1	1	Mean
@@ -56,10 +55,10 @@ a	as.character($1)	1	1	To String
 Xc	chartr($1, $2, $3)	3	1	Char Translate
 Xb	ratl_bin($1)	1	1	To Binary
 Xk	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE
-Xg	ratl_gcd($2, $1)	2	1	GCD
-Xl	ratl_lcm($2, $1)	2	1	LCM
+g	ratl_gcd($2, $1)	2	1	GCD
+lc	ratl_lcm($2, $1)	2	1	LCM
 Xq	ratl_is_prime($1)	1	1	Is Prime
-Xf	ratl_factors($1)	1	1	Factors
+fa	ratl_factors($1)	1	1	Factors
 S	strsplit($2, $1)[[1]]	2	1	Split String
 u	unique($1)	1	1	Unique
 A	utf8ToInt($1)	1	1	To ASCII
@@ -195,18 +194,18 @@ v.cprod	cumprod($1)	1	1	CumProd
 v.diff	diff($1)	1	1	Diff
 v.max	pmax($2, $1)	2	1	PMax
 v.min	pmin($2, $1)	2	1	PMin
-v.which	which($1)	1	1	Which
+wh	which($1)	1	1	Which
 v.whicha	which($1, arr.ind=TRUE)	1	1	WhichArr
 v.seq	seq($2, $1)	2	1	Seq
 v.seqlen	seq($3, $2, length.out=$1)	3	1	SeqLen
-v.rep	rep($2, $1)	2	1	Rep
+r2	rep($2, $1)	2	1	Rep
 v.repmat	matrix(rep($3, $2*$1), nrow=nrow($3)*$2)	3	1	RepMat
 v.drop	drop($1)	1	1	Drop
 MC	choose($2, $1)	2	1	Choose
 m.factor	factor($1)	1	1	Factor
 m.gamma	gamma($1)	1	1	Gamma
 m.beta	beta($2, $1)	2	1	Beta
-m!	factorial($1)	1	1	Factorial
+fp	factorial($1)	1	1	Factorial
 m.idiv	$2 %/% $1	2	1	IntDiv
 m.lm	lm($2 ~ $1)	2	1	LM Simple
 m.quantile	quantile($1, $2)	2	1	Quantile
@@ -408,16 +407,16 @@ pi	Sys.getpid()	0	1	GetPID
 BT	{idx<-c(1,4,3,2,5); $1[idx,idx]}	1	1	Bingo Twin
 YM	matrix($3, nrow=$2, ncol=$1, byrow=TRUE)	3	1	Matrix ByRow
 ..	list($2, $1)	2	1	Pair
-v.rev	rev($1)	1	1	Reverse
-v.sum	sum($1)	1	1	Sum
-v.prod	prod($1)	1	1	Product
+vr	rev($1)	1	1	Reverse
+vs	sum($1)	1	1	Sum
+p1	prod($1)	1	1	Product
 v.rand	runif($1)	1	1	Random
-stat.rms	ratl_rms($1)	1	1	RMS
+rm	ratl_rms($1)	1	1	RMS
 mg	ratl_gcd($2, $1)	2	1	GCD
 ml	ratl_lcm($2, $1)	2	1	LCM
 Y!	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix
 mp	ratl_is_prime($1)	1	1	Is Prime
-v.unique	unique($1)	1	1	Unique
+uq	unique($1)	1	1	Unique
 v.rle	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE
 sa	utf8ToInt($1)	1	1	To ASCII
 FR	readLines($1)	1	1	Read File
@@ -426,3 +425,30 @@ zd	as.Date($1)	1	1	To Date
 mf	ratl_prime_factors($1)	1	1	Prime Factors
 Sd	ratl_cum_sd($1)	1	1	CumSD
 S!	chartr($2, $1, $3)	3	1	Translate
+fu	unlist($1)	1	1	Flatten
+zp	unlist(Map(list, $2, $1))	2	1	Zip
+Fq	NULL	0	1	Map (evaluator)
+Ft	NULL	0	1	Filter (evaluator)
+Fx	NULL	0	1	Repeat (evaluator)
+mn	min($2, $1)	2	1	Min2
+mx	max($2, $1)	2	1	Max2
+rv	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	Reverse String
+c1	cumprod($1)	1	1	CumProd
+tb	tabulate($1)	1	1	Tabulate
+un	length(unique($1))	1	1	UniqueN
+ix	match($2, $1)	2	1	IndexOf
+cn	is.element($2, $1)	2	1	IsIn
+hd	head($2, $1)	2	1	HeadN
+tl	tail($2, $1)	2	1	TailN
+la	tail($1, 1)	1	1	LastElem
+fe1	head($1, 1)	1	1	FirstElem
+sl	$2[$1]	2	1	Slice
+ns	$2[length($2)+1-$1]	2	1	NegSlice
+r1	1:$1	1	1	Range1toN
+<=	$2 <= $1	2	1	LessEqual
+>=	$2 >= $1	2	1	GreatEqual
+sq	sqrt($1)	1	1	Sqrt
+q	NULL	0	1	Map (evaluator)
+e	NULL	0	1	Filter (evaluator)
+y	NULL	0	1	Reduce (evaluator)
+z	NULL	0	1	Repeat (evaluator)

@@ -41,6 +41,108 @@ ratl_eval <- function(tokens, ctx) {
         blk_token <- stack_pop(ctx$stack)
         if (blk_token$type != "block") stop("Top of stack is not a block for @")
         ratl_eval(blk_token$value, ctx)
+      } else if (val == "Fq" || val == "q") {
+        if (stack_length(ctx$stack) < 2) stop("Stack underflow for Fq (map)")
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("Fq requires a block")
+        arr <- stack_pop(ctx$stack)
+        results <- list()
+        for (item in arr) {
+          tmp <- make_stack()
+          stack_push(tmp, item)
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          sl <- stack_length(tmp_ctx$stack)
+          if (sl == 1) {
+            results[[length(results) + 1]] <- stack_peek(tmp_ctx$stack)
+          } else if (sl > 1) {
+            results[[length(results) + 1]] <- stack_to_list(tmp_ctx$stack)
+          }
+        }
+        all_atomic <- all(vapply(results, function(r) is.atomic(r) && length(r) == 1, logical(1)))
+        if (all_atomic) {
+          stack_push(ctx$stack, unlist(results))
+        } else {
+          stack_push(ctx$stack, results)
+        }
+      } else if (val == "Ft" || val == "e") {
+        if (stack_length(ctx$stack) < 2) stop("Stack underflow for Ft (filter)")
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("Ft requires a block")
+        arr <- stack_pop(ctx$stack)
+        filtered <- list()
+        for (item in arr) {
+          tmp <- make_stack()
+          stack_push(tmp, item)
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          if (stack_length(tmp_ctx$stack) > 0 && is_truthy(stack_peek(tmp_ctx$stack))) {
+            filtered[[length(filtered) + 1]] <- item
+          }
+        }
+        if (length(filtered) == 0) {
+          stack_push(ctx$stack, list())
+        } else if (all(vapply(filtered, is.atomic, logical(1)))) {
+          stack_push(ctx$stack, unlist(filtered))
+        } else {
+          stack_push(ctx$stack, filtered)
+        }
+      } else if (val == "Fr" || val == "y") {
+        if (stack_length(ctx$stack) < 2) stop("Stack underflow for Fr (reduce)")
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("Fr requires a block")
+        arr <- stack_pop(ctx$stack)
+        if (length(arr) == 0) {
+          stack_push(ctx$stack, NULL)
+        } else if (length(arr) == 1) {
+          stack_push(ctx$stack, arr[[1]])
+        } else {
+          acc <- arr[[1]]
+          for (i in 2:length(arr)) {
+            tmp <- make_stack()
+            stack_push(tmp, acc)
+            stack_push(tmp, arr[[i]])
+            tmp_ctx <- new.env(parent = emptyenv())
+            tmp_ctx$stack <- tmp
+            tmp_ctx$dispatch <- ctx$dispatch
+            tmp_ctx$clipboards <- ctx$clipboards
+            tmp_ctx$stdin <- ctx$stdin
+            tmp_ctx$in_loop <- FALSE
+            ratl_eval(blk_token$value, tmp_ctx)
+            if (stack_length(tmp_ctx$stack) > 0) {
+              acc <- stack_peek(tmp_ctx$stack)
+            }
+          }
+          stack_push(ctx$stack, acc)
+        }
+      } else if (val == "Fx" || val == "z") {
+        if (stack_length(ctx$stack) < 2) stop("Stack underflow for Fx (repeat)")
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("Fx requires a block")
+        n <- stack_pop(ctx$stack)
+        n <- as.integer(n)
+        old_in_loop <- ctx$in_loop
+        ctx$in_loop <- TRUE
+        for (i in seq_len(n)) {
+          broken <- FALSE
+          tryCatch({
+            ratl_eval(blk_token$value, ctx)
+          }, ratl_break = function(e) {
+            broken <<- TRUE
+          })
+          if (broken) break
+        }
+        ctx$in_loop <- old_in_loop
       } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {

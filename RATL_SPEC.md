@@ -108,6 +108,34 @@ RATL uses special symbols for conditional branching and loops.
 - **Symbols**: `` ` `` starts and ends the loop.
 - **Logic**: Executes the code within the backticks repeatedly. Use the `X` (break) symbol to exit.
 
+### 6.5 Higher-Order Functions (Block Consumers)
+
+These functions pop a `{block}` from the stack and apply it to data.
+
+#### `q` — Map (alias `Fq`)
+- **Syntax**: `{block} array q`
+- **Logic**: Pushes each element of `array` onto a temporary stack, executes `{block}`, collects the result. Returns an atomic vector if all results are scalar, otherwise a list.
+- **Example**: `[1 2 3] {2*} q` → `2 4 6`
+
+#### `e` — Filter (alias `Ft`)
+- **Syntax**: `{block} array e`
+- **Logic**: Pushes each element onto a temporary stack, executes `{block}`. If the top of the stack is truthy after execution, the element is kept.
+- **Example**: `[1 2 3 4 5] {2 % 0 =} e` → `2 4`
+
+#### `y` — Reduce (alias `Fr`)
+- **Syntax**: `{block} array y`
+- **Logic**: Uses the first element as accumulator. For each subsequent element, pushes accumulator and element onto a temporary stack, executes `{block}`. The result becomes the new accumulator.
+- **Example**: `[1 2 3 4 5] {+} y` → `15`
+
+#### `z` — Repeat (alias `Fx`)
+- **Syntax**: `N {block} z`
+- **Logic**: Executes `{block}` N times. The block operates on the main stack.
+- **Example**: `1 5 {D p 1 +} z x` → prints 1 2 3 4 5
+
+#### `@` — Execute Block
+- **Syntax**: `{block} @`
+- **Logic**: Pops and executes a block immediately.
+
 ---
 
 ## 7. Implicit Actions
@@ -126,13 +154,16 @@ RATL uses special symbols for conditional branching and loops.
 
 | Category | Symbols (Examples) |
 | :--- | :--- |
-| **Arithmetic** | `+`, `-`, `*`, `/`, `^`, `%`, `Id` |
-| **Statistics** | `μ`, `σ`, `η`, `varsigma`, `v`, `Xp`, `Xs`, `Bm`, `Bs` |
-| **Prob. Distributions** | `Vrn`, `Vdn`, `db.norm`, `pb.binom`, `rb.pois` |
-| **Trigonometry** | `Ys`, `Yc`, `Yt`, `Ya`, `Yb`, `Yd`, `Y2` |
-| **Matrix Operations** | `!`, `Y*`, `Yi`, `Dt`, `R9`, `Tc`, `Dg`, `Tu`, `Tl`, `Kr` |
-| **String Manipulation** | `C`, `j`, `J`, `S`, `Up`, `Lw`, `Nc`, `Pa`, `Sp` |
-| **Stack/Clipboard** | `D`, `w`, `x`, `U`, `H`, `G`, `L`, `M` |
-| **System/I/O** | `i`, `T`, `F`, `W`, `Da`, `Gd`, `Sw`, `sys.op` |
+| **Arithmetic** | `+`, `-`, `*`, `/`, `^`, `%`, `!` (factorial: `fp`), `sq` (sqrt), `<=`, `>=` |
+| **Comparisons** | `<`, `>`, `=`, `~`, `<=`, `>=` |
+| **Statistics** | `m` (mean), `sd` (std dev), `V` (variance), `h` (median), `Q` (quantile), `tt` (t-test) |
+| **Distributions** | `N` (rnorm), `dn` (dnorm), `sm` (summary), `lm`, `av` (anova), `cr` (cor), `cv` (cov), `sc` (scale) |
+| **Matrix** | `!` (transpose), `Y*` (mat mult), `yD` (diag), `yd` (det), `R9` (rot90), `fp` (factorial) |
+| **String** | `C` (concat), `j` (join), `S` (split), `rv` (reverse), `sU`/`sL` (case), `sn` (nchar), `st` (trim) |
+| **Stack/Clipboard** | `D` (dup), `w` (swap), `x` (delete), `U` (unpack), `H`/`G`, `L`/`M` |
+| **Higher-Order** | `q` (map), `e` (filter), `y` (reduce), `z` (repeat), `@` (execute block) |
+| **Array** | `fu` (flatten), `zp` (zip), `hd`/`tl` (head/tail N), `fe1`/`la` (first/last), `r1` (1:N), `mn`/`mx` (min/max) |
+| **Collection** | `un` (unique count), `ix` (index of), `cn` (contains), `tb` (tabulate), `c1` (cumprod), `uq` (unique) |
+| **System/I/O** | `i` (input), `T` (time), `F` (read), `W` (write) |
 
 For a full list of symbols, refer to `src/ratl_def.tsv`.

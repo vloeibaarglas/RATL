@@ -1,0 +1,8 @@
+# Collatz sequence for n=6
+6 D p
+" D 1 = ~ ?
+  D 2 % 0 = ? D 2 / ]
+  D 2 % 0 = ~ ? D 3 * 1 + ]
+  D p
+" x
+x

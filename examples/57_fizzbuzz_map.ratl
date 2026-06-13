@@ -1,0 +1,7 @@
+# FizzBuzz using map and filter
+1 20: (
+  D 15 % 0 = ? 'FizzBuzz' p ] D 15 % 0 = ~ ?
+    D 3 % 0 = ? 'Fizz' p ] D 5 % 0 = ? 'Buzz' p ] D 3 % 0 = ~ ? D 5 % 0 = ~ ? D p ] ]
+  ]
+  x
+)
