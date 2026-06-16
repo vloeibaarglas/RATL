@@ -1,0 +1,46 @@
+source("src/ratl_lib.R")
+source("src/ratl_stack.R")
+source("src/ratl_dispatch.R")
+source("src/ratl_parse.R")
+source("src/ratl_eval.R")
+dispatch_env <- build_dispatch("src/ratl_def.tsv")
+
+run_test <- function(name, code) {
+  tokens <- ratl_parse(code, dispatch_env)
+  ctx <- new.env(parent = emptyenv())
+  ctx$stack <- make_stack()
+  ctx$dispatch <- dispatch_env
+  ctx$clipboards <- new.env(parent = emptyenv())
+  ctx$stdin <- file("/dev/null", "r")
+  ctx$in_loop <- FALSE
+  result <- tryCatch({
+    ratl_eval(tokens, ctx)
+    tryCatch(close(ctx$stdin), error=function(e) NULL)
+    s <- ctx$stack
+    if (stack_length(s) == 1) paste(stack_peek(s), collapse=" ")
+    else if (stack_length(s) > 1) paste(stack_length(s), "items")
+    else "empty"
+  }, error = function(e) {
+    tryCatch(close(ctx$stdin), error=function(e2) NULL)
+    paste("ERROR:", e$message)
+  })
+  cat(sprintf("%-20s | %-30s | %s\n", name, code, result))
+}
+
+run_test("Empty string", "")
+run_test("Just comment", "# hello")
+run_test("Number only", "42")
+run_test("Negative", "-5")
+run_test("Float", "3.14")
+run_test("String", "'hello'")
+run_test("Empty vector", "[]")
+run_test("Div zero", "1 0 /")
+run_test("Empty stack", "+")
+run_test("While false", "0 \" x \"")
+run_test("If false", "0 ? 99 ]")
+run_test("If true", "1 ? 42 ]")
+run_test("Foreach empty", "[] ( D p )")
+run_test("Clipboard", "5 H G")
+run_test("Clipboard empty", "G")
+run_test("Break no loop", "X")
+run_test("Block no exec", "{5}")

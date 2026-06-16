@@ -35,8 +35,6 @@ cv	cov($2, $1)	2	1	Covariance
 sc	scale($1)	1	1	Scale
 x	NULL	1	0	Delete
 w	list($1, $2)	2	2	Swap
-Xp	mean($1)	1	1	Mean
-Xm	median($1)	1	1	Median
 Xo	ratl_mode($1)	1	1	Mode
 Xr	ratl_rms($1)	1	1	RMS
 Xs	sd($1)	1	1	Std Dev
@@ -74,28 +72,21 @@ Xn	choose($2, $1)	2	1	Choose (nCr)
 XC	cumsum($1)	1	1	CumSum
 Xt	tolower($1)	1	1	ToLower
 XP	ratl_prime_factors($1)	1	1	Prime Factors
-XSD	ratl_cum_sd($1)	1	1	CumSD
 ,	c($2, $1)	2	1	Concat Vectors
-Bm	mean($1)	1	1	Mean
-Bd	median($1)	1	1	Median
 Bs	sd($1)	1	1	Standard Deviation
-Bv	var($1)	1	1	Variance
 Ba	mad($1)	1	1	MAD
 Bn	min($1)	1	1	Min
 Bx	max($1)	1	1	Max
 Br	range($1)	1	1	Range
-Bq	quantile($1)	1	1	Quantile
 Bi	IQR($1)	1	1	IQR
 BS	summary($1)	1	1	Summary
 B5	fivenum($1)	1	1	FiveNum
 Bc	cor($2, $1)	2	1	Correlation
 BC	cov($2, $1)	2	1	Covariance
 Bz	scale($1)	1	1	Scale
-rn	rnorm($1)	1	1	Random Normal
 dn	dnorm($1)	1	1	Density Normal
 pn	pnorm($1)	1	1	Prob Normal
 qn	qnorm($1)	1	1	Quantile Normal
-ru	runif($1)	1	1	Random Uniform
 rb	rbinom($1, size=1, prob=0.5)	1	1	Random Binomial
 rp	rpois($1, lambda=1)	1	1	Random Poisson
 re	rexp($1)	1	1	Random Exp
@@ -167,9 +158,7 @@ yc	eigen($1)$vectors	1	1	EigenVectors
 set.is	intersect($2, $1)	2	1	Intersect
 set.un	union($2, $1)	2	1	Union
 set.sw	setdiff($2, $1)	2	1	SetDiff
-set.ie	is.element($2, $1)	2	1	IsElement
 l.any	any($1)	1	1	Any
-l.all	all($1)	1	1	All
 l.xor	xor($2, $1)	2	1	Xor
 l.nz	sum($1 != 0)	1	1	NNZ
 sU	toupper($1)	1	1	ToUpper
@@ -178,8 +167,6 @@ sn	nchar($1)	1	1	NChar
 ss	substr($3, $2, $1)	3	1	Substr
 sr	sub($2, $1, $3)	3	1	Sub
 SG	gsub($2, $1, $3)	3	1	GSub
-sp	paste($2, $1)	2	1	Paste
-s0	paste0($2, $1)	2	1	Paste0
 sf	sprintf($2, $1)	2	1	Sprintf
 st	trimws($1)	1	1	TrimWS
 b.and	bitwAnd($2, $1)	2	1	BitAnd
@@ -190,13 +177,11 @@ b.shiftl	bitwShiftL($2, $1)	2	1	BitShiftL
 b.shiftr	bitwShiftR($2, $1)	2	1	BitShiftR
 v.cmin	cummin($1)	1	1	CumMin
 v.cmax	cummax($1)	1	1	CumMax
-v.cprod	cumprod($1)	1	1	CumProd
 v.diff	diff($1)	1	1	Diff
 v.max	pmax($2, $1)	2	1	PMax
 v.min	pmin($2, $1)	2	1	PMin
 wh	which($1)	1	1	Which
 v.whicha	which($1, arr.ind=TRUE)	1	1	WhichArr
-v.seq	seq($2, $1)	2	1	Seq
 v.seqlen	seq($3, $2, length.out=$1)	3	1	SeqLen
 r2	rep($2, $1)	2	1	Rep
 v.repmat	matrix(rep($3, $2*$1), nrow=nrow($3)*$2)	3	1	RepMat
@@ -233,7 +218,6 @@ sys.scipen	options(scipen=$1)	1	0	SetScipen
 SH	head($1)	1	1	Head
 ST	tail($1)	1	1	Tail
 SR	rank($1)	1	1	Rank
-SS	sort($1)	1	1	Sort
 db	dbeta($3, $2, $1)	3	1	Density Beta
 pb	pbeta($3, $2, $1)	3	1	Prob Beta
 qb	qbeta($3, $2, $1)	3	1	Quantile Beta
@@ -326,7 +310,6 @@ s.gre	grep($2, $1)	2	1	Grep
 s.grl	grepl($2, $1)	2	1	Grepl
 s.rex	regexpr($2, $1)	2	1	Regexpr
 s.grx	gregexpr($2, $1)	2	1	Gregexpr
-s.spr	sprintf($2, $1)	2	1	Sprintf
 s.cat	cat($1)	1	0	Cat
 s.mes	message($1)	1	0	Message
 s.war	warning($1)	1	0	Warning
@@ -358,7 +341,6 @@ on	names($1)	1	1	Names
 or	rownames($1)	1	1	Rownames
 oC	colnames($1)	1	1	Colnames
 od	dim($1)	1	1	Dim
-oL	length($1)	1	1	Length
 ou	unlist($1)	1	1	Unlist
 Fa	apply($3, $2, $1)	3	1	Apply
 Fl	lapply($2, $1)	2	1	Lapply
@@ -375,19 +357,10 @@ d.agg	aggregate($3, $2, $1)	3	1	Aggregate
 d.spl	split($2, $1)	2	1	Split
 d.uns	unsplit($2, $1)	2	1	Unsplit
 d.ord	order($1)	1	1	Order
-d.ran	rank($1)	1	1	Rank (Full)
-d.mat	match($2, $1)	2	1	Match
 d.cut	cut($2, $1)	2	1	Cut
 d.tab	table($1)	1	1	Table
 d.xta	xtabs($2, $1)	2	1	XTabs
 m.ci	confint($1)	1	1	Conf Int
-m.vc	vcov($1)	1	1	VCov
-m.an	anova($1)	1	1	Anova (Full)
-m.ai	AIC($1)	1	1	AIC
-m.bi	BIC($1)	1	1	BIC
-m.co	coef($1)	1	1	Coef
-m.res	residuals($1)	1	1	Residuals
-m.fit	fitted($1)	1	1	Fitted
 m.pre	predict($1)	1	1	Predict
 m.upd	update($2, $1)	2	1	Update
 m.off	offset($1)	1	1	Offset
@@ -407,19 +380,10 @@ pi	Sys.getpid()	0	1	GetPID
 BT	{idx<-c(1,4,3,2,5); $1[idx,idx]}	1	1	Bingo Twin
 YM	matrix($3, nrow=$2, ncol=$1, byrow=TRUE)	3	1	Matrix ByRow
 ..	list($2, $1)	2	1	Pair
-vr	rev($1)	1	1	Reverse
-vs	sum($1)	1	1	Sum
-p1	prod($1)	1	1	Product
-v.rand	runif($1)	1	1	Random
 rm	ratl_rms($1)	1	1	RMS
-mg	ratl_gcd($2, $1)	2	1	GCD
 ml	ratl_lcm($2, $1)	2	1	LCM
 Y!	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix
 mp	ratl_is_prime($1)	1	1	Is Prime
-uq	unique($1)	1	1	Unique
-v.rle	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE
-sa	utf8ToInt($1)	1	1	To ASCII
-FR	readLines($1)	1	1	Read File
 FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File
 zd	as.Date($1)	1	1	To Date
 mf	ratl_prime_factors($1)	1	1	Prime Factors
@@ -442,7 +406,6 @@ hd	head($2, $1)	2	1	HeadN
 tl	tail($2, $1)	2	1	TailN
 la	tail($1, 1)	1	1	LastElem
 fe1	head($1, 1)	1	1	FirstElem
-sl	$2[$1]	2	1	Slice
 ns	$2[length($2)+1-$1]	2	1	NegSlice
 r1	1:$1	1	1	Range1toN
 <=	$2 <= $1	2	1	LessEqual

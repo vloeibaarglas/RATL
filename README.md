@@ -16,7 +16,7 @@ The compiler works in R 3.0.0 or newer.
 
 - **Addition**: `./src/RATL.R "1 2 + p"` -> `3`
 - **Multiplication Table**: `./src/RATL.R "1 10:D&p"`
-- **Statistical Mean**: `./src/RATL.R "1 5:μ"`
+- **Statistical Mean**: `./src/RATL.R "1 5:m"`
 - **FizzBuzz**: `./src/RATL.R "$(cat examples/17_fizzbuzz.ratl)"`
 
 ## Architecture

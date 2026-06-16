@@ -146,7 +146,7 @@ ratl_eval <- function(tokens, ctx) {
       } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {
-          if (stack_length(ctx$stack) < entry$n_in) stop(paste("Stack underflow for symbol", val))
+          if (stack_length(ctx$stack) < entry$n_in) stop(paste0("Stack underflow for '", val, "': needs ", entry$n_in, " args, has ", stack_length(ctx$stack)))
           args <- list()
           if (entry$n_in > 0) {
             for (k in 1:entry$n_in) args[[k]] <- stack_pop(ctx$stack)
@@ -158,7 +158,7 @@ ratl_eval <- function(tokens, ctx) {
             for (r in res) stack_push(ctx$stack, r)
           }
         } else {
-          warning(paste("Unknown symbol:", val))
+          stop(paste0("Unknown symbol: '", val, "'. Check src/ratl_def.tsv for available symbols."))
         }
       }
     } else if (type == "vector_block") {
