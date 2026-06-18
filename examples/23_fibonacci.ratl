@@ -1,6 +1,6 @@
 #RosettaCode:https://rosettacode.org/wiki/Fibonacci_sequence
 0 1
-1 10: (
+10. (
   x
   D p D L + M w
 )

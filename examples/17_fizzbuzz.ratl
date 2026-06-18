@@ -1,5 +1,5 @@
 #RosettaCode:https://rosettacode.org/wiki/FizzBuzz
-1 20: (
+20. (
   D 15 % 0 = ? 'FizzBuzz' p ]
   D 15 % 0 = ~ ?
     D 3 % 0 = ? 'Fizz' p ]

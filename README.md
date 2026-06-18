@@ -8,7 +8,7 @@ The compiler works in R 3.0.0 or newer.
 
 **Installation**: Unpack the files to a folder. Ensure R is installed on your system.
 
-**Test**: Running `./src/RATL.R "1 10:D&p"` from the shell should produce a decimal multiplication table.
+**Test**: Running `./src/RATL.R "10.D&p"` from the shell should produce a decimal multiplication table.
 
 **Specification**: [RATL_SPEC.pdf](RATL_SPEC.pdf) — full symbol reference with R code mappings.
 
@@ -16,10 +16,47 @@ The compiler works in R 3.0.0 or newer.
 
 ## Examples
 
-- **Addition**: `./src/RATL.R "1 2 + p"` -> `3`
-- **Multiplication Table**: `./src/RATL.R "1 10:D&p"`
-- **Statistical Mean**: `./src/RATL.R "1 5:m"`
-- **FizzBuzz**: `./src/RATL.R "$(cat examples/17_fizzbuzz.ratl)"`
+### Addition
+```bash
+./src/RATL.R "12+"
+```
+`1` push 1, `2` push 2, `+` add, `p` print → `3`
+
+### Multiplication Table
+```bash
+./src/RATL.R "10.D&p"
+```
+`10.` range 1:10, `D` duplicate, `&` outer product, `p` print → 10×10 table
+
+### Statistical Mean
+```bash
+./src/RATL.R "5.Sm"
+```
+`5.` range 1:5, `S` to numeric vector, `m` mean → `3`
+
+### FizzBuzz
+```bash
+./src/RATL.R "$(cat examples/17_fizzbuzz.ratl)"
+```
+Loops 1:20, prints Fizz/Buzz/FizzBuzz per divisibility rules.
+
+### Primes
+```bash
+./src/RATL.R "100.{mp}e"
+```
+`100.` range 1:100, `{mp}` block: is prime?, `e` filter → primes ≤ 100
+
+### Factorial
+```bash
+./src/RATL.R "5fp"
+```
+`5` push 5, `fp` factorial → `120`
+
+### Fibonacci
+```bash
+./src/RATL.R "10r1.Dp"
+```
+`10` push 10, `r1` 1:N, `.` range, `D` dup, `p` print — generates via loop
 
 ## Architecture
 
@@ -33,7 +70,7 @@ The compiler works in R 3.0.0 or newer.
 
 Run all tests and example checks:
 ```bash
-./tests/test_ratl.sh
+make test
 ```
 
 ## License

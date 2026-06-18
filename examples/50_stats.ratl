@@ -1,10 +1,10 @@
 # Statistical Functions Demo
 # R: mean(x); sd(x); fivenum(x); cor(x,y); Norm(n); shapiro.test(x); t.test(x,y); density(x)
-1 5:
+5.
 D m p 
 D Bs p 
 D B5 p 
-1 3: 4 6: Bc p 
+3. 4 6: Bc p 
 100 N D ks p 
-1 3: 2 4: kt p 
+3. 2 4: kt p 
 vd p
