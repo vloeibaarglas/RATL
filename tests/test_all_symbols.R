@@ -450,19 +450,19 @@ cat("Abs ... ")
 r <- run_ratl("5 ab")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Real Part ... ") 
-r <- run_ratl("5 c.re")
+r <- run_ratl("5 cR")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Imag Part ... ") 
-r <- run_ratl("5 c.im")
+r <- run_ratl("5 cI")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Conjugate ... ") 
-r <- run_ratl("5 c.conj")
+r <- run_ratl("5 cJ")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Arg ... ") 
-r <- run_ratl("5 c.arg")
+r <- run_ratl("5 cA")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Modulus ... ") 
-r <- run_ratl("5 c.mod")
+r <- run_ratl("5 cM")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Exp ... ") 
 r <- run_ratl("5 ex")
@@ -507,28 +507,28 @@ cat("EigenVectors ... ")
 r <- run_ratl("5 yc")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Intersect ... ") 
-r <- run_ratl("3 5 set.is")
+r <- run_ratl("3 5 sI")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Union ... ") 
-r <- run_ratl("3 5 set.un")
+r <- run_ratl("3 5 sN")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("SetDiff ... ") 
-r <- run_ratl("3 5 set.sw")
+r <- run_ratl("3 5 sD")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("IsElement ... ") 
 r <- run_ratl("3 5 set.ie")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Any ... ") 
-r <- run_ratl("5 l.any")
+r <- run_ratl("5 lA")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("All ... ") 
 r <- run_ratl("5 l.all")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Xor ... ") 
-r <- run_ratl("3 5 l.xor")
+r <- run_ratl("3 5 lX")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("NNZ ... ") 
-r <- run_ratl("5 l.nz")
+r <- run_ratl("5 lZ")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("ToUpper ... ") 
 r <- run_ratl("5 sU")
@@ -561,85 +561,85 @@ cat("TrimWS ... ")
 r <- run_ratl("5 st")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitAnd ... ") 
-r <- run_ratl("3 5 b.and")
+r <- run_ratl("3 5 bA")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitOr ... ") 
-r <- run_ratl("3 5 b.or")
+r <- run_ratl("3 5 bO")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitXor ... ") 
-r <- run_ratl("3 5 b.xor")
+r <- run_ratl("3 5 bX")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitNot ... ") 
-r <- run_ratl("5 b.not")
+r <- run_ratl("5 bN")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitShiftL ... ") 
-r <- run_ratl("3 5 b.shiftl")
+r <- run_ratl("3 5 bL")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("BitShiftR ... ") 
-r <- run_ratl("3 5 b.shiftr")
+r <- run_ratl("3 5 bR")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("CumMin ... ") 
-r <- run_ratl("5 v.cmin")
+r <- run_ratl("5 vI")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("CumMax ... ") 
-r <- run_ratl("5 v.cmax")
+r <- run_ratl("5 vX")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("CumProd ... ") 
 r <- run_ratl("5 v.cprod")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Diff ... ") 
-r <- run_ratl("5 v.diff")
+r <- run_ratl("5 vF")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("PMax ... ") 
-r <- run_ratl("3 5 v.max")
+r <- run_ratl("3 5 vG")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("PMin ... ") 
-r <- run_ratl("3 5 v.min")
+r <- run_ratl("3 5 vB")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Which ... ") 
 r <- run_ratl("5 wh")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("WhichArr ... ") 
-r <- run_ratl("5 v.whicha")
+r <- run_ratl("5 vH")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Seq ... ") 
 r <- run_ratl("3 5 v.seq")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("SeqLen ... ") 
-r <- run_ratl("1 2 3 v.seqlen")
+r <- run_ratl("1 2 3 vW")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Rep ... ") 
 r <- run_ratl("3 5 r2")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("RepMat ... ") 
-r <- run_ratl("1 2 3 v.repmat")
+r <- run_ratl("1 2 3 vT")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Drop ... ") 
-r <- run_ratl("5 v.drop")
+r <- run_ratl("5 vD")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Choose ... ") 
 r <- run_ratl("3 5 MC")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Factor ... ") 
-r <- run_ratl("5 m.factor")
+r <- run_ratl("5 mF")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Gamma ... ") 
-r <- run_ratl("5 m.gamma")
+r <- run_ratl("5 mG")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Beta ... ") 
-r <- run_ratl("3 5 m.beta")
+r <- run_ratl("3 5 mB")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Factorial ... ") 
 r <- run_ratl("5 fp")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("IntDiv ... ") 
-r <- run_ratl("3 5 m.idiv")
+r <- run_ratl("3 5 mI")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("LM Simple ... ") 
-r <- run_ratl("3 5 m.lm")
+r <- run_ratl("3 5 mL")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Quantile ... ") 
-r <- run_ratl("3 5 m.quantile")
+r <- run_ratl("3 5 mQ")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Skewness ... ") 
 r <- run_ratl("5 Sk")
@@ -906,46 +906,46 @@ cat("Psigamma ... ")
 r <- run_ratl("3 5 ps")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Col Indices ... ") 
-r <- run_ratl("5 v.col")
+r <- run_ratl("5 vC")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Row Indices ... ") 
-r <- run_ratl("5 v.row")
+r <- run_ratl("5 vR")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Col Sums ... ") 
-r <- run_ratl("5 v.cs")
+r <- run_ratl("5 vS")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Row Sums ... ") 
-r <- run_ratl("5 v.rs")
+r <- run_ratl("5 vE")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Col Means ... ") 
-r <- run_ratl("5 v.cm")
+r <- run_ratl("5 vM")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Row Means ... ") 
-r <- run_ratl("5 v.rm")
+r <- run_ratl("5 vN")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Solve ... ") 
-r <- run_ratl("5 v.slv")
+r <- run_ratl("5 vL")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Solve 2 ... ") 
-r <- run_ratl("3 5 v.sl2")
+r <- run_ratl("3 5 v2")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("QR Decomp ... ") 
-r <- run_ratl("5 v.qr")
+r <- run_ratl("5 vQ")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("SVD ... ") 
-r <- run_ratl("5 v.svd")
+r <- run_ratl("5 vV")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Grep ... ") 
-r <- run_ratl("3 5 s.gre")
+r <- run_ratl("3 5 sG")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Grepl ... ") 
-r <- run_ratl("3 5 s.grl")
+r <- run_ratl("3 5 sB")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Regexpr ... ") 
-r <- run_ratl("3 5 s.rex")
+r <- run_ratl("3 5 sR")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Gregexpr ... ") 
-r <- run_ratl("3 5 s.grx")
+r <- run_ratl("3 5 sX")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Sprintf ... ") 
 r <- run_ratl("3 5 s.spr")
@@ -1017,19 +1017,19 @@ cat("Position ... ")
 r <- run_ratl("3 5 Fp")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("By ... ") 
-r <- run_ratl("1 2 3 d.by")
+r <- run_ratl("1 2 3 dY")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Aggregate ... ") 
-r <- run_ratl("1 2 3 d.agg")
+r <- run_ratl("1 2 3 dA")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Split ... ") 
-r <- run_ratl("3 5 d.spl")
+r <- run_ratl("3 5 dS")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Unsplit ... ") 
-r <- run_ratl("3 5 d.uns")
+r <- run_ratl("3 5 dU")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Order ... ") 
-r <- run_ratl("5 d.ord")
+r <- run_ratl("5 dO")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Rank Full ... ") 
 r <- run_ratl("5 d.ran")
@@ -1038,16 +1038,16 @@ cat("Match ... ")
 r <- run_ratl("3 5 d.mat")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Cut ... ") 
-r <- run_ratl("3 5 d.cut")
+r <- run_ratl("3 5 dE")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Table ... ") 
-r <- run_ratl("5 d.tab")
+r <- run_ratl("5 dT")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("XTabs ... ") 
-r <- run_ratl("3 5 d.xta")
+r <- run_ratl("3 5 dX")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Conf Int ... ") 
-r <- run_ratl("5 m.ci")
+r <- run_ratl("5 mC")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("VCov ... ") 
 r <- run_ratl("5 m.vc")
@@ -1071,25 +1071,25 @@ cat("Fitted ... ")
 r <- run_ratl("5 m.fit")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Predict ... ") 
-r <- run_ratl("5 m.pre")
+r <- run_ratl("5 mP")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Update ... ") 
-r <- run_ratl("3 5 m.upd")
+r <- run_ratl("3 5 mU")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Offset ... ") 
-r <- run_ratl("5 m.off")
+r <- run_ratl("5 mO")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Formula ... ") 
-r <- run_ratl("5 m.for")
+r <- run_ratl("5 mW")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Terms ... ") 
-r <- run_ratl("5 m.ter")
+r <- run_ratl("5 mT")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Model Frame ... ") 
-r <- run_ratl("5 m.mfr")
+r <- run_ratl("5 mR")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Model Matrix ... ") 
-r <- run_ratl("5 m.mmt")
+r <- run_ratl("5 mM")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Getenv ... ") 
 r <- run_ratl("5 ge")
@@ -1191,7 +1191,7 @@ cat("LastElem ... ")
 r <- run_ratl("5 la")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("FirstElem ... ") 
-r <- run_ratl("5 fe1")
+r <- run_ratl("5 fE")
 if (!grepl("Error:", r)) { cat("PASS\n"); passed <- passed+1 } else { cat("FAIL: ", r, "\n"); failed <- failed+1 }
 cat("Slice ... ") 
 r <- run_ratl("3 5 sl")

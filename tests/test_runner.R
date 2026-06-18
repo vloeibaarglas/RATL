@@ -65,7 +65,7 @@ test_cases <- list(
   list(name = "Reduce short", code = "[1 2 3 4 5] {+} y", expected = "15"),
   list(name = "Head 1", code = "[1 2 3] 1 hd", expected = "1"),
   list(name = "Tail 1", code = "[1 2 3] 1 tl", expected = "3"),
-  list(name = "First", code = "[10 20 30] fe1", expected = "10"),
+  list(name = "First", code = "[10 20 30] fE", expected = "10"),
   list(name = "Last", code = "[10 20 30] la", expected = "30"),
   list(name = "Range 1 to N", code = "5 r1", expected = "1 2 3 4 5"),
   list(name = "Neg slice", code = "[10 20 30 40 50] 1 ns", expected = "50"),

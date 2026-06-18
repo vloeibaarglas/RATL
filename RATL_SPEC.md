@@ -162,7 +162,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | **String** | `C` (concat), `j` (join), `S` (split), `rv` (reverse), `sU`/`sL` (case), `sn` (nchar), `st` (trim) |
 | **Stack/Clipboard** | `D` (dup), `w` (swap), `x` (delete), `U` (unpack), `H`/`G`, `L`/`M` |
 | **Higher-Order** | `q` (map), `e` (filter), `y` (reduce), `z` (repeat), `@` (execute block) |
-| **Array** | `fu` (flatten), `zp` (zip), `hd`/`tl` (head/tail N), `fe1`/`la` (first/last), `r1` (1:N), `mn`/`mx` (min/max) |
+| **Array** | `fu` (flatten), `zp` (zip), `hd`/`tl` (head/tail N), `fE`/`la` (first/last), `r1` (1:N), `mn`/`mx` (min/max) |
 | **Collection** | `un` (unique count), `ix` (index of), `cn` (contains), `tb` (tabulate), `c1` (cumprod), `uq` (unique) |
 | **System/I/O** | `i` (input), `T` (time), `F` (read), `W` (write) |
 

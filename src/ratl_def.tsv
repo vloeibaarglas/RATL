@@ -136,11 +136,11 @@ tr	trunc($1)	1	1	Trunc
 ro	round($1)	1	1	Round
 sg	sign($1)	1	1	Sign
 ab	abs($1)	1	1	Abs
-c.re	Re($1)	1	1	Real Part
-c.im	Im($1)	1	1	Imag Part
-c.conj	Conj($1)	1	1	Conjugate
-c.arg	Arg($1)	1	1	Arg
-c.mod	Mod($1)	1	1	Modulus
+cR	Re($1)	1	1	Real Part
+cI	Im($1)	1	1	Imag Part
+cJ	Conj($1)	1	1	Conjugate
+cA	Arg($1)	1	1	Arg
+cM	Mod($1)	1	1	Modulus
 ex	exp($1)	1	1	Exp
 lg	log($1)	1	1	Log Natural
 l1	log10($1)	1	1	Log 10
@@ -155,12 +155,12 @@ yl	{x<-$1; x[upper.tri(x)]<-0; x}	1	1	TriLower
 yk	kronecker($2, $1)	2	1	Kronecker
 yv	eigen($1)$values	1	1	EigenValues
 yc	eigen($1)$vectors	1	1	EigenVectors
-set.is	intersect($2, $1)	2	1	Intersect
-set.un	union($2, $1)	2	1	Union
-set.sw	setdiff($2, $1)	2	1	SetDiff
-l.any	any($1)	1	1	Any
-l.xor	xor($2, $1)	2	1	Xor
-l.nz	sum($1 != 0)	1	1	NNZ
+sI	intersect($2, $1)	2	1	Intersect
+sN	union($2, $1)	2	1	Union
+sD	setdiff($2, $1)	2	1	SetDiff
+lA	any($1)	1	1	Any
+lX	xor($2, $1)	2	1	Xor
+lZ	sum($1 != 0)	1	1	NNZ
 sU	toupper($1)	1	1	ToUpper
 sL	tolower($1)	1	1	ToLower
 sn	nchar($1)	1	1	NChar
@@ -169,31 +169,31 @@ sr	sub($2, $1, $3)	3	1	Sub
 SG	gsub($2, $1, $3)	3	1	GSub
 sf	sprintf($2, $1)	2	1	Sprintf
 st	trimws($1)	1	1	TrimWS
-b.and	bitwAnd($2, $1)	2	1	BitAnd
-b.or	bitwOr($2, $1)	2	1	BitOr
-b.xor	bitwXor($2, $1)	2	1	BitXor
-b.not	bitwNot($1)	1	1	BitNot
-b.shiftl	bitwShiftL($2, $1)	2	1	BitShiftL
-b.shiftr	bitwShiftR($2, $1)	2	1	BitShiftR
-v.cmin	cummin($1)	1	1	CumMin
-v.cmax	cummax($1)	1	1	CumMax
-v.diff	diff($1)	1	1	Diff
-v.max	pmax($2, $1)	2	1	PMax
-v.min	pmin($2, $1)	2	1	PMin
+bA	bitwAnd($2, $1)	2	1	BitAnd
+bO	bitwOr($2, $1)	2	1	BitOr
+bX	bitwXor($2, $1)	2	1	BitXor
+bN	bitwNot($1)	1	1	BitNot
+bL	bitwShiftL($2, $1)	2	1	BitShiftL
+bR	bitwShiftR($2, $1)	2	1	BitShiftR
+vI	cummin($1)	1	1	CumMin
+vX	cummax($1)	1	1	CumMax
+vF	diff($1)	1	1	Diff
+vG	pmax($2, $1)	2	1	PMax
+vB	pmin($2, $1)	2	1	PMin
 wh	which($1)	1	1	Which
-v.whicha	which($1, arr.ind=TRUE)	1	1	WhichArr
-v.seqlen	seq($3, $2, length.out=$1)	3	1	SeqLen
+vH	which($1, arr.ind=TRUE)	1	1	WhichArr
+vW	seq($3, $2, length.out=$1)	3	1	SeqLen
 r2	rep($2, $1)	2	1	Rep
-v.repmat	matrix(rep($3, $2*$1), nrow=nrow($3)*$2)	3	1	RepMat
-v.drop	drop($1)	1	1	Drop
+vT	matrix(rep($3, $2*$1), nrow=nrow($3)*$2)	3	1	RepMat
+vD	drop($1)	1	1	Drop
 MC	choose($2, $1)	2	1	Choose
-m.factor	factor($1)	1	1	Factor
-m.gamma	gamma($1)	1	1	Gamma
-m.beta	beta($2, $1)	2	1	Beta
+mF	factor($1)	1	1	Factor
+mG	gamma($1)	1	1	Gamma
+mB	beta($2, $1)	2	1	Beta
 fp	factorial($1)	1	1	Factorial
-m.idiv	$2 %/% $1	2	1	IntDiv
-m.lm	lm($2 ~ $1)	2	1	LM Simple
-m.quantile	quantile($1, $2)	2	1	Quantile
+mI	$2 %/% $1	2	1	IntDiv
+mL	lm($2 ~ $1)	2	1	LM Simple
+mQ	quantile($1, $2)	2	1	Quantile
 Sk	sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)	1	1	Skewness
 Ku	sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)	1	1	Kurtosis
 Sw	weighted.mean($2, $1)	2	1	WeightedMean
@@ -202,19 +202,19 @@ Sn	sum($1, na.rm=TRUE)	1	1	SumNA
 Pi	pi	0	1	Pi
 Na	NA	0	1	NA
 In	Inf	0	1	Inf
-sys.tic	proc.time()	0	1	Tic
-sys.toc	proc.time() - $1	1	1	Toc
-sys.sleep	Sys.sleep($1)	1	0	Sleep
-sys.date	date()	0	1	Date
-sys.getwd	getwd()	0	1	GetWD
-sys.setwd	setwd($1)	1	0	SetWD
-sys.e.num	numeric(0)	0	1	EmptyNum
-sys.e.char	character(0)	0	1	EmptyChar
-sys.e.log	logical(0)	0	1	EmptyLog
+sT	proc.time()	0	1	Tic
+sK	proc.time() - $1	1	1	Toc
+sP	Sys.sleep($1)	1	0	Sleep
+sE	date()	0	1	Date
+sH	getwd()	0	1	GetWD
+sJ	setwd($1)	1	0	SetWD
+sZ	numeric(0)	0	1	EmptyNum
+sQ	character(0)	0	1	EmptyChar
+s4	logical(0)	0	1	EmptyLog
 zt	Sys.time()	0	1	SysTime
-sys.ver	R.version.string	0	1	RVersion
-sys.prompt	options(prompt=$1)	1	0	SetPrompt
-sys.scipen	options(scipen=$1)	1	0	SetScipen
+sV	R.version.string	0	1	RVersion
+sF	options(prompt=$1)	1	0	SetPrompt
+sY	options(scipen=$1)	1	0	SetScipen
 SH	head($1)	1	1	Head
 ST	tail($1)	1	1	Tail
 SR	rank($1)	1	1	Rank
@@ -296,24 +296,24 @@ LG	lgamma($1)	1	1	Log Gamma
 di	digamma($1)	1	1	Digamma
 tg	trigamma($1)	1	1	Trigamma
 ps	psigamma($2, $1)	2	1	Psigamma
-v.col	col($1)	1	1	Col Indices
-v.row	row($1)	1	1	Row Indices
-v.cs	colSums($1)	1	1	Col Sums
-v.rs	rowSums($1)	1	1	Row Sums
-v.cm	colMeans($1)	1	1	Col Means
-v.rm	rowMeans($1)	1	1	Row Means
-v.slv	solve($1)	1	1	Solve
-v.sl2	solve($2, $1)	2	1	Solve 2
-v.qr	qr($1)	1	1	QR Decomp
-v.svd	svd($1)	1	1	SVD
-s.gre	grep($2, $1)	2	1	Grep
-s.grl	grepl($2, $1)	2	1	Grepl
-s.rex	regexpr($2, $1)	2	1	Regexpr
-s.grx	gregexpr($2, $1)	2	1	Gregexpr
-s.cat	cat($1)	1	0	Cat
-s.mes	message($1)	1	0	Message
-s.war	warning($1)	1	0	Warning
-s.sto	stop($1)	1	0	Stop
+vC	col($1)	1	1	Col Indices
+vR	row($1)	1	1	Row Indices
+vS	colSums($1)	1	1	Col Sums
+vE	rowSums($1)	1	1	Row Sums
+vM	colMeans($1)	1	1	Col Means
+vN	rowMeans($1)	1	1	Row Means
+vL	solve($1)	1	1	Solve
+v2	solve($2, $1)	2	1	Solve 2
+vQ	qr($1)	1	1	QR Decomp
+vV	svd($1)	1	1	SVD
+sG	grep($2, $1)	2	1	Grep
+sB	grepl($2, $1)	2	1	Grepl
+sR	regexpr($2, $1)	2	1	Regexpr
+sX	gregexpr($2, $1)	2	1	Gregexpr
+sC	cat($1)	1	0	Cat
+sM	message($1)	1	0	Message
+sW	warning($1)	1	0	Warning
+sS	stop($1)	1	0	Stop
 fr	read.table($1)	1	1	Read Table
 fc	read.csv($1)	1	1	Read CSV
 fw	write.table($2, $1)	2	0	Write Table
@@ -352,22 +352,22 @@ Ff	Filter($2, $1)	2	1	Filter (Func)
 Fn	Find($2, $1)	2	1	Find (Func)
 fn	Negate($1)	1	1	Negate
 Fp	Position($2, $1)	2	1	Position
-d.by	by($3, $2, $1)	3	1	By
-d.agg	aggregate($3, $2, $1)	3	1	Aggregate
-d.spl	split($2, $1)	2	1	Split
-d.uns	unsplit($2, $1)	2	1	Unsplit
-d.ord	order($1)	1	1	Order
-d.cut	cut($2, $1)	2	1	Cut
-d.tab	table($1)	1	1	Table
-d.xta	xtabs($2, $1)	2	1	XTabs
-m.ci	confint($1)	1	1	Conf Int
-m.pre	predict($1)	1	1	Predict
-m.upd	update($2, $1)	2	1	Update
-m.off	offset($1)	1	1	Offset
-m.for	formula($1)	1	1	Formula
-m.ter	terms($1)	1	1	Terms
-m.mfr	model.frame($1)	1	1	Model Frame
-m.mmt	model.matrix($1)	1	1	Model Matrix
+dY	by($3, $2, $1)	3	1	By
+dA	aggregate($3, $2, $1)	3	1	Aggregate
+dS	split($2, $1)	2	1	Split
+dU	unsplit($2, $1)	2	1	Unsplit
+dO	order($1)	1	1	Order
+dE	cut($2, $1)	2	1	Cut
+dT	table($1)	1	1	Table
+dX	xtabs($2, $1)	2	1	XTabs
+mC	confint($1)	1	1	Conf Int
+mP	predict($1)	1	1	Predict
+mU	update($2, $1)	2	1	Update
+mO	offset($1)	1	1	Offset
+mW	formula($1)	1	1	Formula
+mT	terms($1)	1	1	Terms
+mR	model.frame($1)	1	1	Model Frame
+mM	model.matrix($1)	1	1	Model Matrix
 zo	options()	0	1	Options
 zg	gc()	0	1	GC
 zv	version	0	1	Version
@@ -405,7 +405,7 @@ cn	is.element($2, $1)	2	1	IsIn
 hd	head($2, $1)	2	1	HeadN
 tl	tail($2, $1)	2	1	TailN
 la	tail($1, 1)	1	1	LastElem
-fe1	head($1, 1)	1	1	FirstElem
+fE	head($1, 1)	1	1	FirstElem
 ns	$2[length($2)+1-$1]	2	1	NegSlice
 r1	1:$1	1	1	Range1toN
 <=	$2 <= $1	2	1	LessEqual
