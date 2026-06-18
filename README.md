@@ -2,57 +2,41 @@
 
 [![CI](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml/badge.svg)](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml)
 
-A programming language based on R and suitable for code golf.
+R-based Array Manipulation Language — a stack-based esoteric language for code golf, built on R's statistical and matrix capabilities.
 
-RATL (R-based Array Manipulation Language) is an esoteric, stack-based language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax.
+Requires R 3.0.0+.
 
-The compiler works in R 3.0.0 or newer.
+## Quick Start
 
-**Installation**: Unpack the files to a folder. Ensure R is installed on your system.
+```bash
+git clone https://github.com/vloeibaarglas/RATL.git
+cd RATL
+make test
+```
 
-**Test**: `make test` — runs 399 unit tests (auto-generated from `src/ratl_def.tsv`) plus 60 integration tests.
+## Usage
 
-**Specification**: [RATL_SPEC.pdf](specs/RATL_SPEC.pdf) — full symbol reference with R code mappings. Auto-generated from `src/ratl_def.tsv` via `make spec`.
+Run a RATL program:
 
-**Usage**: See the specification documented in the examples and definition files.
+```bash
+Rscript src/RATL.R "your code here"
+```
+
+Read the [specification](specs/RATL_SPEC.pdf) for the full symbol reference.
 
 ## Examples
 
-### Addition
-```
-1 2+
-```
-`1` push 1, `2` push 2, `+` add → `3`
-
-### Multiplication Table
-```
-10.D&p
-```
-`10.` range 1:10, `D` duplicate, `&` outer product, `p` print → 10×10 table
-
-Note: `p` is optional when there's one value left on the stack — RATL prints it automatically.
-
-### Statistical Mean
-```
-2 5:m
-```
-`2` push 2, `5:` range 2:5, `m` mean → `3.5`
-
-Note: `.` is shorthand for `1:N` (1 arg), while `:` takes two args `N:M`.
-
-### Primes
-```
-100.{mp}e
-```
-`100.` range 1:100, `{mp}` block: is prime?, `e` filter → primes ≤ 100
-
-### Factorial
-```
-5fp
-```
-`5` push 5, `fp` factorial → `120`
+| Code | Description | Output |
+|------|-------------|--------|
+| `1 2+` | Addition | `3` |
+| `10.D&p` | 10×10 multiplication table | printed table |
+| `5fp` | Factorial | `120` |
+| `10.2^s` | Sum of squares 1–10 | `385` |
+| `3y!` | 3×3 identity matrix | identity matrix |
+| `100.{mp}e` | Primes ≤ 100 | 2 3 5 7 ... |
 
 ### FizzBuzz
+
 ```
 20.(
   D15%0=?'FizzBuzz'p]
@@ -62,9 +46,9 @@ Note: `.` is shorthand for `1:N` (1 arg), while `:` takes two args `N:M`.
     D3%0=~?D5%0=~?Dp]]]
   x)
 ```
-Loops 1:20, prints Fizz/Buzz/FizzBuzz per divisibility rules.
 
 ### Fibonacci
+
 ```
 0 1
 10.(
@@ -73,43 +57,41 @@ Loops 1:20, prints Fizz/Buzz/FizzBuzz per divisibility rules.
 )
 x x
 ```
-First 10 Fibonacci numbers — uses clipboards L/M to hold previous two values.
 
-### Collatz Sequence
-```
-6D Dp
-"D1=?X]
-  D2%0=?D2/;D3*1+]
-  wxDDp
-"x
-```
-Hailstone sequence starting at 6: 6→3→10→5→16→8→4→2→1
+First 10 Fibonacci numbers using clipboards L/M for state.
 
-### Identity Matrix
-```
-3y!
-```
-3×3 identity matrix
+## Development
 
-### Sum of Squares
-```
-10.2^s
-```
-`10.` range 1:10, `2^` square each, `s` sum → `385`
+| Command | Description |
+|---------|-------------|
+| `make test` | Run all tests (399 unit + 60 integration) |
+| `make spec` | Regenerate spec markdown + PDF |
+| `make gen-tests` | Regenerate unit tests from TSV |
+| `make clean` | Remove generated files |
+
+### Source of Truth
+
+`src/ratl_def.tsv` defines all symbols, categories, and test cases. The spec and tests are auto-generated from it:
+
+- `scripts/gen_spec.py` → `specs/RATL_SPEC.md` → `specs/RATL_SPEC.pdf`
+- `scripts/gen_tests.py` → `tests/test_all_symbols.R`
+
+### CI
+
+GitHub Actions runs on every push:
+- **Tests** — runs `make test` on all pushes
+- **Spec rebuild** — regenerates spec + tests on main, auto-commits with `[skip ci]`
+
+Doc-only changes (`*.md`, `specs/`, `examples/`) are excluded from CI.
 
 ## Architecture
 
-1.  **Parser (`src/ratl_parse.R`)**: Tokenizes input into literals and blocks.
-2.  **Evaluator (`src/ratl_eval.R`)**: Tree-walking interpreter that executes tokens on a live stack.
-3.  **Dispatch (`src/ratl_dispatch.R`)**: Hashed environment for O(1) symbol lookup.
-4.  **Stack (`src/ratl_stack.R`)**: Pointer-based stack implementation for performance.
-5.  **Library (`src/ratl_lib.R`)**: Statistical and helper functions.
-
-## Testing
-
-```bash
-make test
-```
+1. **Parser** (`src/ratl_parse.R`) — tokenizes input into literals and blocks
+2. **Evaluator** (`src/ratl_eval.R`) — tree-walking interpreter on a live stack
+3. **Dispatch** (`src/ratl_dispatch.R`) — hashed O(1) symbol lookup
+4. **Stack** (`src/ratl_stack.R`) — pointer-based stack implementation
+5. **Library** (`src/ratl_lib.R`) — statistical and helper functions
 
 ## License
+
 MIT
