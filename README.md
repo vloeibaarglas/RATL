@@ -39,28 +39,27 @@ Note: `p` is optional when there's one value left on the stack — RATL prints i
 Note: `.` is shorthand for `1:N` (1 arg), while `:` takes two args `N:M`.
 
 ### FizzBuzz
-```bash
-./src/RATL.R "$(cat examples/17_fizzbuzz.ratl)"
+```
+20.(
+  D15%0=?'FizzBuzz'p]
+  D15%0=~?
+    D3%0=?'Fizz'p]
+    D5%0=?'Buzz'p]
+    D3%0=~?D5%0=~?Dp]]]
+  x)
 ```
 Loops 1:20, prints Fizz/Buzz/FizzBuzz per divisibility rules.
 
-### Primes
-```bash
-./src/RATL.R "100.{mp}e"
-```
-`100.` range 1:100, `{mp}` block: is prime?, `e` filter → primes ≤ 100
-
-### Factorial
-```bash
-./src/RATL.R "5fp"
-```
-`5` push 5, `fp` factorial → `120`
-
 ### Fibonacci
-```bash
-./src/RATL.R "$(cat examples/23_fibonacci.ratl)"
 ```
-Generates first 10 Fibonacci numbers using clipboards for state.
+0 1
+10.(
+  x
+  D p D L + M w
+)
+x x
+```
+First 10 Fibonacci numbers — uses clipboards L/M to hold previous two values.
 
 ## Architecture
 
