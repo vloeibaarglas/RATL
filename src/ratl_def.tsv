@@ -415,3 +415,6 @@ q	NULL	0	1	Map (evaluator)
 e	NULL	0	1	Filter (evaluator)
 y	NULL	0	1	Reduce (evaluator)
 z	NULL	0	1	Repeat (evaluator)
+es	$2[$1]	2	1	Extract Subset [
+el	$2[[$1]]	2	1	Extract Element [[
+en	$2[[as.character($1)]]	2	1	Extract Name $
