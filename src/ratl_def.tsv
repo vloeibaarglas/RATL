@@ -418,3 +418,4 @@ z	NULL	0	1	Repeat (evaluator)
 es	$2[$1]	2	1	Extract Subset [
 el	$2[[$1]]	2	1	Extract Element [[
 en	$2[[as.character($1)]]	2	1	Extract Name $
+.	1:$1	1	1	Range 1 to N
