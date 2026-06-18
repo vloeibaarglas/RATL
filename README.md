@@ -8,7 +8,7 @@ The compiler works in R 3.0.0 or newer.
 
 **Installation**: Unpack the files to a folder. Ensure R is installed on your system.
 
-**Test**: Running `./src/RATL.R "10:D&p"` from the shell should produce a decimal multiplication table.
+**Test**: Running `./src/RATL.R "1 10:D&p"` from the shell should produce a decimal multiplication table.
 
 **Specification**: [RATL_SPEC.pdf](RATL_SPEC.pdf) — full symbol reference with R code mappings.
 
@@ -17,7 +17,7 @@ The compiler works in R 3.0.0 or newer.
 ## Examples
 
 - **Addition**: `./src/RATL.R "1 2 + p"` -> `3`
-- **Multiplication Table**: `./src/RATL.R "10:D&p"`
+- **Multiplication Table**: `./src/RATL.R "1 10:D&p"`
 - **Statistical Mean**: `./src/RATL.R "1 5:m"`
 - **FizzBuzz**: `./src/RATL.R "$(cat examples/17_fizzbuzz.ratl)"`
 

@@ -146,22 +146,10 @@ ratl_eval <- function(tokens, ctx) {
        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {
-          if (entry$n_in == -1) {
-            # Variable arity: pop up to 2 args
-            n_avail = stack_length(ctx$stack)
-            if (n_avail >= 2) {
-              args <- list(stack_pop(ctx$stack), stack_pop(ctx$stack))
-            } else if (n_avail >= 1) {
-              args <- list(stack_pop(ctx$stack))
-            } else {
-              stop(paste0("Stack underflow for '", val, "': needs at least 1 arg, has 0"))
-            }
-          } else {
-            if (stack_length(ctx$stack) < entry$n_in) stop(paste0("Stack underflow for '", val, "': needs ", entry$n_in, " args, has ", stack_length(ctx$stack)))
-            args <- list()
-            if (entry$n_in > 0) {
-              for (k in 1:entry$n_in) args[[k]] <- stack_pop(ctx$stack)
-            }
+          if (stack_length(ctx$stack) < entry$n_in) stop(paste0("Stack underflow for '", val, "': needs ", entry$n_in, " args, has ", stack_length(ctx$stack)))
+          args <- list()
+          if (entry$n_in > 0) {
+            for (k in 1:entry$n_in) args[[k]] <- stack_pop(ctx$stack)
           }
           res <- do.call(entry$fn, args)
           if (entry$n_out == 1) {

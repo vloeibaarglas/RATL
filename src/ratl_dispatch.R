@@ -13,9 +13,7 @@ build_dispatch <- function(def_file = "ratl_def.tsv") {
     
     clean_code <- gsub("\\$([0-9]+)", "v\\1", r_code)
     
-    args_str <- if (n_in == -1) {
-      "v1, v2"
-    } else if (n_in > 0) {
+    args_str <- if (n_in > 0) {
       paste0("v", seq_len(n_in), collapse = ", ")
     } else {
       ""
