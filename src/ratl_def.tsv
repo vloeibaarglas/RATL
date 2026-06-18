@@ -10,7 +10,7 @@ p	ratl_print($1)	1	0	Print
 P	prod($1)	1	1	Product
 i	scan(ratl_stdin, what=character(), n=1, quiet=TRUE)	0	1	Input
 r	runif($1)	1	1	Random (n)
-:	seq($2, $1)	2	1	Sequence
+:	if (missing(v2)) seq(1, v1) else seq(v2, v1)	-1	1	Sequence (1 or 2 args)
 =	$2 == $1	2	1	Equal
 <	$2 < $1	2	1	Less
 >	$2 > $1	2	1	Greater

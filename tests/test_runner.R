@@ -27,7 +27,7 @@ test_cases <- list(
   list(name = "Palindrome", file = "examples/25_palindrome.ratl", expected = "Palindrome"),
   list(name = "Sum of Squares", file = "examples/27_sum_squares.ratl", expected = "385"),
   list(name = "Dot Product", file = "examples/28_dot_product.ratl", expected = "32"),
-  list(name = "Identity Matrix", file = "examples/29_identity.ratl", expected = "1 0 0 0 1 0 0 0 1"),
+  list(name = "Identity Matrix", file = "examples/29_identity.ratl", expected = "[,1] [,2] [,3]\n[1,]    1    0    0\n[2,]    0    1    0\n[3,]    0    0    1"),
   list(name = "100 Doors", file = "examples/44_100_doors.ratl", expected = "1 4 9 16 25 36 49 64 81 100"),
   list(name = "Amicable Pairs", file = "examples/45_amicable_pairs.ratl", expected = "220 284"),
   list(name = "Prime Factors", file = "examples/48_prime_factors.ratl", expected = "2 3 3 47 14593"),

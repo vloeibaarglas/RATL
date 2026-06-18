@@ -69,6 +69,8 @@ ratl_cum_sd <- function(x) {
 ratl_print <- function(x) {
   if (is.list(x)) {
     print(x)
+  } else if (is.matrix(x)) {
+    print(x)
   } else if (is.atomic(x) && length(x) <= 100) {
     cat(paste(x, collapse = " "), "\n", sep = "")
   } else {
