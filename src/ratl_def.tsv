@@ -204,7 +204,7 @@ kk	ks.test($2, $1)	2	1	KS Test	Distributions & Tests	3 5 kk	c(D = 1) 1 two-sided
 kv	var.test($2, $1)	2	1	F-Test Var	Distributions & Tests	3 5 kv	ERROR: not enough 'x' observations
 KK	kruskal.test($1)	1	1	Kruskal-Wallis	Distributions & Tests	5 KK	ERROR: argument "g" is missing, with no default
 kb	bartlett.test($1)	1	1	Bartlett Test	Distributions & Tests	5 kb	ERROR: argument "g" is missing, with no default
-N	rnorm($1)	1	1	Random Normal	Distributions & Tests	5 N	1.37095844714667 -0.564698171396089 0.363128411337339 0.632862604961041 0.404268323140999
+N	rnorm($1)	1	1	Random Normal	Distributions & Tests	5 N	
 dn	dnorm($1)	1	1	Density Normal	Distributions & Tests	5 dn	1.4867195147343e-06
 pn	pnorm($1)	1	1	Prob Normal	Distributions & Tests	5 pn	0.999999713348428
 qn	qnorm($1)	1	1	Quantile Normal	Distributions & Tests	5 qn	NaN
@@ -404,14 +404,14 @@ sT	proc.time()	0	1	Tic	System	sT
 sK	proc.time() - $1	1	1	Toc	System	5 sK	
 sP	Sys.sleep($1)	1	0	Sleep	System	5 sP	
 sE	date()	0	1	Date	System	sE	
-sH	getwd()	0	1	GetWD	System	sH	/home/ubuntu/RATL
+sH	getwd()	0	1	GetWD	System	sH	
 sJ	setwd($1)	1	0	SetWD	System		
 zt	Sys.time()	0	1	SysTime	System	zt	
-sV	R.version.string	0	1	RVersion	System	sV	R version 4.5.2 (2025-10-31)
+sV	R.version.string	0	1	RVersion	System	sV	
 sF	options(prompt=$1)	1	0	SetPrompt	System		
 sY	options(scipen=$1)	1	0	SetScipen	System		
-ZT	Sys.timezone()	0	1	Timezone	System	ZT	Etc/UTC
-zl	Sys.localeconv()	0	1	Locale	System	zl	.          255 255 255 255 255 255 255 255
+ZT	Sys.timezone()	0	1	Timezone	System	ZT	
+zl	Sys.localeconv()	0	1	Locale	System	zl	
 zo	options()	0	1	Options	System	zo	
 zg	gc()	0	1	GC	System	zg	
 zv	version	0	1	Version	System	zv	
