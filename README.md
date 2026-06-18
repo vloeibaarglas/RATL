@@ -10,6 +10,8 @@ The compiler works in R 3.0.0 or newer.
 
 **Test**: Running `./src/RATL.R "1 10:D&p"` from the shell should produce a decimal multiplication table.
 
+**Specification**: [RATL_SPEC.pdf](RATL_SPEC.pdf) — full symbol reference with R code mappings.
+
 **Usage**: See the specification documented in the examples and definition files.
 
 ## Examples
