@@ -1,72 +1,33 @@
 #!/usr/bin/env python3
 """Generate RATL_SPEC.md from src/ratl_def.tsv"""
 
-import re
-from collections import defaultdict
+import sys
+from collections import OrderedDict
 
 def load_def(path):
     symbols = []
     with open(path) as f:
-        header = f.readline()  # skip header
+        header = f.readline()
         for line in f:
             parts = line.rstrip('\n').split('\t')
-            if len(parts) >= 5:
-                src, r_code, n_in, n_out, desc = parts[0], parts[1], parts[2], parts[3], parts[4]
+            if len(parts) >= 6:
+                src, r_code, n_in, n_out, desc, category = (
+                    parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]
+                )
                 symbols.append({
                     'src': src, 'r_code': r_code,
-                    'n_in': int(n_in), 'n_out': int(n_out), 'desc': desc
+                    'n_in': int(n_in), 'n_out': int(n_out),
+                    'desc': desc, 'category': category
                 })
     return symbols
 
 def categorize(symbols):
-    cats = defaultdict(list)
+    cats = OrderedDict()
     for s in symbols:
-        src = s['src']
-        desc = s['desc'].lower()
-        r = s['r_code']
-
-        if src in ('+', '-', '*', '/', '^', '%', '<=', '>='):
-            cats['Arithmetic & Comparison'].append(s)
-        elif src in ('<', '>', '=', '~', '!', 'sq', 'ab', 'fl', 'cl', 'tr', 'ro', 'sg'):
-            cats['Arithmetic & Comparison'].append(s)
-        elif src in ('D', 'w', 'x', 'U', 'H', 'G', 'L', 'M', 'i', 'X'):
-            cats['Stack & Control'].append(s)
-        elif src in ('Ls',):
-            cats['Stack & Control'].append(s)
-        elif src in ('q', 'e', 'y', 'z', '@', 'Fq', 'Ft', 'Fr', 'Fx'):
-            cats['Higher-Order Functions'].append(s)
-        elif 'matrix' in desc or 'diag' in desc or 'det' in desc or 'eigen' in desc or 'solve' in desc or 'qr' in desc or 'svd' in desc or 'trace' in desc or src.startswith('y') or src == 'R9' or src == '!':
-            cats['Matrix'].append(s)
-        elif 'test' in desc or 'anova' in desc or 'lm' in desc or 'glm' in desc or 'predict' in desc or 'residual' in desc or 'coef' in desc or 'fitted' in desc or 'aic' in desc or 'bic' in desc or 'loglik' in desc or 'vcov' in desc or 'conf' in desc or 'update' in desc or 'offset' in desc or 'formula' in desc or 'terms' in desc or 'model' in desc or 'loess' in desc or 'nls' in desc or 'pca' in desc or 'density' in desc:
-            cats['Statistical Modeling'].append(s)
-        elif 'norm' in desc or 'pois' in desc or 'exp' in desc or 'binom' in desc or 'chisq' in desc or 't-' in desc or 'f-test' in desc or 'wilcox' in desc or 'shapiro' in desc or 'ks ' in desc or 'fisher' in desc or 'bartlett' in desc or 'kruskal' in desc or 'prop' in desc or 'corr' in desc or 'cov' in desc or 'beta' in desc or 'cauchy' in desc or 'gamma' in desc or 'geom' in desc or 'hyper' in desc or 'lnorm' in desc or 'logis' in desc or 'nbinom' in desc or 'unif' in desc or 'weibull' in desc or 'log' in desc or 'binom' in desc or 'dnorm' in desc or 'pnorm' in desc or 'qnorm' in desc or 'rnorm' in desc or 'dpois' in desc or 'ppois' in desc or 'qpois' in desc or 'rpois' in desc:
-            cats['Distributions & Tests'].append(s)
-        elif 'sin' in desc or 'cos' in desc or 'tan' in desc or 'asin' in desc or 'acos' in desc or 'atan' in desc or 'sinh' in desc or 'cosh' in desc or 'tanh' in desc or 'exp ' in desc or desc.startswith('exp') or 'log ' in desc or desc.startswith('log') or 'sqrt' in desc or 'cumsum' in desc or 'cumprod' in desc or 'cummin' in desc or 'cummax' in desc or 'diff' in desc or 'sign' in desc or 'round' in desc or 'ceiling' in desc or 'floor' in desc or 'trunc' in desc:
-            cats['Math Functions'].append(s)
-        elif 'mean' in desc or 'sum' in desc or 'median' in desc or 'var' in desc or 'sd' in desc or 'min' in desc or 'max' in desc or 'range' in desc or 'iqr' in desc or 'summary' in desc or 'fivenum' in desc or 'mad' in desc or 'skew' in desc or 'kurt' in desc or 'weight' in desc or 'na.rm' in desc:
-            cats['Statistics'].append(s)
-        elif 'sort' in desc or 'rev' in desc or 'rank' in desc or 'unique' in desc or 'tabulate' in desc or 'which' in desc or 'match' in desc or 'element' in desc or 'length' in desc or 'head' in desc or 'tail' in desc or 'flatten' in desc or 'zip' in desc or 'repeat' in desc or 'range' in desc or 'rep ' in desc or 'seq' in desc or 'cumsum' in desc or 'cumprod' in desc or 'diff' in desc or 'pmax' in desc or 'pmin' in desc or 'cummin' in desc or 'cummax' in desc:
-            cats['Array Operations'].append(s)
-        elif src in ('es', 'el', 'en', 'fu', 'zp', 'hd', 'tl', 'fE', 'la', 'r1', 'mn', 'mx', 'rv', 'c1', 'tb', 'un', 'ix', 'cn'):
-            cats['Array Operations'].append(s)
-        elif 'string' in desc or 'char' in desc or 'nchar' in desc or 'substr' in desc or 'sub ' in desc or 'gsub' in desc or 'sprintf' in desc or 'trim' in desc or 'paste' in desc or 'concat' in desc or 'join' in desc or 'split' in desc or 'reverse' in desc or 'toupper' in desc or 'tolower' in desc or 'grep' in desc or 'grepl' in desc or 'regexpr' in desc or 'gregexpr' in desc or 'cat(' in desc or 'message' in desc or 'warning' in desc or 'stop' in desc or 'translate' in desc:
-            cats['String Operations'].append(s)
-        elif 'read' in desc or 'write' in desc or 'file' in desc or 'dir' in desc or 'path' in desc or 'list.files' in desc or 'basename' in desc or 'dirname' in desc or 'temp' in desc:
-            cats['File I/O'].append(s)
-        elif 'type' in desc or 'class' in desc or 'attr' in desc or 'names' in desc or 'dim' in desc or 'typeof' in desc or 'is ' in desc or 'as ' in desc or 'unlist' in desc:
-            cats['Type & Introspection'].append(s)
-        elif 'set' in desc or 'intersect' in desc or 'union' in desc or 'setdiff' in desc:
-            cats['Set Operations'].append(s)
-        elif 'bitwise' in desc or 'bit' in desc:
-            cats['Bitwise Operations'].append(s)
-        elif 'complex' in desc or 'real' in desc or 'imag' in desc or 'conjugate' in desc or 'arg' in desc or 'modulus' in desc:
-            cats['Complex Numbers'].append(s)
-        elif 'sys.' in src or 'proc.time' in r or 'Sys.' in r or 'options' in r or 'version' in r or 'locale' in r or 'pid' in r or 'gc()' in r:
-            cats['System'].append(s)
-        elif 'factorial' in desc or 'choose' in desc or 'gamma' in desc or 'beta' in desc or 'digamma' in desc or 'trigamma' in desc or 'psigamma' in desc or 'lgamma' in desc or 'lbeta' in desc or 'cospi' in desc or 'sinpi' in desc or 'tanpi' in desc or 'log1p' in desc or 'expm1' in desc:
-            cats['Combinatorics & Special'].append(s)
-        else:
-            cats['Other'].append(s)
+        cat = s['category']
+        if cat not in cats:
+            cats[cat] = []
+        cats[cat].append(s)
     return cats
 
 def format_symbol(s):
@@ -194,33 +155,8 @@ def generate_spec(symbols):
     lines.append("## 7. Symbol Reference")
     lines.append("")
 
-    # Order categories nicely
-    order = [
-        'Arithmetic & Comparison',
-        'Stack & Control',
-        'Higher-Order Functions',
-        'Array Operations',
-        'Matrix',
-        'Statistics',
-        'Statistical Modeling',
-        'Distributions & Tests',
-        'Math Functions',
-        'Combinatorics & Special',
-        'Complex Numbers',
-        'String Operations',
-        'Set Operations',
-        'Bitwise Operations',
-        'Type & Introspection',
-        'File I/O',
-        'System',
-        'Other',
-    ]
-
-    for cat in order:
-        if cat not in cats:
-            continue
-        syms = cats[cat]
-        lines.append(f"### 7.{order.index(cat)+1} {cat}")
+    for i, (cat, syms) in enumerate(cats.items(), 1):
+        lines.append(f"### 7.{i} {cat}")
         lines.append("")
         lines.append("| Symbol | R Code | Description | Stack Effect |")
         lines.append("|--------|--------|-------------|--------------|")
@@ -231,7 +167,6 @@ def generate_spec(symbols):
     return '\n'.join(lines)
 
 if __name__ == '__main__':
-    import sys
     tsv_path = sys.argv[1] if len(sys.argv) > 1 else 'src/ratl_def.tsv'
     symbols = load_def(tsv_path)
     spec = generate_spec(symbols)
