@@ -32,9 +32,11 @@ Note: `p` is optional when there's one value left on the stack — RATL prints i
 
 ### Statistical Mean
 ```bash
-./src/RATL.R "5.Sm"
+./src/RATL.R "2 5:m"
 ```
-`5.` range 1:5, `S` to numeric vector, `m` mean → `3`
+`2` push 2, `5:` range 2:5, `m` mean → `3.5`
+
+Note: `.` is shorthand for `1:N` (1 arg), while `:` takes two args `N:M`.
 
 ### FizzBuzz
 ```bash
