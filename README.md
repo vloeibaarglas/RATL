@@ -28,6 +28,8 @@ The compiler works in R 3.0.0 or newer.
 ```
 `10.` range 1:10, `D` duplicate, `&` outer product, `p` print → 10×10 table
 
+Note: `p` is optional when there's one value left on the stack — RATL prints it automatically.
+
 ### Statistical Mean
 ```bash
 ./src/RATL.R "5.Sm"
