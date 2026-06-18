@@ -8,7 +8,7 @@ The compiler works in R 3.0.0 or newer.
 
 **Installation**: Unpack the files to a folder. Ensure R is installed on your system.
 
-**Test**: Running `./src/RATL.R "10.D&p"` from the shell should produce a decimal multiplication table.
+**Test**: `10.D&p` should produce a decimal multiplication table.
 
 **Specification**: [RATL_SPEC.pdf](RATL_SPEC.pdf) — full symbol reference with R code mappings.
 
@@ -17,26 +17,38 @@ The compiler works in R 3.0.0 or newer.
 ## Examples
 
 ### Addition
-```bash
-./src/RATL.R "12+"
 ```
-`1` push 1, `2` push 2, `+` add, `p` print → `3`
+1 2+
+```
+`1` push 1, `2` push 2, `+` add → `3`
 
 ### Multiplication Table
-```bash
-./src/RATL.R "10.D&p"
+```
+10.D&p
 ```
 `10.` range 1:10, `D` duplicate, `&` outer product, `p` print → 10×10 table
 
 Note: `p` is optional when there's one value left on the stack — RATL prints it automatically.
 
 ### Statistical Mean
-```bash
-./src/RATL.R "2 5:m"
+```
+2 5:m
 ```
 `2` push 2, `5:` range 2:5, `m` mean → `3.5`
 
 Note: `.` is shorthand for `1:N` (1 arg), while `:` takes two args `N:M`.
+
+### Primes
+```
+100.{mp}e
+```
+`100.` range 1:100, `{mp}` block: is prime?, `e` filter → primes ≤ 100
+
+### Factorial
+```
+5fp
+```
+`5` push 5, `fp` factorial → `120`
 
 ### FizzBuzz
 ```
@@ -61,6 +73,28 @@ x x
 ```
 First 10 Fibonacci numbers — uses clipboards L/M to hold previous two values.
 
+### Collatz Sequence
+```
+6D Dp
+"D1=?X]
+  D2%0=?D2/;D3*1+]
+  wxDDp
+"x
+```
+Hailstone sequence starting at 6: 6→3→10→5→16→8→4→2→1
+
+### Identity Matrix
+```
+3y!
+```
+3×3 identity matrix
+
+### Sum of Squares
+```
+10.2^s
+```
+`10.` range 1:10, `2^` square each, `s` sum → `385`
+
 ## Architecture
 
 1.  **Parser (`src/ratl_parse.R`)**: Tokenizes input into literals and blocks.
@@ -71,7 +105,6 @@ First 10 Fibonacci numbers — uses clipboards L/M to hold previous two values.
 
 ## Testing
 
-Run all tests and example checks:
 ```bash
 make test
 ```
