@@ -2,8 +2,8 @@
 
 spec: specs/RATL_SPEC.pdf
 
-specs/RATL_SPEC.md: src/ratl_def.tsv scripts/generate_spec.py
-	python3 scripts/generate_spec.py > specs/RATL_SPEC.md
+specs/RATL_SPEC.md: src/ratl_def.tsv scripts/gen_spec.py
+	python3 scripts/gen_spec.py > specs/RATL_SPEC.md
 
 specs/RATL_SPEC.pdf: specs/RATL_SPEC.md
 	quarto render specs/RATL_SPEC.md --to pdf
