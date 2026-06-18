@@ -10,7 +10,7 @@ The compiler works in R 3.0.0 or newer.
 
 **Test**: `10.D&p` should produce a decimal multiplication table.
 
-**Specification**: [RATL_SPEC.pdf](RATL_SPEC.pdf) — full symbol reference with R code mappings.
+**Specification**: [RATL_SPEC.pdf](specs/RATL_SPEC.pdf) — full symbol reference with R code mappings.
 
 **Usage**: See the specification documented in the examples and definition files.
 
