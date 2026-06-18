@@ -112,510 +112,510 @@ These functions pop a `{block}` from the stack and apply it to data.
 
 ### 7.1 Arithmetic & Comparison
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `!` | Transpose | 1 → 1 |
-| `%` | Modulo | 2 → 1 |
-| `*` | Multiply | 2 → 1 |
-| `+` | Add | 2 → 1 |
-| `-` | Subtract | 2 → 1 |
-| `/` | Divide | 2 → 1 |
-| `<` | Less | 2 → 1 |
-| `<=` | LessEqual | 2 → 1 |
-| `=` | Equal | 2 → 1 |
-| `>` | Greater | 2 → 1 |
-| `>=` | GreatEqual | 2 → 1 |
-| `^` | Power | 2 → 1 |
-| `ab` | Abs | 1 → 1 |
-| `cl` | Ceiling | 1 → 1 |
-| `fl` | Floor | 1 → 1 |
-| `ro` | Round | 1 → 1 |
-| `sg` | Sign | 1 → 1 |
-| `sq` | Sqrt | 1 → 1 |
-| `tr` | Trunc | 1 → 1 |
-| `~` | Not | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `!` | `t($1)` | Transpose | 1 → 1 |
+| `%` | `$2 %% $1` | Modulo | 2 → 1 |
+| `*` | `$2 * $1` | Multiply | 2 → 1 |
+| `+` | `$2 + $1` | Add | 2 → 1 |
+| `-` | `$2 - $1` | Subtract | 2 → 1 |
+| `/` | `$2 / $1` | Divide | 2 → 1 |
+| `<` | `$2 < $1` | Less | 2 → 1 |
+| `<=` | `$2 <= $1` | LessEqual | 2 → 1 |
+| `=` | `$2 == $1` | Equal | 2 → 1 |
+| `>` | `$2 > $1` | Greater | 2 → 1 |
+| `>=` | `$2 >= $1` | GreatEqual | 2 → 1 |
+| `^` | `$2 ^ $1` | Power | 2 → 1 |
+| `ab` | `abs($1)` | Abs | 1 → 1 |
+| `cl` | `ceiling($1)` | Ceiling | 1 → 1 |
+| `fl` | `floor($1)` | Floor | 1 → 1 |
+| `ro` | `round($1)` | Round | 1 → 1 |
+| `sg` | `sign($1)` | Sign | 1 → 1 |
+| `sq` | `sqrt($1)` | Sqrt | 1 → 1 |
+| `tr` | `trunc($1)` | Trunc | 1 → 1 |
+| `~` | `!$1` | Not | 1 → 1 |
 
 ### 7.2 Stack & Control
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `D` | Duplicate | 1 → 2 |
-| `Ls` | Stack Length | 0 → 1 |
-| `U` | Unpack | 1 → 0 |
-| `i` | Input | 0 → 1 |
-| `w` | Swap | 2 → 2 |
-| `x` | Delete | 1 → 0 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `D` | `list($1, $1)` | Duplicate | 1 → 2 |
+| `Ls` | `length(stack)` | Stack Length | 0 → 1 |
+| `U` | `for(x in $1) stack[[length(stack)+1]] <- x` | Unpack | 1 → 0 |
+| `i` | `scan(ratl_stdin, what=character(), n=1, quiet=TRUE)` | Input | 0 → 1 |
+| `w` | `list($1, $2)` | Swap | 2 → 2 |
+| `x` | `NULL` | Delete | 1 → 0 |
 
 ### 7.3 Higher-Order Functions
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `Fq` | Map (evaluator) | 0 → 1 |
-| `Fr` | Reduce | 2 → 1 |
-| `Ft` | Filter (evaluator) | 0 → 1 |
-| `Fx` | Repeat (evaluator) | 0 → 1 |
-| `e` | Filter (evaluator) | 0 → 1 |
-| `q` | Map (evaluator) | 0 → 1 |
-| `y` | Reduce (evaluator) | 0 → 1 |
-| `z` | Repeat (evaluator) | 0 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `Fq` | `NULL` | Map (evaluator) | 0 → 1 |
+| `Fr` | `Reduce($2, $1)` | Reduce | 2 → 1 |
+| `Ft` | `NULL` | Filter (evaluator) | 0 → 1 |
+| `Fx` | `NULL` | Repeat (evaluator) | 0 → 1 |
+| `e` | `NULL` | Filter (evaluator) | 0 → 1 |
+| `q` | `NULL` | Map (evaluator) | 0 → 1 |
+| `y` | `NULL` | Reduce (evaluator) | 0 → 1 |
+| `z` | `NULL` | Repeat (evaluator) | 0 → 1 |
 
 ### 7.4 Array Operations
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `:` | Sequence | 2 → 1 |
-| `O` | Sort | 1 → 1 |
-| `R` | Reverse | 1 → 1 |
-| `SH` | Head | 1 → 1 |
-| `SR` | Rank | 1 → 1 |
-| `ST` | Tail | 1 → 1 |
-| `el` | Extract Element [[ | 2 → 1 |
-| `en` | Extract Name $ | 2 → 1 |
-| `es` | Extract Subset [ | 2 → 1 |
-| `fE` | FirstElem | 1 → 1 |
-| `fu` | Flatten | 1 → 1 |
-| `hd` | HeadN | 2 → 1 |
-| `ix` | IndexOf | 2 → 1 |
-| `l` | Length | 1 → 1 |
-| `la` | LastElem | 1 → 1 |
-| `rv` | Reverse String | 1 → 1 |
-| `tb` | Tabulate | 1 → 1 |
-| `tl` | TailN | 2 → 1 |
-| `u` | Unique | 1 → 1 |
-| `un` | UniqueN | 1 → 1 |
-| `vH` | WhichArr | 1 → 1 |
-| `vW` | SeqLen | 3 → 1 |
-| `wh` | Which | 1 → 1 |
-| `zp` | Zip | 2 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `:` | `seq($2, $1)` | Sequence | 2 → 1 |
+| `O` | `sort($1)` | Sort | 1 → 1 |
+| `R` | `rev($1)` | Reverse | 1 → 1 |
+| `SH` | `head($1)` | Head | 1 → 1 |
+| `SR` | `rank($1)` | Rank | 1 → 1 |
+| `ST` | `tail($1)` | Tail | 1 → 1 |
+| `el` | `$2[[$1]]` | Extract Element [[ | 2 → 1 |
+| `en` | `$2[[as.character($1)]]` | Extract Name $ | 2 → 1 |
+| `es` | `$2[$1]` | Extract Subset [ | 2 → 1 |
+| `fE` | `head($1, 1)` | FirstElem | 1 → 1 |
+| `fu` | `unlist($1)` | Flatten | 1 → 1 |
+| `hd` | `head($2, $1)` | HeadN | 2 → 1 |
+| `ix` | `match($2, $1)` | IndexOf | 2 → 1 |
+| `l` | `length($1)` | Length | 1 → 1 |
+| `la` | `tail($1, 1)` | LastElem | 1 → 1 |
+| `rv` | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | Reverse String | 1 → 1 |
+| `tb` | `tabulate($1)` | Tabulate | 1 → 1 |
+| `tl` | `tail($2, $1)` | TailN | 2 → 1 |
+| `u` | `unique($1)` | Unique | 1 → 1 |
+| `un` | `length(unique($1))` | UniqueN | 1 → 1 |
+| `vH` | `which($1, arr.ind=TRUE)` | WhichArr | 1 → 1 |
+| `vW` | `seq($3, $2, length.out=$1)` | SeqLen | 3 → 1 |
+| `wh` | `which($1)` | Which | 1 → 1 |
+| `zp` | `unlist(Map(list, $2, $1))` | Zip | 2 → 1 |
 
 ### 7.5 Matrix
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `Bi` | IQR | 1 → 1 |
-| `R9` | Rot90 | 1 → 1 |
-| `Y!` | Create Matrix | 3 → 1 |
-| `Y*` | Matrix Mult | 2 → 1 |
-| `YM` | Matrix ByRow | 3 → 1 |
-| `mM` | Model Matrix | 1 → 1 |
-| `v2` | Solve 2 | 2 → 1 |
-| `vL` | Solve | 1 → 1 |
-| `vQ` | QR Decomp | 1 → 1 |
-| `vV` | SVD | 1 → 1 |
-| `y!` | Diag | 1 → 1 |
-| `yD` | Identity Matrix | 1 → 1 |
-| `yc` | EigenVectors | 1 → 1 |
-| `yd` | Determinant | 1 → 1 |
-| `yf` | Full | 1 → 1 |
-| `yk` | Kronecker | 2 → 1 |
-| `yl` | TriLower | 1 → 1 |
-| `ym` | Create Matrix | 3 → 1 |
-| `yt` | Trace | 1 → 1 |
-| `yu` | TriUpper | 1 → 1 |
-| `yv` | EigenValues | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `Bi` | `IQR($1)` | IQR | 1 → 1 |
+| `R9` | `apply(t($1), 2, rev)` | Rot90 | 1 → 1 |
+| `Y!` | `matrix($3, nrow=$2, ncol=$1)` | Create Matrix | 3 → 1 |
+| `Y*` | `$2 %*% $1` | Matrix Mult | 2 → 1 |
+| `YM` | `matrix($3, nrow=$2, ncol=$1, byrow=TRUE)` | Matrix ByRow | 3 → 1 |
+| `mM` | `model.matrix($1)` | Model Matrix | 1 → 1 |
+| `v2` | `solve($2, $1)` | Solve 2 | 2 → 1 |
+| `vL` | `solve($1)` | Solve | 1 → 1 |
+| `vQ` | `qr($1)` | QR Decomp | 1 → 1 |
+| `vV` | `svd($1)` | SVD | 1 → 1 |
+| `y!` | `diag($1)` | Diag | 1 → 1 |
+| `yD` | `diag($1)` | Identity Matrix | 1 → 1 |
+| `yc` | `eigen($1)$vectors` | EigenVectors | 1 → 1 |
+| `yd` | `det($1)` | Determinant | 1 → 1 |
+| `yf` | `as.matrix($1)` | Full | 1 → 1 |
+| `yk` | `kronecker($2, $1)` | Kronecker | 2 → 1 |
+| `yl` | `{x<-$1; x[upper.tri(x)]<-0; x}` | TriLower | 1 → 1 |
+| `ym` | `matrix($3, nrow=$2, ncol=$1)` | Create Matrix | 3 → 1 |
+| `yt` | `sum(diag($1))` | Trace | 1 → 1 |
+| `yu` | `{x<-$1; x[lower.tri(x)]<-0; x}` | TriUpper | 1 → 1 |
+| `yv` | `eigen($1)$values` | EigenValues | 1 → 1 |
 
 ### 7.6 Statistics
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `B5` | FiveNum | 1 → 1 |
-| `BS` | Summary | 1 → 1 |
-| `Ba` | MAD | 1 → 1 |
-| `Bn` | Min | 1 → 1 |
-| `Br` | Range | 1 → 1 |
-| `Bx` | Max | 1 → 1 |
-| `Ku` | Kurtosis | 1 → 1 |
-| `Sd` | CumSD | 1 → 1 |
-| `Sk` | Skewness | 1 → 1 |
-| `Sm` | MeanNA | 1 → 1 |
-| `Sn` | SumNA | 1 → 1 |
-| `Sw` | WeightedMean | 2 → 1 |
-| `V` | Variance | 1 → 1 |
-| `h` | Median | 1 → 1 |
-| `m` | Mean | 1 → 1 |
-| `mn` | Min2 | 2 → 1 |
-| `mx` | Max2 | 2 → 1 |
-| `r1` | Range1toN | 1 → 1 |
-| `s` | Sum | 1 → 1 |
-| `sm` | Summary | 1 → 1 |
-| `v` | Variance | 1 → 1 |
-| `vB` | PMin | 2 → 1 |
-| `vE` | Row Sums | 1 → 1 |
-| `vG` | PMax | 2 → 1 |
-| `vM` | Col Means | 1 → 1 |
-| `vN` | Row Means | 1 → 1 |
-| `vS` | Col Sums | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `B5` | `fivenum($1)` | FiveNum | 1 → 1 |
+| `BS` | `summary($1)` | Summary | 1 → 1 |
+| `Ba` | `mad($1)` | MAD | 1 → 1 |
+| `Bn` | `min($1)` | Min | 1 → 1 |
+| `Br` | `range($1)` | Range | 1 → 1 |
+| `Bx` | `max($1)` | Max | 1 → 1 |
+| `Ku` | `sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)` | Kurtosis | 1 → 1 |
+| `Sd` | `ratl_cum_sd($1)` | CumSD | 1 → 1 |
+| `Sk` | `sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)` | Skewness | 1 → 1 |
+| `Sm` | `mean($1, na.rm=TRUE)` | MeanNA | 1 → 1 |
+| `Sn` | `sum($1, na.rm=TRUE)` | SumNA | 1 → 1 |
+| `Sw` | `weighted.mean($2, $1)` | WeightedMean | 2 → 1 |
+| `V` | `var($1)` | Variance | 1 → 1 |
+| `h` | `median($1)` | Median | 1 → 1 |
+| `m` | `mean($1)` | Mean | 1 → 1 |
+| `mn` | `min($2, $1)` | Min2 | 2 → 1 |
+| `mx` | `max($2, $1)` | Max2 | 2 → 1 |
+| `r1` | `1:$1` | Range1toN | 1 → 1 |
+| `s` | `sum($1)` | Sum | 1 → 1 |
+| `sm` | `summary($1)` | Summary | 1 → 1 |
+| `v` | `var($1)` | Variance | 1 → 1 |
+| `vB` | `pmin($2, $1)` | PMin | 2 → 1 |
+| `vE` | `rowSums($1)` | Row Sums | 1 → 1 |
+| `vG` | `pmax($2, $1)` | PMax | 2 → 1 |
+| `vM` | `colMeans($1)` | Col Means | 1 → 1 |
+| `vN` | `rowMeans($1)` | Row Means | 1 → 1 |
+| `vS` | `colSums($1)` | Col Sums | 1 → 1 |
 
 ### 7.7 Statistical Modeling
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `DN` | Density Normal | 3 → 1 |
-| `K!` | Coef | 1 → 1 |
-| `KB` | BIC | 1 → 1 |
-| `KC` | Cor Test | 2 → 1 |
-| `KE` | Residuals | 1 → 1 |
-| `KF` | Fitted | 1 → 1 |
-| `KL` | LogLik | 1 → 1 |
-| `KV` | VCov | 1 → 1 |
-| `av` | Anova | 1 → 1 |
-| `dB` | Density Binomial | 3 → 1 |
-| `dC` | Density Chi-Square | 2 → 1 |
-| `dG` | Density Geometric | 2 → 1 |
-| `dL` | Density Logistic | 3 → 1 |
-| `dN` | Density Neg-Binomial | 3 → 1 |
-| `dP` | Density Poisson | 2 → 1 |
-| `db` | Density Beta | 3 → 1 |
-| `dc` | Density Cauchy | 3 → 1 |
-| `de` | Density Exponential | 2 → 1 |
-| `df` | Density F | 3 → 1 |
-| `dg` | Density Gamma | 3 → 1 |
-| `dh` | Density Hypergeometric | 4 → 1 |
-| `dl` | Density Log-Normal | 3 → 1 |
-| `dn` | Density Normal | 1 → 1 |
-| `dt` | Density Student-t | 2 → 1 |
-| `du` | Density Uniform | 3 → 1 |
-| `dw` | Density Weibull | 3 → 1 |
-| `ka` | Anova | 1 → 1 |
-| `kb` | Bartlett Test | 1 → 1 |
-| `kc` | Chi-Square Test | 1 → 1 |
-| `ke` | Predict | 2 → 1 |
-| `kf` | Fisher Test | 1 → 1 |
-| `kg` | GLM | 1 → 1 |
-| `ki` | AIC | 1 → 1 |
-| `kk` | KS Test | 2 → 1 |
-| `kl` | Linear Model | 1 → 1 |
-| `kn` | NLS | 1 → 1 |
-| `ko` | Loess | 1 → 1 |
-| `kp` | Prop Test | 2 → 1 |
-| `kt` | T-Test | 2 → 1 |
-| `kv` | F-Test Var | 2 → 1 |
-| `kw` | Wilcoxon Test | 2 → 1 |
-| `lm` | Linear Model | 1 → 1 |
-| `mC` | Conf Int | 1 → 1 |
-| `mL` | LM Simple | 2 → 1 |
-| `mO` | Offset | 1 → 1 |
-| `mP` | Predict | 1 → 1 |
-| `mR` | Model Frame | 1 → 1 |
-| `mT` | Terms | 1 → 1 |
-| `mU` | Update | 2 → 1 |
-| `mW` | Formula | 1 → 1 |
-| `tt` | T-Test | 2 → 1 |
-| `vd` | Density | 1 → 1 |
-| `vp` | PCA | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `DN` | `dnorm($3, $2, $1)` | Density Normal | 3 → 1 |
+| `K!` | `coef($1)` | Coef | 1 → 1 |
+| `KB` | `BIC($1)` | BIC | 1 → 1 |
+| `KC` | `cor.test($2, $1)` | Cor Test | 2 → 1 |
+| `KE` | `residuals($1)` | Residuals | 1 → 1 |
+| `KF` | `fitted($1)` | Fitted | 1 → 1 |
+| `KL` | `logLik($1)` | LogLik | 1 → 1 |
+| `KV` | `vcov($1)` | VCov | 1 → 1 |
+| `av` | `anova($1)` | Anova | 1 → 1 |
+| `dB` | `dbinom($3, $2, $1)` | Density Binomial | 3 → 1 |
+| `dC` | `dchisq($2, $1)` | Density Chi-Square | 2 → 1 |
+| `dG` | `dgeom($2, $1)` | Density Geometric | 2 → 1 |
+| `dL` | `dlogis($3, $2, $1)` | Density Logistic | 3 → 1 |
+| `dN` | `dnbinom($3, $2, $1)` | Density Neg-Binomial | 3 → 1 |
+| `dP` | `dpois($2, $1)` | Density Poisson | 2 → 1 |
+| `db` | `dbeta($3, $2, $1)` | Density Beta | 3 → 1 |
+| `dc` | `dcauchy($3, $2, $1)` | Density Cauchy | 3 → 1 |
+| `de` | `dexp($2, $1)` | Density Exponential | 2 → 1 |
+| `df` | `df($3, $2, $1)` | Density F | 3 → 1 |
+| `dg` | `dgamma($3, $2, $1)` | Density Gamma | 3 → 1 |
+| `dh` | `dhyper($4, $3, $2, $1)` | Density Hypergeometric | 4 → 1 |
+| `dl` | `dlnorm($3, $2, $1)` | Density Log-Normal | 3 → 1 |
+| `dn` | `dnorm($1)` | Density Normal | 1 → 1 |
+| `dt` | `dt($2, $1)` | Density Student-t | 2 → 1 |
+| `du` | `dunif($3, $2, $1)` | Density Uniform | 3 → 1 |
+| `dw` | `dweibull($3, $2, $1)` | Density Weibull | 3 → 1 |
+| `ka` | `anova($1)` | Anova | 1 → 1 |
+| `kb` | `bartlett.test($1)` | Bartlett Test | 1 → 1 |
+| `kc` | `chisq.test($1)` | Chi-Square Test | 1 → 1 |
+| `ke` | `predict($2, $1)` | Predict | 2 → 1 |
+| `kf` | `fisher.test($1)` | Fisher Test | 1 → 1 |
+| `kg` | `glm($1)` | GLM | 1 → 1 |
+| `ki` | `AIC($1)` | AIC | 1 → 1 |
+| `kk` | `ks.test($2, $1)` | KS Test | 2 → 1 |
+| `kl` | `lm($1)` | Linear Model | 1 → 1 |
+| `kn` | `nls($1)` | NLS | 1 → 1 |
+| `ko` | `loess($1)` | Loess | 1 → 1 |
+| `kp` | `prop.test($2, $1)` | Prop Test | 2 → 1 |
+| `kt` | `t.test($2, $1)` | T-Test | 2 → 1 |
+| `kv` | `var.test($2, $1)` | F-Test Var | 2 → 1 |
+| `kw` | `wilcox.test($2, $1)` | Wilcoxon Test | 2 → 1 |
+| `lm` | `lm($1)` | Linear Model | 1 → 1 |
+| `mC` | `confint($1)` | Conf Int | 1 → 1 |
+| `mL` | `lm($2 ~ $1)` | LM Simple | 2 → 1 |
+| `mO` | `offset($1)` | Offset | 1 → 1 |
+| `mP` | `predict($1)` | Predict | 1 → 1 |
+| `mR` | `model.frame($1)` | Model Frame | 1 → 1 |
+| `mT` | `terms($1)` | Terms | 1 → 1 |
+| `mU` | `update($2, $1)` | Update | 2 → 1 |
+| `mW` | `formula($1)` | Formula | 1 → 1 |
+| `tt` | `t.test($2, $1)` | T-Test | 2 → 1 |
+| `vd` | `density($1)` | Density | 1 → 1 |
+| `vp` | `prcomp($1)` | PCA | 1 → 1 |
 
 ### 7.8 Distributions & Tests
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `BC` | Covariance | 2 → 1 |
-| `Bc` | Correlation | 2 → 1 |
-| `KK` | Kruskal-Wallis | 1 → 1 |
-| `LG` | Log Gamma | 1 → 1 |
-| `N` | Random Normal | 1 → 1 |
-| `PN` | Prob Normal | 3 → 1 |
-| `QN` | Quantile Normal | 3 → 1 |
-| `RB` | Random Beta | 3 → 1 |
-| `RE` | Random Exponential | 2 → 1 |
-| `RN` | Random Normal | 3 → 1 |
-| `RU` | Random Uniform | 3 → 1 |
-| `cr` | Correlation | 2 → 1 |
-| `cv` | Covariance | 2 → 1 |
-| `di` | Digamma | 1 → 1 |
-| `e-` | Exp(x)-1 | 1 → 1 |
-| `ex` | Exp | 1 → 1 |
-| `ks` | Shapiro-Wilk | 1 → 1 |
-| `l+` | Log(1+x) | 1 → 1 |
-| `l1` | Log 10 | 1 → 1 |
-| `l2` | Log 2 | 1 → 1 |
-| `lb` | Log Beta | 2 → 1 |
-| `lg` | Log Natural | 1 → 1 |
-| `mB` | Beta | 2 → 1 |
-| `mG` | Gamma | 1 → 1 |
-| `pB` | Prob Binomial | 3 → 1 |
-| `pG` | Prob Geometric | 2 → 1 |
-| `pL` | Prob Logistic | 3 → 1 |
-| `pN` | Prob Neg-Binomial | 3 → 1 |
-| `pP` | Prob Poisson | 2 → 1 |
-| `pb` | Prob Beta | 3 → 1 |
-| `pc` | Prob Cauchy | 3 → 1 |
-| `pe` | Prob Exponential | 2 → 1 |
-| `pg` | Prob Gamma | 3 → 1 |
-| `ph` | Prob Hypergeometric | 4 → 1 |
-| `pl` | Prob Log-Normal | 3 → 1 |
-| `pn` | Prob Normal | 1 → 1 |
-| `ps` | Psigamma | 2 → 1 |
-| `pt` | Prob Student-t | 2 → 1 |
-| `pu` | Prob Uniform | 3 → 1 |
-| `pw` | Prob Weibull | 3 → 1 |
-| `qB` | Quantile Binomial | 3 → 1 |
-| `qG` | Quantile Geometric | 2 → 1 |
-| `qL` | Quantile Logistic | 3 → 1 |
-| `qN` | Quantile Neg-Binomial | 3 → 1 |
-| `qP` | Quantile Poisson | 2 → 1 |
-| `qb` | Quantile Beta | 3 → 1 |
-| `qc` | Quantile Cauchy | 3 → 1 |
-| `qe` | Quantile Exponential | 2 → 1 |
-| `qg` | Quantile Gamma | 3 → 1 |
-| `qh` | Quantile Hypergeometric | 4 → 1 |
-| `ql` | Quantile Log-Normal | 3 → 1 |
-| `qn` | Quantile Normal | 1 → 1 |
-| `qt` | Quantile Student-t | 2 → 1 |
-| `qu` | Quantile Uniform | 3 → 1 |
-| `qw` | Quantile Weibull | 3 → 1 |
-| `rB` | Random Binomial | 3 → 1 |
-| `rG` | Random Geometric | 2 → 1 |
-| `rL` | Random Logistic | 3 → 1 |
-| `rN` | Random Neg-Binomial | 3 → 1 |
-| `rP` | Random Poisson | 2 → 1 |
-| `rb` | Random Binomial | 1 → 1 |
-| `rc` | Random Cauchy | 3 → 1 |
-| `re` | Random Exp | 1 → 1 |
-| `rg` | Random Gamma | 3 → 1 |
-| `rh` | Random Hypergeometric | 4 → 1 |
-| `rl` | Random Log-Normal | 3 → 1 |
-| `rp` | Random Poisson | 1 → 1 |
-| `rt` | Random Student-t | 2 → 1 |
-| `rw` | Random Weibull | 3 → 1 |
-| `s4` | EmptyLog | 0 → 1 |
-| `sR` | Regexpr | 2 → 1 |
-| `sX` | Gregexpr | 2 → 1 |
-| `tg` | Trigamma | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `BC` | `cov($2, $1)` | Covariance | 2 → 1 |
+| `Bc` | `cor($2, $1)` | Correlation | 2 → 1 |
+| `KK` | `kruskal.test($1)` | Kruskal-Wallis | 1 → 1 |
+| `LG` | `lgamma($1)` | Log Gamma | 1 → 1 |
+| `N` | `rnorm($1)` | Random Normal | 1 → 1 |
+| `PN` | `pnorm($3, $2, $1)` | Prob Normal | 3 → 1 |
+| `QN` | `qnorm($3, $2, $1)` | Quantile Normal | 3 → 1 |
+| `RB` | `rbeta($3, $2, $1)` | Random Beta | 3 → 1 |
+| `RE` | `rexp($2, $1)` | Random Exponential | 2 → 1 |
+| `RN` | `rnorm($3, $2, $1)` | Random Normal | 3 → 1 |
+| `RU` | `runif($3, $2, $1)` | Random Uniform | 3 → 1 |
+| `cr` | `cor($2, $1)` | Correlation | 2 → 1 |
+| `cv` | `cov($2, $1)` | Covariance | 2 → 1 |
+| `di` | `digamma($1)` | Digamma | 1 → 1 |
+| `e-` | `expm1($1)` | Exp(x)-1 | 1 → 1 |
+| `ex` | `exp($1)` | Exp | 1 → 1 |
+| `ks` | `shapiro.test($1)` | Shapiro-Wilk | 1 → 1 |
+| `l+` | `log1p($1)` | Log(1+x) | 1 → 1 |
+| `l1` | `log10($1)` | Log 10 | 1 → 1 |
+| `l2` | `log2($1)` | Log 2 | 1 → 1 |
+| `lb` | `lbeta($2, $1)` | Log Beta | 2 → 1 |
+| `lg` | `log($1)` | Log Natural | 1 → 1 |
+| `mB` | `beta($2, $1)` | Beta | 2 → 1 |
+| `mG` | `gamma($1)` | Gamma | 1 → 1 |
+| `pB` | `pbinom($3, $2, $1)` | Prob Binomial | 3 → 1 |
+| `pG` | `pgeom($2, $1)` | Prob Geometric | 2 → 1 |
+| `pL` | `plogis($3, $2, $1)` | Prob Logistic | 3 → 1 |
+| `pN` | `pnbinom($3, $2, $1)` | Prob Neg-Binomial | 3 → 1 |
+| `pP` | `ppois($2, $1)` | Prob Poisson | 2 → 1 |
+| `pb` | `pbeta($3, $2, $1)` | Prob Beta | 3 → 1 |
+| `pc` | `pcauchy($3, $2, $1)` | Prob Cauchy | 3 → 1 |
+| `pe` | `pexp($2, $1)` | Prob Exponential | 2 → 1 |
+| `pg` | `pgamma($3, $2, $1)` | Prob Gamma | 3 → 1 |
+| `ph` | `phyper($4, $3, $2, $1)` | Prob Hypergeometric | 4 → 1 |
+| `pl` | `plnorm($3, $2, $1)` | Prob Log-Normal | 3 → 1 |
+| `pn` | `pnorm($1)` | Prob Normal | 1 → 1 |
+| `ps` | `psigamma($2, $1)` | Psigamma | 2 → 1 |
+| `pt` | `pt($2, $1)` | Prob Student-t | 2 → 1 |
+| `pu` | `punif($3, $2, $1)` | Prob Uniform | 3 → 1 |
+| `pw` | `pweibull($3, $2, $1)` | Prob Weibull | 3 → 1 |
+| `qB` | `qbinom($3, $2, $1)` | Quantile Binomial | 3 → 1 |
+| `qG` | `qgeom($2, $1)` | Quantile Geometric | 2 → 1 |
+| `qL` | `qlogis($3, $2, $1)` | Quantile Logistic | 3 → 1 |
+| `qN` | `qnbinom($3, $2, $1)` | Quantile Neg-Binomial | 3 → 1 |
+| `qP` | `qpois($2, $1)` | Quantile Poisson | 2 → 1 |
+| `qb` | `qbeta($3, $2, $1)` | Quantile Beta | 3 → 1 |
+| `qc` | `qcauchy($3, $2, $1)` | Quantile Cauchy | 3 → 1 |
+| `qe` | `qexp($2, $1)` | Quantile Exponential | 2 → 1 |
+| `qg` | `qgamma($3, $2, $1)` | Quantile Gamma | 3 → 1 |
+| `qh` | `qhyper($4, $3, $2, $1)` | Quantile Hypergeometric | 4 → 1 |
+| `ql` | `qlnorm($3, $2, $1)` | Quantile Log-Normal | 3 → 1 |
+| `qn` | `qnorm($1)` | Quantile Normal | 1 → 1 |
+| `qt` | `qt($2, $1)` | Quantile Student-t | 2 → 1 |
+| `qu` | `qunif($3, $2, $1)` | Quantile Uniform | 3 → 1 |
+| `qw` | `qweibull($3, $2, $1)` | Quantile Weibull | 3 → 1 |
+| `rB` | `rbinom($3, $2, $1)` | Random Binomial | 3 → 1 |
+| `rG` | `rgeom($2, $1)` | Random Geometric | 2 → 1 |
+| `rL` | `rlogis($3, $2, $1)` | Random Logistic | 3 → 1 |
+| `rN` | `rnbinom($3, $2, $1)` | Random Neg-Binomial | 3 → 1 |
+| `rP` | `rpois($2, $1)` | Random Poisson | 2 → 1 |
+| `rb` | `rbinom($1, size=1, prob=0.5)` | Random Binomial | 1 → 1 |
+| `rc` | `rcauchy($3, $2, $1)` | Random Cauchy | 3 → 1 |
+| `re` | `rexp($1)` | Random Exp | 1 → 1 |
+| `rg` | `rgamma($3, $2, $1)` | Random Gamma | 3 → 1 |
+| `rh` | `rhyper($4, $3, $2, $1)` | Random Hypergeometric | 4 → 1 |
+| `rl` | `rlnorm($3, $2, $1)` | Random Log-Normal | 3 → 1 |
+| `rp` | `rpois($1, lambda=1)` | Random Poisson | 1 → 1 |
+| `rt` | `rt($2, $1)` | Random Student-t | 2 → 1 |
+| `rw` | `rweibull($3, $2, $1)` | Random Weibull | 3 → 1 |
+| `s4` | `logical(0)` | EmptyLog | 0 → 1 |
+| `sR` | `regexpr($2, $1)` | Regexpr | 2 → 1 |
+| `sX` | `gregexpr($2, $1)` | Gregexpr | 2 → 1 |
+| `tg` | `trigamma($1)` | Trigamma | 1 → 1 |
 
 ### 7.9 Math Functions
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `Bs` | Standard Deviation | 1 → 1 |
-| `SP` | Sin(pi*x) | 1 → 1 |
-| `XC` | CumSum | 1 → 1 |
-| `a2` | ArcTan2 | 2 → 1 |
-| `aC` | ArcCos | 1 → 1 |
-| `aS` | ArcSin | 1 → 1 |
-| `aT` | ArcTan | 1 → 1 |
-| `ac` | ArcCosh | 1 → 1 |
-| `as` | ArcSinh | 1 → 1 |
-| `at` | ArcTanh | 1 → 1 |
-| `bA` | BitAnd | 2 → 1 |
-| `c1` | CumProd | 1 → 1 |
-| `ch` | Cosh | 1 → 1 |
-| `cn` | IsIn | 2 → 1 |
-| `cp` | Cos(pi*x) | 1 → 1 |
-| `mc` | Cos | 1 → 1 |
-| `ms` | Sin | 1 → 1 |
-| `mt` | Tan | 1 → 1 |
-| `sD` | SetDiff | 2 → 1 |
-| `sd` | Standard Deviation | 1 → 1 |
-| `sh` | Sinh | 1 → 1 |
-| `th` | Tanh | 1 → 1 |
-| `tp` | Tan(pi*x) | 1 → 1 |
-| `vF` | Diff | 1 → 1 |
-| `vI` | CumMin | 1 → 1 |
-| `vX` | CumMax | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `Bs` | `sd($1)` | Standard Deviation | 1 → 1 |
+| `SP` | `sinpi($1)` | Sin(pi*x) | 1 → 1 |
+| `XC` | `cumsum($1)` | CumSum | 1 → 1 |
+| `a2` | `atan2($2, $1)` | ArcTan2 | 2 → 1 |
+| `aC` | `acos($1)` | ArcCos | 1 → 1 |
+| `aS` | `asin($1)` | ArcSin | 1 → 1 |
+| `aT` | `atan($1)` | ArcTan | 1 → 1 |
+| `ac` | `acosh($1)` | ArcCosh | 1 → 1 |
+| `as` | `asinh($1)` | ArcSinh | 1 → 1 |
+| `at` | `atanh($1)` | ArcTanh | 1 → 1 |
+| `bA` | `bitwAnd($2, $1)` | BitAnd | 2 → 1 |
+| `c1` | `cumprod($1)` | CumProd | 1 → 1 |
+| `ch` | `cosh($1)` | Cosh | 1 → 1 |
+| `cn` | `is.element($2, $1)` | IsIn | 2 → 1 |
+| `cp` | `cospi($1)` | Cos(pi*x) | 1 → 1 |
+| `mc` | `cos($1)` | Cos | 1 → 1 |
+| `ms` | `sin($1)` | Sin | 1 → 1 |
+| `mt` | `tan($1)` | Tan | 1 → 1 |
+| `sD` | `setdiff($2, $1)` | SetDiff | 2 → 1 |
+| `sd` | `sd($1)` | Standard Deviation | 1 → 1 |
+| `sh` | `sinh($1)` | Sinh | 1 → 1 |
+| `th` | `tanh($1)` | Tanh | 1 → 1 |
+| `tp` | `tanpi($1)` | Tan(pi*x) | 1 → 1 |
+| `vF` | `diff($1)` | Diff | 1 → 1 |
+| `vI` | `cummin($1)` | CumMin | 1 → 1 |
+| `vX` | `cummax($1)` | CumMax | 1 → 1 |
 
 ### 7.10 Combinatorics & Special
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `MC` | Choose | 2 → 1 |
-| `Xn` | Choose (nCr) | 2 → 1 |
-| `fp` | Factorial | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `MC` | `choose($2, $1)` | Choose | 2 → 1 |
+| `Xn` | `choose($2, $1)` | Choose (nCr) | 2 → 1 |
+| `fp` | `factorial($1)` | Factorial | 1 → 1 |
 
 ### 7.11 Complex Numbers
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `cA` | Arg | 1 → 1 |
-| `cI` | Imag Part | 1 → 1 |
-| `cJ` | Conjugate | 1 → 1 |
-| `cM` | Modulus | 1 → 1 |
-| `cR` | Real Part | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `cA` | `Arg($1)` | Arg | 1 → 1 |
+| `cI` | `Im($1)` | Imag Part | 1 → 1 |
+| `cJ` | `Conj($1)` | Conjugate | 1 → 1 |
+| `cM` | `Mod($1)` | Modulus | 1 → 1 |
+| `cR` | `Re($1)` | Real Part | 1 → 1 |
 
 ### 7.12 String Operations
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `,` | Concat Vectors | 2 → 1 |
-| `C` | Concat | 2 → 1 |
-| `J` | Join List | 2 → 1 |
-| `S` | Split String | 2 → 1 |
-| `S!` | Translate | 3 → 1 |
-| `SG` | GSub | 3 → 1 |
-| `Xc` | Char Translate | 3 → 1 |
-| `Xt` | ToLower | 1 → 1 |
-| `a` | To String | 1 → 1 |
-| `c` | To Char | 1 → 1 |
-| `dS` | Split | 2 → 1 |
-| `dU` | Unsplit | 2 → 1 |
-| `j` | Join | 2 → 1 |
-| `sB` | Grepl | 2 → 1 |
-| `sG` | Grep | 2 → 1 |
-| `sL` | ToLower | 1 → 1 |
-| `sM` | Message | 1 → 0 |
-| `sQ` | EmptyChar | 0 → 1 |
-| `sS` | Stop | 1 → 0 |
-| `sU` | ToUpper | 1 → 1 |
-| `sW` | Warning | 1 → 0 |
-| `sf` | Sprintf | 2 → 1 |
-| `sn` | NChar | 1 → 1 |
-| `ss` | Substr | 3 → 1 |
-| `st` | TrimWS | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `,` | `c($2, $1)` | Concat Vectors | 2 → 1 |
+| `C` | `paste0($2, $1)` | Concat | 2 → 1 |
+| `J` | `paste($2, collapse=$1)` | Join List | 2 → 1 |
+| `S` | `strsplit($2, $1)[[1]]` | Split String | 2 → 1 |
+| `S!` | `chartr($2, $1, $3)` | Translate | 3 → 1 |
+| `SG` | `gsub($2, $1, $3)` | GSub | 3 → 1 |
+| `Xc` | `chartr($1, $2, $3)` | Char Translate | 3 → 1 |
+| `Xt` | `tolower($1)` | ToLower | 1 → 1 |
+| `a` | `as.character($1)` | To String | 1 → 1 |
+| `c` | `intToUtf8($1)` | To Char | 1 → 1 |
+| `dS` | `split($2, $1)` | Split | 2 → 1 |
+| `dU` | `unsplit($2, $1)` | Unsplit | 2 → 1 |
+| `j` | `paste($2, $1)` | Join | 2 → 1 |
+| `sB` | `grepl($2, $1)` | Grepl | 2 → 1 |
+| `sG` | `grep($2, $1)` | Grep | 2 → 1 |
+| `sL` | `tolower($1)` | ToLower | 1 → 1 |
+| `sM` | `message($1)` | Message | 1 → 0 |
+| `sQ` | `character(0)` | EmptyChar | 0 → 1 |
+| `sS` | `stop($1)` | Stop | 1 → 0 |
+| `sU` | `toupper($1)` | ToUpper | 1 → 1 |
+| `sW` | `warning($1)` | Warning | 1 → 0 |
+| `sf` | `sprintf($2, $1)` | Sprintf | 2 → 1 |
+| `sn` | `nchar($1)` | NChar | 1 → 1 |
+| `ss` | `substr($3, $2, $1)` | Substr | 3 → 1 |
+| `st` | `trimws($1)` | TrimWS | 1 → 1 |
 
 ### 7.13 Set Operations
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `sF` | SetPrompt | 1 → 0 |
-| `sI` | Intersect | 2 → 1 |
-| `sJ` | SetWD | 1 → 0 |
-| `sN` | Union | 2 → 1 |
-| `sY` | SetScipen | 1 → 0 |
-| `se` | Setenv | 1 → 0 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `sF` | `options(prompt=$1)` | SetPrompt | 1 → 0 |
+| `sI` | `intersect($2, $1)` | Intersect | 2 → 1 |
+| `sJ` | `setwd($1)` | SetWD | 1 → 0 |
+| `sN` | `union($2, $1)` | Union | 2 → 1 |
+| `sY` | `options(scipen=$1)` | SetScipen | 1 → 0 |
+| `se` | `Sys.setenv(...)` | Setenv | 1 → 0 |
 
 ### 7.14 Bitwise Operations
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `bL` | BitShiftL | 2 → 1 |
-| `bN` | BitNot | 1 → 1 |
-| `bO` | BitOr | 2 → 1 |
-| `bR` | BitShiftR | 2 → 1 |
-| `bX` | BitXor | 2 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `bL` | `bitwShiftL($2, $1)` | BitShiftL | 2 → 1 |
+| `bN` | `bitwNot($1)` | BitNot | 1 → 1 |
+| `bO` | `bitwOr($2, $1)` | BitOr | 2 → 1 |
+| `bR` | `bitwShiftR($2, $1)` | BitShiftR | 2 → 1 |
+| `bX` | `bitwXor($2, $1)` | BitXor | 2 → 1 |
 
 ### 7.15 Type & Introspection
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `AS` | As Type | 2 → 1 |
-| `Xq` | Is Prime | 1 → 1 |
-| `is` | Is Type | 2 → 1 |
-| `mp` | Is Prime | 1 → 1 |
-| `oA` | Attr | 2 → 1 |
-| `oC` | Colnames | 1 → 1 |
-| `oa` | Attributes | 1 → 1 |
-| `oc` | Class | 1 → 1 |
-| `od` | Dim | 1 → 1 |
-| `on` | Names | 1 → 1 |
-| `or` | Rownames | 1 → 1 |
-| `ot` | Typeof | 1 → 1 |
-| `ou` | Unlist | 1 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `AS` | `as($2, $1)` | As Type | 2 → 1 |
+| `Xq` | `ratl_is_prime($1)` | Is Prime | 1 → 1 |
+| `is` | `is($2, $1)` | Is Type | 2 → 1 |
+| `mp` | `ratl_is_prime($1)` | Is Prime | 1 → 1 |
+| `oA` | `attr($2, $1)` | Attr | 2 → 1 |
+| `oC` | `colnames($1)` | Colnames | 1 → 1 |
+| `oa` | `attributes($1)` | Attributes | 1 → 1 |
+| `oc` | `class($1)` | Class | 1 → 1 |
+| `od` | `dim($1)` | Dim | 1 → 1 |
+| `on` | `names($1)` | Names | 1 → 1 |
+| `or` | `rownames($1)` | Rownames | 1 → 1 |
+| `ot` | `typeof($1)` | Typeof | 1 → 1 |
+| `ou` | `unlist($1)` | Unlist | 1 → 1 |
 
 ### 7.16 File I/O
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `F` | Read File | 1 → 1 |
-| `FL` | List Files | 1 → 1 |
-| `FW` | Write File | 2 → 0 |
-| `W` | Write File | 2 → 0 |
-| `fA` | Dirname | 1 → 1 |
-| `fC` | Write CSV | 2 → 0 |
-| `fD` | List Dirs | 1 → 1 |
-| `fN` | File Create | 1 → 1 |
-| `fP` | Abs Path | 1 → 1 |
-| `fT` | Temp File | 0 → 1 |
-| `fX` | Dir Exists | 1 → 1 |
-| `fb` | Basename | 1 → 1 |
-| `fc` | Read CSV | 1 → 1 |
-| `fd` | Dir Create | 1 → 1 |
-| `fe` | File Exists | 1 → 1 |
-| `fi` | File Info | 1 → 1 |
-| `fm` | File Remove | 1 → 1 |
-| `fr` | Read Table | 1 → 1 |
-| `ft` | Temp Dir | 0 → 1 |
-| `fw` | Write Table | 2 → 0 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `F` | `readLines($1)` | Read File | 1 → 1 |
+| `FL` | `list.files($1)` | List Files | 1 → 1 |
+| `FW` | `{writeLines(as.character($2), $1); NULL}` | Write File | 2 → 0 |
+| `W` | `writeLines(as.character($2), $1); NULL` | Write File | 2 → 0 |
+| `fA` | `dirname($1)` | Dirname | 1 → 1 |
+| `fC` | `write.csv($2, $1)` | Write CSV | 2 → 0 |
+| `fD` | `list.dirs($1)` | List Dirs | 1 → 1 |
+| `fN` | `file.create($1)` | File Create | 1 → 1 |
+| `fP` | `normalizePath($1)` | Abs Path | 1 → 1 |
+| `fT` | `tempfile()` | Temp File | 0 → 1 |
+| `fX` | `dir.exists($1)` | Dir Exists | 1 → 1 |
+| `fb` | `basename($1)` | Basename | 1 → 1 |
+| `fc` | `read.csv($1)` | Read CSV | 1 → 1 |
+| `fd` | `dir.create($1)` | Dir Create | 1 → 1 |
+| `fe` | `file.exists($1)` | File Exists | 1 → 1 |
+| `fi` | `file.info($1)` | File Info | 1 → 1 |
+| `fm` | `file.remove($1)` | File Remove | 1 → 1 |
+| `fr` | `read.table($1)` | Read Table | 1 → 1 |
+| `ft` | `tempdir()` | Temp Dir | 0 → 1 |
+| `fw` | `write.table($2, $1)` | Write Table | 2 → 0 |
 
 ### 7.17 System
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `T` | Time Epoch | 0 → 1 |
-| `ZT` | Timezone | 0 → 1 |
-| `ge` | Getenv | 1 → 1 |
-| `pi` | GetPID | 0 → 1 |
-| `sK` | Toc | 1 → 1 |
-| `sP` | Sleep | 1 → 0 |
-| `sT` | Tic | 0 → 1 |
-| `sV` | RVersion | 0 → 1 |
-| `um` | Umask | 1 → 1 |
-| `zg` | GC | 0 → 1 |
-| `zl` | Locale | 0 → 1 |
-| `zo` | Options | 0 → 1 |
-| `zt` | SysTime | 0 → 1 |
-| `zv` | Version | 0 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `T` | `as.numeric(Sys.time())` | Time Epoch | 0 → 1 |
+| `ZT` | `Sys.timezone()` | Timezone | 0 → 1 |
+| `ge` | `Sys.getenv($1)` | Getenv | 1 → 1 |
+| `pi` | `Sys.getpid()` | GetPID | 0 → 1 |
+| `sK` | `proc.time() - $1` | Toc | 1 → 1 |
+| `sP` | `Sys.sleep($1)` | Sleep | 1 → 0 |
+| `sT` | `proc.time()` | Tic | 0 → 1 |
+| `sV` | `R.version.string` | RVersion | 0 → 1 |
+| `um` | `Sys.umask($1)` | Umask | 1 → 1 |
+| `zg` | `gc()` | GC | 0 → 1 |
+| `zl` | `Sys.localeconv()` | Locale | 0 → 1 |
+| `zo` | `options()` | Options | 0 → 1 |
+| `zt` | `Sys.time()` | SysTime | 0 → 1 |
+| `zv` | `version` | Version | 0 → 1 |
 
 ### 7.18 Other
 
-| Symbol | Description | Stack Effect |
-|--------|-------------|--------------|
-| `#` | Filter | 2 → 1 |
-| `&` | Outer Product | 2 → 1 |
-| `..` | Pair | 2 → 1 |
-| `A` | To ASCII | 1 → 1 |
-| `BT` | Bingo Twin | 1 → 1 |
-| `Bz` | Scale | 1 → 1 |
-| `Fa` | Apply | 3 → 1 |
-| `Ff` | Filter (Func) | 2 → 1 |
-| `Fl` | Lapply | 2 → 1 |
-| `Fm` | Mapply | 1 → 1 |
-| `Fn` | Find (Func) | 2 → 1 |
-| `Fp` | Position | 2 → 1 |
-| `Fs` | Sapply | 2 → 1 |
-| `Fv` | Vapply | 3 → 1 |
-| `In` | Inf | 0 → 1 |
-| `KA` | AOV | 1 → 1 |
-| `Na` | NA | 0 → 1 |
-| `P` | Product | 1 → 1 |
-| `Pi` | Pi | 0 → 1 |
-| `Q` | Quantile | 1 → 1 |
-| `XP` | Prime Factors | 1 → 1 |
-| `Xb` | To Binary | 1 → 1 |
-| `Xd` | To Date | 1 → 1 |
-| `Xk` | RLE | 1 → 2 |
-| `Xo` | Mode | 1 → 1 |
-| `Xr` | RMS | 1 → 1 |
-| `Xs` | Std Dev | 1 → 1 |
-| `dA` | Aggregate | 3 → 1 |
-| `dE` | Cut | 2 → 1 |
-| `dO` | Order | 1 → 1 |
-| `dT` | Table | 1 → 1 |
-| `dX` | XTabs | 2 → 1 |
-| `dY` | By | 3 → 1 |
-| `fa` | Factors | 1 → 1 |
-| `fn` | Negate | 1 → 1 |
-| `g` | GCD | 2 → 1 |
-| `lA` | Any | 1 → 1 |
-| `lX` | Xor | 2 → 1 |
-| `lZ` | NNZ | 1 → 1 |
-| `lc` | LCM | 2 → 1 |
-| `mF` | Factor | 1 → 1 |
-| `mI` | IntDiv | 2 → 1 |
-| `mQ` | Quantile | 2 → 1 |
-| `mf` | Prime Factors | 1 → 1 |
-| `ml` | LCM | 2 → 1 |
-| `n` | To Number | 1 → 1 |
-| `ns` | NegSlice | 2 → 1 |
-| `p` | Print | 1 → 0 |
-| `pC` | Prob Chi-Square | 2 → 1 |
-| `pf` | Prob F | 3 → 1 |
-| `qC` | Quantile Chi-Square | 2 → 1 |
-| `qf` | Quantile F | 3 → 1 |
-| `r` | Random (n) | 1 → 1 |
-| `r2` | Rep | 2 → 1 |
-| `rC` | Random Chi-Square | 2 → 1 |
-| `rf` | Random F | 3 → 1 |
-| `rm` | RMS | 1 → 1 |
-| `sC` | Cat | 1 → 0 |
-| `sE` | Date | 0 → 1 |
-| `sH` | GetWD | 0 → 1 |
-| `sZ` | EmptyNum | 0 → 1 |
-| `sc` | Scale | 1 → 1 |
-| `sr` | Sub | 3 → 1 |
-| `vA` | All | 1 → 1 |
-| `vC` | Col Indices | 1 → 1 |
-| `vD` | Drop | 1 → 1 |
-| `vR` | Row Indices | 1 → 1 |
-| `vT` | RepMat | 3 → 1 |
-| `zd` | To Date | 1 → 1 |
-| `\|` | Or | 2 → 1 |
+| Symbol | R Code | Description | Stack Effect |
+|--------|--------|-------------|--------------|
+| `#` | `$2[$1]` | Filter | 2 → 1 |
+| `&` | `$2 %o% $1` | Outer Product | 2 → 1 |
+| `..` | `list($2, $1)` | Pair | 2 → 1 |
+| `A` | `utf8ToInt($1)` | To ASCII | 1 → 1 |
+| `BT` | `{idx<-c(1,4,3,2,5); $1[idx,idx]}` | Bingo Twin | 1 → 1 |
+| `Bz` | `scale($1)` | Scale | 1 → 1 |
+| `Fa` | `apply($3, $2, $1)` | Apply | 3 → 1 |
+| `Ff` | `Filter($2, $1)` | Filter (Func) | 2 → 1 |
+| `Fl` | `lapply($2, $1)` | Lapply | 2 → 1 |
+| `Fm` | `mapply($1, ...)` | Mapply | 1 → 1 |
+| `Fn` | `Find($2, $1)` | Find (Func) | 2 → 1 |
+| `Fp` | `Position($2, $1)` | Position | 2 → 1 |
+| `Fs` | `sapply($2, $1)` | Sapply | 2 → 1 |
+| `Fv` | `vapply($3, $2, $1)` | Vapply | 3 → 1 |
+| `In` | `Inf` | Inf | 0 → 1 |
+| `KA` | `aov($1)` | AOV | 1 → 1 |
+| `Na` | `NA` | NA | 0 → 1 |
+| `P` | `prod($1)` | Product | 1 → 1 |
+| `Pi` | `pi` | Pi | 0 → 1 |
+| `Q` | `quantile($1)` | Quantile | 1 → 1 |
+| `XP` | `ratl_prime_factors($1)` | Prime Factors | 1 → 1 |
+| `Xb` | `ratl_bin($1)` | To Binary | 1 → 1 |
+| `Xd` | `as.Date($1)` | To Date | 1 → 1 |
+| `Xk` | `{r <- rle($1); list(r$values, r$lengths)}` | RLE | 1 → 2 |
+| `Xo` | `ratl_mode($1)` | Mode | 1 → 1 |
+| `Xr` | `ratl_rms($1)` | RMS | 1 → 1 |
+| `Xs` | `sd($1)` | Std Dev | 1 → 1 |
+| `dA` | `aggregate($3, $2, $1)` | Aggregate | 3 → 1 |
+| `dE` | `cut($2, $1)` | Cut | 2 → 1 |
+| `dO` | `order($1)` | Order | 1 → 1 |
+| `dT` | `table($1)` | Table | 1 → 1 |
+| `dX` | `xtabs($2, $1)` | XTabs | 2 → 1 |
+| `dY` | `by($3, $2, $1)` | By | 3 → 1 |
+| `fa` | `ratl_factors($1)` | Factors | 1 → 1 |
+| `fn` | `Negate($1)` | Negate | 1 → 1 |
+| `g` | `ratl_gcd($2, $1)` | GCD | 2 → 1 |
+| `lA` | `any($1)` | Any | 1 → 1 |
+| `lX` | `xor($2, $1)` | Xor | 2 → 1 |
+| `lZ` | `sum($1 != 0)` | NNZ | 1 → 1 |
+| `lc` | `ratl_lcm($2, $1)` | LCM | 2 → 1 |
+| `mF` | `factor($1)` | Factor | 1 → 1 |
+| `mI` | `$2 %/% $1` | IntDiv | 2 → 1 |
+| `mQ` | `quantile($1, $2)` | Quantile | 2 → 1 |
+| `mf` | `ratl_prime_factors($1)` | Prime Factors | 1 → 1 |
+| `ml` | `ratl_lcm($2, $1)` | LCM | 2 → 1 |
+| `n` | `as.numeric($1)` | To Number | 1 → 1 |
+| `ns` | `$2[length($2)+1-$1]` | NegSlice | 2 → 1 |
+| `p` | `ratl_print($1)` | Print | 1 → 0 |
+| `pC` | `pchisq($2, $1)` | Prob Chi-Square | 2 → 1 |
+| `pf` | `pf($3, $2, $1)` | Prob F | 3 → 1 |
+| `qC` | `qchisq($2, $1)` | Quantile Chi-Square | 2 → 1 |
+| `qf` | `qf($3, $2, $1)` | Quantile F | 3 → 1 |
+| `r` | `runif($1)` | Random (n) | 1 → 1 |
+| `r2` | `rep($2, $1)` | Rep | 2 → 1 |
+| `rC` | `rchisq($2, $1)` | Random Chi-Square | 2 → 1 |
+| `rf` | `rf($3, $2, $1)` | Random F | 3 → 1 |
+| `rm` | `ratl_rms($1)` | RMS | 1 → 1 |
+| `sC` | `cat($1)` | Cat | 1 → 0 |
+| `sE` | `date()` | Date | 0 → 1 |
+| `sH` | `getwd()` | GetWD | 0 → 1 |
+| `sZ` | `numeric(0)` | EmptyNum | 0 → 1 |
+| `sc` | `scale($1)` | Scale | 1 → 1 |
+| `sr` | `sub($2, $1, $3)` | Sub | 3 → 1 |
+| `vA` | `all($1)` | All | 1 → 1 |
+| `vC` | `col($1)` | Col Indices | 1 → 1 |
+| `vD` | `drop($1)` | Drop | 1 → 1 |
+| `vR` | `row($1)` | Row Indices | 1 → 1 |
+| `vT` | `matrix(rep($3, $2*$1), nrow=nrow($3)*$2)` | RepMat | 3 → 1 |
+| `zd` | `as.Date($1)` | To Date | 1 → 1 |
+| `\|` | `$2 \| $1` | Or | 2 → 1 |
 

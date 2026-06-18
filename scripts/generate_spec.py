@@ -71,10 +71,11 @@ def categorize(symbols):
 
 def format_symbol(s):
     src = s['src'].replace('|', '\\|')
+    r_code = s['r_code'].replace('|', '\\|')
     desc = s['desc']
     n_in = s['n_in']
     n_out = s['n_out']
-    return f"| `{src}` | {desc} | {n_in} → {n_out} |"
+    return f"| `{src}` | `{r_code}` | {desc} | {n_in} → {n_out} |"
 
 def generate_spec(symbols):
     cats = categorize(symbols)
@@ -221,8 +222,8 @@ def generate_spec(symbols):
         syms = cats[cat]
         lines.append(f"### 7.{order.index(cat)+1} {cat}")
         lines.append("")
-        lines.append("| Symbol | Description | Stack Effect |")
-        lines.append("|--------|-------------|--------------|")
+        lines.append("| Symbol | R Code | Description | Stack Effect |")
+        lines.append("|--------|--------|-------------|--------------|")
         for s in sorted(syms, key=lambda x: x['src']):
             lines.append(format_symbol(s))
         lines.append("")
