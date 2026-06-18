@@ -1,4 +1,4 @@
-.PHONY: spec test examples clean
+.PHONY: spec test gen-tests examples clean
 
 spec: specs/RATL_SPEC.pdf
 
@@ -8,7 +8,13 @@ specs/RATL_SPEC.md: src/ratl_def.tsv scripts/generate_spec.py
 specs/RATL_SPEC.pdf: specs/RATL_SPEC.md
 	quarto render specs/RATL_SPEC.md --to pdf
 
-test:
+gen-tests: tests/test_all_symbols.R
+
+tests/test_all_symbols.R: src/ratl_def.tsv scripts/gen_tests.py
+	python3 scripts/gen_tests.py
+
+test: gen-tests
+	Rscript tests/test_all_symbols.R
 	Rscript tests/test_runner.R
 
 examples:

@@ -1,5 +1,7 @@
 # RATL
 
+[![CI](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml/badge.svg)](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml)
+
 A programming language based on R and suitable for code golf.
 
 RATL (R-based Array Manipulation Language) is an esoteric, stack-based language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax.
@@ -8,9 +10,9 @@ The compiler works in R 3.0.0 or newer.
 
 **Installation**: Unpack the files to a folder. Ensure R is installed on your system.
 
-**Test**: `10.D&p` should produce a decimal multiplication table.
+**Test**: `make test` — runs 399 unit tests (auto-generated from `src/ratl_def.tsv`) plus 60 integration tests.
 
-**Specification**: [RATL_SPEC.pdf](specs/RATL_SPEC.pdf) — full symbol reference with R code mappings.
+**Specification**: [RATL_SPEC.pdf](specs/RATL_SPEC.pdf) — full symbol reference with R code mappings. Auto-generated from `src/ratl_def.tsv` via `make spec`.
 
 **Usage**: See the specification documented in the examples and definition files.
 
