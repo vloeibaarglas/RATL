@@ -58,9 +58,9 @@ Loops 1:20, prints Fizz/Buzz/FizzBuzz per divisibility rules.
 
 ### Fibonacci
 ```bash
-./src/RATL.R "10r1.Dp"
+./src/RATL.R "$(cat examples/23_fibonacci.ratl)"
 ```
-`10` push 10, `r1` 1:N, `.` range, `D` dup, `p` print — generates via loop
+Generates first 10 Fibonacci numbers using clipboards for state.
 
 ## Architecture
 
