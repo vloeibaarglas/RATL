@@ -1,8 +1,7 @@
+#RosettaCode:https://rosettacode.org/wiki/Hailstone_sequence
 # Collatz sequence for n=6
-6 D p
-" D 1 = ~ ?
-  D 2 % 0 = ? D 2 / ]
-  D 2 % 0 = ~ ? D 3 * 1 + ]
-  D p
+6 D D p
+" D 1 = ? X ]
+  D 2 % 0 = ? D 2 / ; D 3 * 1 + ]
+  w x D D p
 " x
-x
