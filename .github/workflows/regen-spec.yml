@@ -21,14 +21,11 @@ jobs:
 
       - uses: r-lib/actions/setup-r@v2
 
-      - uses: r-lib/actions/setup-tinytex@v2
-
-      - uses: quarto-dev/quarto-actions/setup@v2
-
       - name: Regenerate spec
         run: |
           make gen-tests
-          make spec
+          python3 scripts/gen_spec.py > specs/RATL_SPEC.md
+          pandoc specs/RATL_SPEC.md -s --embed-resources --metadata title="RATL Specification" -o specs/RATL_SPEC.html
 
       - name: Commit updates
         run: |

@@ -1,7 +1,7 @@
 # RATL
 
 [![CI](https://github.com/vloeibaarglas/RATL/actions/workflows/test.yml/badge.svg)](https://github.com/vloeibaarglas/RATL/actions/workflows/test.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/vloeibaarglas/RATL/blob/main/LICENSE)
 
 R-based Array Manipulation Language — a stack-based esoteric language for code golf, built on R's statistical and matrix capabilities.
 
@@ -23,7 +23,7 @@ Run a RATL program:
 Rscript src/RATL.R "your code here"
 ```
 
-Read the [specification](specs/RATL_SPEC.pdf) for the full symbol reference.
+Read the [specification](specs/RATL_SPEC.html) for the full symbol reference.
 
 ## Examples
 
@@ -74,7 +74,7 @@ First 10 Fibonacci numbers using clipboards L/M for state.
 
 `src/ratl_def.tsv` defines all symbols, categories, and test cases. The spec and tests are auto-generated from it:
 
-- `scripts/gen_spec.py` → `specs/RATL_SPEC.md` → `specs/RATL_SPEC.pdf`
+- `scripts/gen_spec.py` → `specs/RATL_SPEC.md` → `specs/RATL_SPEC.html`
 - `scripts/gen_tests.py` → `tests/test_all_symbols.R`
 
 ### CI

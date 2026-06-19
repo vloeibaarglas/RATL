@@ -30,11 +30,9 @@ def categorize(symbols):
         cats[cat].append(s)
     return cats
 
-def format_symbol(s, max_code_len=30):
+def format_symbol(s):
     src = s['src'].replace('|', '\\|')
     r_code = s['r_code'].replace('|', '\\|')
-    if len(r_code) > max_code_len:
-        r_code = r_code[:max_code_len-1] + '…'
     desc = s['desc']
     n_in = s['n_in']
     n_out = s['n_out']

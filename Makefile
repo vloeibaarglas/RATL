@@ -1,12 +1,12 @@
 .PHONY: spec test gen-tests examples clean
 
-spec: specs/RATL_SPEC.pdf
+spec: specs/RATL_SPEC.html
 
 specs/RATL_SPEC.md: src/ratl_def.tsv scripts/gen_spec.py
 	python3 scripts/gen_spec.py > specs/RATL_SPEC.md
 
-specs/RATL_SPEC.pdf: specs/RATL_SPEC.md specs/_quarto.yml
-	quarto render specs/RATL_SPEC.md --to pdf
+specs/RATL_SPEC.html: specs/RATL_SPEC.md
+	pandoc $< -s --embed-resources --metadata title="RATL Specification" -o $@
 
 gen-tests: tests/test_all_symbols.R
 
@@ -24,4 +24,4 @@ examples:
 	@echo "Done"
 
 clean:
-	rm -f specs/RATL_SPEC.pdf specs/RATL_SPEC.md
+	rm -f specs/RATL_SPEC.html specs/RATL_SPEC.md
