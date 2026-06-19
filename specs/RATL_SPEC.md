@@ -2,7 +2,7 @@
 
 RATL (R-based Array Manipulation Language) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
-**Total symbols: 420** (all 2-byte or shorter)
+**Total symbols: 423** (all 2-byte or shorter)
 
 ## 1. Introduction
 
@@ -108,9 +108,42 @@ These functions pop a `{block}` from the stack and apply it to data.
 
 ***
 
-## 7. Symbol Reference
+## 7. Meta-Programming
 
-### 7.1 Arithmetic & Comparison
+RATL supports meta-programming — code that generates or manipulates other code at runtime.
+
+### 7.1 Dynamic Evaluation (`ev`)
+
+Pops a string from the stack and executes it as RATL code:
+
+```
+'3 5 +' ev        → 8
+'[1 2 3] s' ev    → 6
+'5 fp' ev         → 120
+```
+
+### 7.2 Dispatch List (`zD`)
+
+Pushes a list of all available symbol names onto the stack:
+
+```
+zD    → [+ - * / D w x ...]
+```
+
+### 7.3 Dynamic Dispatch (`zS`)
+
+Calls a symbol by name (string):
+
+```
+3 5 '+' zS    → 8
+5 'sq' zS     → 2.236...
+```
+
+***
+
+## 8. Symbol Reference
+
+### 8.1 Arithmetic & Comparison
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -130,7 +163,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `\|` | `$2 \| $1` | Or | 2 → 1 |
 | `~` | `!$1` | Not | 1 → 1 |
 
-### 7.2 Stack & Control
+### 8.2 Stack & Control
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -146,7 +179,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `w` | `list($1, $2)` | Swap | 2 → 2 |
 | `x` | `NULL` | Delete | 1 → 0 |
 
-### 7.3 Constants
+### 8.3 Constants
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -157,7 +190,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `sQ` | `character(0)` | EmptyChar | 0 → 1 |
 | `sZ` | `numeric(0)` | EmptyNum | 0 → 1 |
 
-### 7.4 Higher-Order Functions
+### 8.4 Higher-Order Functions
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -179,7 +212,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `y` | `NULL` | Reduce (evaluator) | 0 → 1 |
 | `z` | `NULL` | Repeat (evaluator) | 0 → 1 |
 
-### 7.5 Array Operations
+### 8.5 Array Operations
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -228,7 +261,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `wh` | `which($1)` | Which | 1 → 1 |
 | `zp` | `unlist(Map(list, $2, $1))` | Zip | 2 → 1 |
 
-### 7.6 Matrix
+### 8.6 Matrix
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -261,7 +294,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `yu` | `{x<-$1; x[lower.tri(x)]<-0; x}` | TriUpper | 1 → 1 |
 | `yv` | `eigen($1)$values` | EigenValues | 1 → 1 |
 
-### 7.7 Statistics
+### 8.7 Statistics
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -309,7 +342,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `vA` | `all($1)` | All | 1 → 1 |
 | `vd` | `density($1)` | Density | 1 → 1 |
 
-### 7.8 Statistical Modeling
+### 8.8 Statistical Modeling
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -343,7 +376,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `mW` | `formula($1)` | Formula | 1 → 1 |
 | `vp` | `prcomp($1)` | PCA | 1 → 1 |
 
-### 7.9 Distributions & Tests
+### 8.9 Distributions & Tests
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -435,7 +468,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `rw` | `rweibull($3, $2, $1)` | Random Weibull | 3 → 1 |
 | `tt` | `t.test($2, $1)` | T-Test | 2 → 1 |
 
-### 7.10 Math Functions
+### 8.10 Math Functions
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -469,7 +502,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `tp` | `tanpi($1)` | Tan(pi*x) | 1 → 1 |
 | `tr` | `trunc($1)` | Trunc | 1 → 1 |
 
-### 7.11 Combinatorics & Special
+### 8.11 Combinatorics & Special
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -492,7 +525,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `ps` | `psigamma($2, $1)` | Psigamma | 2 → 1 |
 | `tg` | `trigamma($1)` | Trigamma | 1 → 1 |
 
-### 7.12 Complex Numbers
+### 8.12 Complex Numbers
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -502,7 +535,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `cM` | `Mod($1)` | Modulus | 1 → 1 |
 | `cR` | `Re($1)` | Real Part | 1 → 1 |
 
-### 7.13 String Operations
+### 8.13 String Operations
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -527,7 +560,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `ss` | `substr($3, $2, $1)` | Substr | 3 → 1 |
 | `st` | `trimws($1)` | TrimWS | 1 → 1 |
 
-### 7.14 Set Operations
+### 8.14 Set Operations
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -535,7 +568,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `sI` | `intersect($2, $1)` | Intersect | 2 → 1 |
 | `sN` | `union($2, $1)` | Union | 2 → 1 |
 
-### 7.15 Bitwise Operations
+### 8.15 Bitwise Operations
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -546,7 +579,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `bR` | `bitwShiftR($2, $1)` | BitShiftR | 2 → 1 |
 | `bX` | `bitwXor($2, $1)` | BitXor | 2 → 1 |
 
-### 7.16 Type & Introspection
+### 8.16 Type & Introspection
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -556,6 +589,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `Xd` | `as.Date($1)` | To Date | 1 → 1 |
 | `a` | `as.character($1)` | To String | 1 → 1 |
 | `c` | `intToUtf8($1)` | To Char | 1 → 1 |
+| `ev` | `NULL` | Eval | 1 → 0 |
 | `is` | `is($2, $1)` | Is Type | 2 → 1 |
 | `mF` | `factor($1)` | Factor | 1 → 1 |
 | `n` | `as.numeric($1)` | To Number | 1 → 1 |
@@ -568,9 +602,11 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `or` | `rownames($1)` | Rownames | 1 → 1 |
 | `ot` | `typeof($1)` | Typeof | 1 → 1 |
 | `ou` | `unlist($1)` | Unlist | 1 → 1 |
+| `zD` | `NULL` | Dispatch List | 0 → 1 |
+| `zS` | `NULL` | Send | 1 → 1 |
 | `zd` | `as.Date($1)` | To Date | 1 → 1 |
 
-### 7.17 File I/O
+### 8.17 File I/O
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|
@@ -595,7 +631,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `ft` | `tempdir()` | Temp Dir | 0 → 1 |
 | `fw` | `write.table($2, $1)` | Write Table | 2 → 0 |
 
-### 7.18 System
+### 8.18 System
 
 | Symbol | R Code | Description | Stack Effect |
 |--------|--------|-------------|--------------|

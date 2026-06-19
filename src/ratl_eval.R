@@ -147,6 +147,20 @@ ratl_eval <- function(tokens, ctx) {
         code_str <- stack_pop(ctx$stack)
         tokens <- ratl_parse(code_str, ctx$dispatch)
         ratl_eval(tokens, ctx)
+       } else if (val == "zD") {
+        stack_push(ctx$stack, names(ctx$dispatch))
+       } else if (val == "zS") {
+        if (stack_length(ctx$stack) < 1) stop("Stack underflow for 'zS': needs at least 1 arg")
+        name <- stack_pop(ctx$stack)
+        entry <- ctx$dispatch[[name]]
+        if (is.null(entry)) stop(paste0("Unknown symbol: '", name, "'"))
+        args <- list()
+        if (entry$n_in > 0) {
+          if (stack_length(ctx$stack) < entry$n_in) stop(paste0("Stack underflow for '", name, "': needs ", entry$n_in, " args"))
+          for (k in 1:entry$n_in) args[[k]] <- stack_pop(ctx$stack)
+        }
+        res <- do.call(entry$fn, args)
+        stack_push(ctx$stack, res)
        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {

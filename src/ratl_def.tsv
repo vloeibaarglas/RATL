@@ -420,3 +420,5 @@ se	Sys.setenv(...)	1	0	Setenv	System
 um	Sys.umask($1)	1	1	Umask	System		
 pi	Sys.getpid()	0	1	GetPID	System	pi	
 ev	NULL	1	0	Eval	Type & Introspection		
+zD	NULL	0	1	Dispatch List	Type & Introspection		
+zS	NULL	1	1	Send	Type & Introspection		
