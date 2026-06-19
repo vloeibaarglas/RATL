@@ -2,7 +2,7 @@
 
 RATL (R-based Array Manipulation Language) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
-**Total symbols: 423** (all 2-byte or shorter)
+**Total symbols: 427** (all 2-byte or shorter)
 
 ## 1. Introduction
 
@@ -137,6 +137,65 @@ Calls a symbol by name (string):
 ```
 3 5 '+' zS    → 8
 5 'sq' zS     → 2.236...
+```
+
+### 7.4 Shell Exec (`zX`)
+
+Runs a shell command and pushes the output:
+
+```
+'echo hello' zX    → "hello"
+'ls' zX            → file listing
+```
+
+### 7.5 Sort By (`zB`)
+
+Sorts an array using a block as the key function:
+
+```
+[3 1 4 1 5] {0-} zB    → 1 1 3 4 5 (reverse sort)
+[1 2 3] {2 *} zB       → 1 2 3
+```
+
+### 7.6 Group By (`zG`)
+
+Groups array elements by the block's return value:
+
+```
+[1 2 3 4 5 6] {2 %} zG    → $0: [2 4 6] $1: [1 3 5]
+```
+
+### 7.7 Scan (`zC`)
+
+Like reduce, but returns all intermediate results:
+
+```
+[1 2 3 4 5] {+} zC    → 1 3 6 10 15
+[2 3 4] {*} zC        → 2 6 24
+```
+
+### 7.8 Take While (`zT`)
+
+Takes elements while the block returns truthy:
+
+```
+[1 2 3 4 5] {4 <} zT    → 1 2 3
+```
+
+### 7.9 Drop While (`zW`)
+
+Drops elements while the block returns truthy:
+
+```
+[1 2 3 4 5] {3 <} zW    → 3 4 5
+```
+
+### 7.10 Zip With (`zZ`)
+
+Applies a block pairwise to two arrays:
+
+```
+[1 2 3] [4 5 6] {+} zZ    → 5 7 9
 ```
 
 ***
@@ -335,7 +394,6 @@ Calls a symbol by name (string):
 | `r` | `runif($1)` | Random (n) | 1 → 1 |
 | `rm` | `ratl_rms($1)` | RMS | 1 → 1 |
 | `s` | `sum($1)` | Sum | 1 → 1 |
-| `sc` | `scale($1)` | Scale | 1 → 1 |
 | `sd` | `sd($1)` | Standard Deviation | 1 → 1 |
 | `sm` | `summary($1)` | Summary | 1 → 1 |
 | `v` | `var($1)` | Variance | 1 → 1 |
@@ -406,7 +464,6 @@ Calls a symbol by name (string):
 | `dn` | `dnorm($1)` | Density Normal | 1 → 1 |
 | `dt` | `dt($2, $1)` | Density Student-t | 2 → 1 |
 | `du` | `dunif($3, $2, $1)` | Density Uniform | 3 → 1 |
-| `dw` | `dweibull($3, $2, $1)` | Density Weibull | 3 → 1 |
 | `kb` | `bartlett.test($1)` | Bartlett Test | 1 → 1 |
 | `kc` | `chisq.test($1)` | Chi-Square Test | 1 → 1 |
 | `kf` | `fisher.test($1)` | Fisher Test | 1 → 1 |
@@ -485,7 +542,6 @@ Calls a symbol by name (string):
 | `cl` | `ceiling($1)` | Ceiling | 1 → 1 |
 | `cp` | `cospi($1)` | Cos(pi*x) | 1 → 1 |
 | `e-` | `expm1($1)` | Exp(x)-1 | 1 → 1 |
-| `ex` | `exp($1)` | Exp | 1 → 1 |
 | `fl` | `floor($1)` | Floor | 1 → 1 |
 | `l+` | `log1p($1)` | Log(1+x) | 1 → 1 |
 | `l1` | `log10($1)` | Log 10 | 1 → 1 |
@@ -602,8 +658,15 @@ Calls a symbol by name (string):
 | `or` | `rownames($1)` | Rownames | 1 → 1 |
 | `ot` | `typeof($1)` | Typeof | 1 → 1 |
 | `ou` | `unlist($1)` | Unlist | 1 → 1 |
+| `zB` | `NULL` | Sort By | 2 → 1 |
+| `zC` | `NULL` | Scan | 2 → 1 |
 | `zD` | `NULL` | Dispatch List | 0 → 1 |
+| `zG` | `NULL` | Group By | 2 → 1 |
 | `zS` | `NULL` | Send | 1 → 1 |
+| `zT` | `NULL` | Take While | 2 → 1 |
+| `zW` | `NULL` | Drop While | 2 → 1 |
+| `zX` | `NULL` | Shell Exec | 1 → 1 |
+| `zZ` | `NULL` | Zip With | 3 → 1 |
 | `zd` | `as.Date($1)` | To Date | 1 → 1 |
 
 ### 8.17 File I/O

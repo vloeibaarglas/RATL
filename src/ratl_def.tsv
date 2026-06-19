@@ -129,7 +129,6 @@ v	var($1)	1	1	Variance	Statistics	5 v	NA
 V	var($1)	1	1	Variance	Statistics	5 V	NA
 sd	sd($1)	1	1	Standard Deviation	Statistics	5 sd	NA
 sm	summary($1)	1	1	Summary	Statistics	5 sm	5 5 5 5 5 5
-sc	scale($1)	1	1	Scale	Statistics	5 sc	NaN
 r	runif($1)	1	1	Random (n)	Statistics	5 r	0.914806043496355 0.937075413297862 0.286139534786344 0.830447626067325 0.641745518893003
 vA	all($1)	1	1	All	Statistics	5 vA	TRUE
 lA	any($1)	1	1	Any	Statistics	5 lA	TRUE
@@ -275,7 +274,6 @@ du	dunif($3, $2, $1)	3	1	Density Uniform	Distributions & Tests	1 2 3 du	0
 pu	punif($3, $2, $1)	3	1	Prob Uniform	Distributions & Tests	1 2 3 pu	0
 qu	qunif($3, $2, $1)	3	1	Quantile Uniform	Distributions & Tests	1 2 3 qu	3
 RU	runif($3, $2, $1)	3	1	Random Uniform	Distributions & Tests	1 2 3 RU	2.91480604349636
-dw	dweibull($3, $2, $1)	3	1	Density Weibull	Distributions & Tests	1 2 3 dw	0.198853181514304
 pw	pweibull($3, $2, $1)	3	1	Prob Weibull	Distributions & Tests	1 2 3 pw	0.10516068318563
 qw	qweibull($3, $2, $1)	3	1	Quantile Weibull	Distributions & Tests	1 2 3 qw	Inf
 rw	rweibull($3, $2, $1)	3	1	Random Weibull	Distributions & Tests	1 2 3 rw	0.895203269919986
@@ -292,7 +290,6 @@ th	tanh($1)	1	1	Tanh	Math Functions	5 th	0.999909204262595
 as	asinh($1)	1	1	ArcSinh	Math Functions	5 as	2.31243834127275
 ac	acosh($1)	1	1	ArcCosh	Math Functions	5 ac	2.29243166956118
 at	atanh($1)	1	1	ArcTanh	Math Functions	5 at	NaN
-ex	exp($1)	1	1	Exp	Math Functions	5 ex	148.413159102577
 lg	log($1)	1	1	Log Natural	Math Functions	5 lg	1.6094379124341
 l1	log10($1)	1	1	Log 10	Math Functions	5 l1	0.698970004336019
 l2	log2($1)	1	1	Log 2	Math Functions	5 l2	2.32192809488736
@@ -422,3 +419,10 @@ pi	Sys.getpid()	0	1	GetPID	System	pi
 ev	NULL	1	0	Eval	Type & Introspection		
 zD	NULL	0	1	Dispatch List	Type & Introspection		
 zS	NULL	1	1	Send	Type & Introspection		
+zX	NULL	1	1	Shell Exec	Type & Introspection		
+zB	NULL	2	1	Sort By	Type & Introspection		
+zG	NULL	2	1	Group By	Type & Introspection		
+zC	NULL	2	1	Scan	Type & Introspection		
+zT	NULL	2	1	Take While	Type & Introspection		
+zW	NULL	2	1	Drop While	Type & Introspection		
+zZ	NULL	3	1	Zip With	Type & Introspection		

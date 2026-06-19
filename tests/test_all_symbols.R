@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 423 symbols (unit tests)\n"))
+cat(sprintf("Testing 427 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Arithmetic & Comparison: + — Add
@@ -1407,17 +1407,6 @@ test_sm_Summary <- function() {
   if (grepl("Error:", r)) { cat("FAIL [sm] Summary: ", r, "\n"); return(FALSE) }
   if (r != "5 5 5 5 5 5") {
     cat("FAIL [sm] Summary: expected [5 5 5 5 5 5], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Statistics: sc — Scale
-test_sc_Scale <- function() {
-  r <- run_ratl("5 sc")
-  if (grepl("Error:", r)) { cat("FAIL [sc] Scale: ", r, "\n"); return(FALSE) }
-  if (r != "NaN") {
-    cat("FAIL [sc] Scale: expected [NaN], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3022,17 +3011,6 @@ test_RU_Random_Uniform <- function() {
   return(TRUE)
 }
 
-# Distributions & Tests: dw — Density Weibull
-test_dw_Density_Weibull <- function() {
-  r <- run_ratl("1 2 3 dw")
-  if (grepl("Error:", r)) { cat("FAIL [dw] Density Weibull: ", r, "\n"); return(FALSE) }
-  if (r != "0.198853181514304") {
-    cat("FAIL [dw] Density Weibull: expected [0.198853181514304], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Distributions & Tests: pw — Prob Weibull
 test_pw_Prob_Weibull <- function() {
   r <- run_ratl("1 2 3 pw")
@@ -3205,17 +3183,6 @@ test_at_ArcTanh <- function() {
   if (grepl("Error:", r)) { cat("FAIL [at] ArcTanh: ", r, "\n"); return(FALSE) }
   if (r != "NaN") {
     cat("FAIL [at] ArcTanh: expected [NaN], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Math Functions: ex — Exp
-test_ex_Exp <- function() {
-  r <- run_ratl("5 ex")
-  if (grepl("Error:", r)) { cat("FAIL [ex] Exp: ", r, "\n"); return(FALSE) }
-  if (r != "148.413159102577") {
-    cat("FAIL [ex] Exp: expected [148.413159102577], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -4410,6 +4377,27 @@ skipped <- skipped + 1
 # SKIP zS (Send) — no test_input defined
 skipped <- skipped + 1
 
+# SKIP zX (Shell Exec) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zB (Sort By) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zG (Group By) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zC (Scan) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zT (Take While) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zW (Drop While) — no test_input defined
+skipped <- skipped + 1
+
+# SKIP zZ (Zip With) — no test_input defined
+skipped <- skipped + 1
+
 all_tests <- list(
   list(name = "+ Add", fn = test___Add)
 ,
@@ -4658,8 +4646,6 @@ all_tests <- list(
   list(name = "sd Standard Deviation", fn = test_sd_Standard_Deviation)
 ,
   list(name = "sm Summary", fn = test_sm_Summary)
-,
-  list(name = "sc Scale", fn = test_sc_Scale)
 ,
   list(name = "r Random (n)", fn = test_r_Random__n_)
 ,
@@ -4951,8 +4937,6 @@ all_tests <- list(
 ,
   list(name = "RU Random Uniform", fn = test_RU_Random_Uniform)
 ,
-  list(name = "dw Density Weibull", fn = test_dw_Density_Weibull)
-,
   list(name = "pw Prob Weibull", fn = test_pw_Prob_Weibull)
 ,
   list(name = "qw Quantile Weibull", fn = test_qw_Quantile_Weibull)
@@ -4984,8 +4968,6 @@ all_tests <- list(
   list(name = "ac ArcCosh", fn = test_ac_ArcCosh)
 ,
   list(name = "at ArcTanh", fn = test_at_ArcTanh)
-,
-  list(name = "ex Exp", fn = test_ex_Exp)
 ,
   list(name = "lg Log Natural", fn = test_lg_Log_Natural)
 ,

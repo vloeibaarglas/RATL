@@ -147,6 +147,10 @@ ratl_eval <- function(tokens, ctx) {
         code_str <- stack_pop(ctx$stack)
         tokens <- ratl_parse(code_str, ctx$dispatch)
         ratl_eval(tokens, ctx)
+       } else if (val == "zX") {
+        cmd <- stack_pop(ctx$stack)
+        result <- system(cmd, intern = TRUE)
+        stack_push(ctx$stack, result)
        } else if (val == "zD") {
         stack_push(ctx$stack, names(ctx$dispatch))
        } else if (val == "zS") {
@@ -161,6 +165,123 @@ ratl_eval <- function(tokens, ctx) {
         }
         res <- do.call(entry$fn, args)
         stack_push(ctx$stack, res)
+       } else if (val == "zB") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr <- stack_pop(ctx$stack)
+        keys <- sapply(arr, function(item) {
+          tmp <- make_stack()
+          stack_push(tmp, item)
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          stack_peek(tmp_ctx$stack)
+        })
+        stack_push(ctx$stack, arr[order(keys)])
+       } else if (val == "zG") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr <- stack_pop(ctx$stack)
+        keys <- sapply(arr, function(item) {
+          tmp <- make_stack()
+          stack_push(tmp, item)
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          stack_peek(tmp_ctx$stack)
+        })
+        stack_push(ctx$stack, split(arr, keys))
+       } else if (val == "zC") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr <- stack_pop(ctx$stack)
+        acc <- arr[[1]]
+        result <- list(acc)
+        for (i in 2:length(arr)) {
+          tmp <- make_stack()
+          stack_push(tmp, acc)
+          stack_push(tmp, arr[[i]])
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          acc <- stack_peek(tmp_ctx$stack)
+          result[[length(result) + 1]] <- acc
+        }
+        stack_push(ctx$stack, unlist(result))
+       } else if (val == "zT") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr <- stack_pop(ctx$stack)
+        result <- list()
+        for (item in arr) {
+          tmp <- make_stack()
+          stack_push(tmp, item)
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          if (!is_truthy(stack_peek(tmp_ctx$stack))) break
+          result[[length(result) + 1]] <- item
+        }
+        stack_push(ctx$stack, unlist(result))
+       } else if (val == "zW") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr <- stack_pop(ctx$stack)
+        skipping <- TRUE
+        result <- list()
+        for (item in arr) {
+          if (skipping) {
+            tmp <- make_stack()
+            stack_push(tmp, item)
+            tmp_ctx <- new.env(parent = emptyenv())
+            tmp_ctx$stack <- tmp
+            tmp_ctx$dispatch <- ctx$dispatch
+            tmp_ctx$clipboards <- ctx$clipboards
+            tmp_ctx$stdin <- ctx$stdin
+            tmp_ctx$in_loop <- FALSE
+            ratl_eval(blk_token$value, tmp_ctx)
+            if (is_truthy(stack_peek(tmp_ctx$stack))) next
+            skipping <- FALSE
+          }
+          result[[length(result) + 1]] <- item
+        }
+        stack_push(ctx$stack, unlist(result))
+       } else if (val == "zZ") {
+        blk_token <- stack_pop(ctx$stack)
+        if (blk_token$type != "block") stop("zS requires a block")
+        arr2 <- stack_pop(ctx$stack)
+        arr1 <- stack_pop(ctx$stack)
+        result <- list()
+        for (i in seq_along(arr1)) {
+          tmp <- make_stack()
+          stack_push(tmp, arr1[[i]])
+          stack_push(tmp, arr2[[i]])
+          tmp_ctx <- new.env(parent = emptyenv())
+          tmp_ctx$stack <- tmp
+          tmp_ctx$dispatch <- ctx$dispatch
+          tmp_ctx$clipboards <- ctx$clipboards
+          tmp_ctx$stdin <- ctx$stdin
+          tmp_ctx$in_loop <- FALSE
+          ratl_eval(blk_token$value, tmp_ctx)
+          result[[length(result) + 1]] <- stack_peek(tmp_ctx$stack)
+        }
+        stack_push(ctx$stack, unlist(result))
        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {
