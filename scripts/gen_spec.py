@@ -30,7 +30,7 @@ def categorize(symbols):
         cats[cat].append(s)
     return cats
 
-def format_symbol(s, max_code_len=35):
+def format_symbol(s, max_code_len=30):
     src = s['src'].replace('|', '\\|')
     r_code = s['r_code'].replace('|', '\\|')
     if len(r_code) > max_code_len:
@@ -39,6 +39,9 @@ def format_symbol(s, max_code_len=35):
     n_in = s['n_in']
     n_out = s['n_out']
     return f"| `{src}` | `{r_code}` | {desc} | {n_in} → {n_out} |"
+
+def hr():
+    return "***"
 
 def generate_spec(symbols):
     cats = categorize(symbols)
@@ -62,7 +65,7 @@ def generate_spec(symbols):
     lines.append("- `stack`: The global list used for storage.")
     lines.append("- `H, G, L, M`: Clipboards for temporary storage outside the stack.")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 2. The Stack and Data Types")
     lines.append("")
@@ -76,7 +79,7 @@ def generate_spec(symbols):
     lines.append("- **List/Cell Array**: Collections of items, which can be of mixed types (R `list`).")
     lines.append("- **Matrix**: 2D arrays (R `matrix`).")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 3. Statements and Separators")
     lines.append("")
@@ -84,7 +87,7 @@ def generate_spec(symbols):
     lines.append("- **Newline**: Ignored by the parser but acts as a token separator.")
     lines.append("- **Comments**: Lines starting with `#` are treated as comments and ignored.")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 4. Literals")
     lines.append("")
@@ -105,7 +108,7 @@ def generate_spec(symbols):
     lines.append("Enclosed in curly braces `{...}`.")
     lines.append("Example: `{1 'a' [1 2]}` pushes an R list containing three different types.")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 5. Control Flow")
     lines.append("")
@@ -140,7 +143,7 @@ def generate_spec(symbols):
     lines.append("| `z` | Repeat | `N {block} z` — executes block N times |")
     lines.append("| `@` | Execute | `{block} @` — pops and executes a block immediately |")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 6. Implicit Actions")
     lines.append("")
@@ -152,7 +155,7 @@ def generate_spec(symbols):
     lines.append("- **Implicit Print**: If the stack contains exactly one element, it is printed automatically. If it contains more than one, the entire stack is printed as a list.")
     lines.append("- **Invisible Output**: The final evaluation result is returned invisibly in R.")
     lines.append("")
-    lines.append("---")
+    lines.append(hr())
     lines.append("")
     lines.append("## 7. Symbol Reference")
     lines.append("")

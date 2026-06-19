@@ -16,7 +16,7 @@ The name stands for **R-based Array Manipulation Language**, reflecting its foun
 - `stack`: The global list used for storage.
 - `H, G, L, M`: Clipboards for temporary storage outside the stack.
 
----
+***
 
 ## 2. The Stack and Data Types
 
@@ -30,7 +30,7 @@ RATL uses native R types:
 - **List/Cell Array**: Collections of items, which can be of mixed types (R `list`).
 - **Matrix**: 2D arrays (R `matrix`).
 
----
+***
 
 ## 3. Statements and Separators
 
@@ -38,7 +38,7 @@ RATL uses native R types:
 - **Newline**: Ignored by the parser but acts as a token separator.
 - **Comments**: Lines starting with `#` are treated as comments and ignored.
 
----
+***
 
 ## 4. Literals
 
@@ -59,7 +59,7 @@ Example: `'hello'` pushes a character vector of length 1.
 Enclosed in curly braces `{...}`.
 Example: `{1 'a' [1 2]}` pushes an R list containing three different types.
 
----
+***
 
 ## 5. Control Flow
 
@@ -94,7 +94,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `z` | Repeat | `N {block} z` — executes block N times |
 | `@` | Execute | `{block} @` — pops and executes a block immediately |
 
----
+***
 
 ## 6. Implicit Actions
 
@@ -106,7 +106,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 - **Implicit Print**: If the stack contains exactly one element, it is printed automatically. If it contains more than one, the entire stack is printed as a list.
 - **Invisible Output**: The final evaluation result is returned invisibly in R.
 
----
+***
 
 ## 7. Symbol Reference
 
@@ -136,8 +136,8 @@ These functions pop a `{block}` from the stack and apply it to data.
 |--------|--------|-------------|--------------|
 | `D` | `list($1, $1)` | Duplicate | 1 → 2 |
 | `Ls` | `length(stack)` | Stack Length | 0 → 1 |
-| `U` | `for(x in $1) stack[[length(stack)+…` | Unpack | 1 → 0 |
-| `i` | `scan(ratl_stdin, what=character(),…` | Input | 0 → 1 |
+| `U` | `for(x in $1) stack[[length(st…` | Unpack | 1 → 0 |
+| `i` | `scan(ratl_stdin, what=charact…` | Input | 0 → 1 |
 | `p` | `ratl_print($1)` | Print | 1 → 0 |
 | `sC` | `cat($1)` | Cat | 1 → 0 |
 | `sM` | `message($1)` | Message | 1 → 0 |
@@ -194,7 +194,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `SR` | `rank($1)` | Rank | 1 → 1 |
 | `ST` | `tail($1)` | Tail | 1 → 1 |
 | `XC` | `cumsum($1)` | CumSum | 1 → 1 |
-| `Xk` | `{r <- rle($1); list(r$values, r$le…` | RLE | 1 → 2 |
+| `Xk` | `{r <- rle($1); list(r$values,…` | RLE | 1 → 2 |
 | `c1` | `cumprod($1)` | CumProd | 1 → 1 |
 | `cn` | `is.element($2, $1)` | IsIn | 2 → 1 |
 | `dO` | `order($1)` | Order | 1 → 1 |
@@ -222,7 +222,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `vG` | `pmax($2, $1)` | PMax | 2 → 1 |
 | `vH` | `which($1, arr.ind=TRUE)` | WhichArr | 1 → 1 |
 | `vI` | `cummin($1)` | CumMin | 1 → 1 |
-| `vT` | `matrix(rep($3, $2*$1), nrow=nrow($…` | RepMat | 3 → 1 |
+| `vT` | `matrix(rep($3, $2*$1), nrow=n…` | RepMat | 3 → 1 |
 | `vW` | `seq($3, $2, length.out=$1)` | SeqLen | 3 → 1 |
 | `vX` | `cummax($1)` | CumMax | 1 → 1 |
 | `wh` | `which($1)` | Which | 1 → 1 |
@@ -234,11 +234,11 @@ These functions pop a `{block}` from the stack and apply it to data.
 |--------|--------|-------------|--------------|
 | `!` | `t($1)` | Transpose | 1 → 1 |
 | `&` | `$2 %o% $1` | Outer Product | 2 → 1 |
-| `BT` | `{idx<-c(1,4,3,2,5); $1[idx,idx]}` | Bingo Twin | 1 → 1 |
+| `BT` | `{idx<-c(1,4,3,2,5); $1[idx,id…` | Bingo Twin | 1 → 1 |
 | `R9` | `apply(t($1), 2, rev)` | Rot90 | 1 → 1 |
 | `Y!` | `matrix($3, nrow=$2, ncol=$1)` | Create Matrix | 3 → 1 |
 | `Y*` | `$2 %*% $1` | Matrix Mult | 2 → 1 |
-| `YM` | `matrix($3, nrow=$2, ncol=$1, byrow…` | Matrix ByRow | 3 → 1 |
+| `YM` | `matrix($3, nrow=$2, ncol=$1, …` | Matrix ByRow | 3 → 1 |
 | `v2` | `solve($2, $1)` | Solve 2 | 2 → 1 |
 | `vC` | `col($1)` | Col Indices | 1 → 1 |
 | `vE` | `rowSums($1)` | Row Sums | 1 → 1 |
@@ -276,11 +276,11 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `Bs` | `sd($1)` | Standard Deviation | 1 → 1 |
 | `Bx` | `max($1)` | Max | 1 → 1 |
 | `Bz` | `scale($1)` | Scale | 1 → 1 |
-| `Ku` | `sum(($1-mean($1))^4)/((length($1)-…` | Kurtosis | 1 → 1 |
+| `Ku` | `sum(($1-mean($1))^4)/((length…` | Kurtosis | 1 → 1 |
 | `P` | `prod($1)` | Product | 1 → 1 |
 | `Q` | `quantile($1)` | Quantile | 1 → 1 |
 | `Sd` | `ratl_cum_sd($1)` | CumSD | 1 → 1 |
-| `Sk` | `sum(($1-mean($1))^3)/((length($1)-…` | Skewness | 1 → 1 |
+| `Sk` | `sum(($1-mean($1))^3)/((length…` | Skewness | 1 → 1 |
 | `Sm` | `mean($1, na.rm=TRUE)` | MeanNA | 1 → 1 |
 | `Sn` | `sum($1, na.rm=TRUE)` | SumNA | 1 → 1 |
 | `Sw` | `weighted.mean($2, $1)` | WeightedMean | 2 → 1 |
@@ -514,7 +514,7 @@ These functions pop a `{block}` from the stack and apply it to data.
 | `Xc` | `chartr($1, $2, $3)` | Char Translate | 3 → 1 |
 | `Xt` | `tolower($1)` | ToLower | 1 → 1 |
 | `j` | `paste($2, $1)` | Join | 2 → 1 |
-| `rv` | `paste(rev(strsplit(as.character($1…` | Reverse String | 1 → 1 |
+| `rv` | `paste(rev(strsplit(as.charact…` | Reverse String | 1 → 1 |
 | `sB` | `grepl($2, $1)` | Grepl | 2 → 1 |
 | `sG` | `grep($2, $1)` | Grep | 2 → 1 |
 | `sL` | `tolower($1)` | ToLower | 1 → 1 |
@@ -576,8 +576,8 @@ These functions pop a `{block}` from the stack and apply it to data.
 |--------|--------|-------------|--------------|
 | `F` | `readLines($1)` | Read File | 1 → 1 |
 | `FL` | `list.files($1)` | List Files | 1 → 1 |
-| `FW` | `{writeLines(as.character($2), $1);…` | Write File | 2 → 0 |
-| `W` | `writeLines(as.character($2), $1); …` | Write File | 2 → 0 |
+| `FW` | `{writeLines(as.character($2),…` | Write File | 2 → 0 |
+| `W` | `writeLines(as.character($2), …` | Write File | 2 → 0 |
 | `fA` | `dirname($1)` | Dirname | 1 → 1 |
 | `fC` | `write.csv($2, $1)` | Write CSV | 2 → 0 |
 | `fD` | `list.dirs($1)` | List Dirs | 1 → 1 |
