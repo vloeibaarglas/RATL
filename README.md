@@ -1,6 +1,7 @@
 # RATL
 
-[![CI](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml/badge.svg)](https://github.com/vloeibaarglas/RATL/actions/workflows/ci.yml)
+[![CI](https://github.com/vloeibaarglas/RATL/actions/workflows/test.yml/badge.svg)](https://github.com/vloeibaarglas/RATL/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 R-based Array Manipulation Language — a stack-based esoteric language for code golf, built on R's statistical and matrix capabilities.
 
