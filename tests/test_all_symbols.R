@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 420 symbols (unit tests)\n"))
+cat(sprintf("Testing 421 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Arithmetic & Comparison: + — Add
@@ -4400,6 +4400,9 @@ test_pi_GetPID <- function() {
   if (grepl("Error:", r)) { cat("FAIL [pi] GetPID: ", r, "\n"); return(FALSE) }
   return(TRUE)
 }
+
+# SKIP ev (Eval) — no test_input defined
+skipped <- skipped + 1
 
 all_tests <- list(
   list(name = "+ Add", fn = test___Add)

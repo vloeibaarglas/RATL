@@ -419,3 +419,4 @@ ge	Sys.getenv($1)	1	1	Getenv	System	5 ge
 se	Sys.setenv(...)	1	0	Setenv	System		
 um	Sys.umask($1)	1	1	Umask	System		
 pi	Sys.getpid()	0	1	GetPID	System	pi	
+ev	NULL	1	0	Eval	Type & Introspection		

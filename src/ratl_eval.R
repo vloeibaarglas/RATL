@@ -143,6 +143,10 @@ ratl_eval <- function(tokens, ctx) {
           if (broken) break
         }
         ctx$in_loop <- old_in_loop
+       } else if (val == "ev") {
+        code_str <- stack_pop(ctx$stack)
+        tokens <- ratl_parse(code_str, ctx$dispatch)
+        ratl_eval(tokens, ctx)
        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {
