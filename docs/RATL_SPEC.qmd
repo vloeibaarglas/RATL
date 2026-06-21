@@ -2,7 +2,7 @@
 title: RATL Specification
 ---
 
-RATL (R-based Array Manipulation Language) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
+RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
 **Total symbols: 427** (all 2-byte or shorter)
 
@@ -11,7 +11,7 @@ RATL (R-based Array Manipulation Language) is a stack-based, esoteric programmin
 RATL is implemented in R and uses R's internal data structures (vectors, lists, matrices) to handle stack operations. It translates RATL code into R code, which is then evaluated.
 
 ### 1.1 The Name
-The name stands for **R-based Array Manipulation Language**, reflecting its foundation in R and its primary focus on array-based operations.
+The name stands for **R** **A**rray Manipula**T**ion **L**anguage, reflecting its foundation in R and its primary focus on array-based operations.
 
 ### 1.2 Notation
 - `$n`: Represents the $n$-th element popped from the stack (starting from the top).
