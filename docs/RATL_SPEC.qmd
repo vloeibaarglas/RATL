@@ -4,7 +4,7 @@ title: RATL Specification
 
 RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
-**Total symbols: 427** (all 2-byte or shorter)
+**Total symbols: 421** (all 2-byte or shorter)
 
 ## Getting Started
 
@@ -55,13 +55,13 @@ RATL is designed as a **stack-based array manipulation language** for code golf.
 RATL organizes its symbol set into three conceptual tiers:
 
 **Tier 1 — Core** (stack manipulation, arrays, blocks, control flow, arithmetic)
-: 105 symbols across 5 categories
+: 107 symbols across 5 categories
 
 **Tier 2 — Toolkit** (grouping, mapping, reduction, matrix operations, strings, sets)
-: 68 symbols across 4 categories
+: 67 symbols across 4 categories
 
 **Tier 3 — Extensions** (statistics, distributions, filesystem, shell access, meta-programming)
-: 220 symbols across 7 categories
+: 213 symbols across 7 categories
 
 ***
 
@@ -380,7 +380,29 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**427 symbols** organized by category. Click a category to expand.
+**421 symbols** organized by category. Click a category to expand.
+
+<details><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 15 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `D` | Duplicate | `list($1, $1)` | 1 → 2 |
+| `Ls` | Stack Length | `length(stack)` | 0 → 1 |
+| `N` | Rotate | `list($2, $1, $3)` | 3 → 3 |
+| `Q` | Over | `list($2, $1, $2)` | 2 → 3 |
+| `T` | Tuck | `list($1, $2, $1)` | 2 → 3 |
+| `U` | Unpack | `for(x in $1) stack[[length(stack)+1]] <- x` | 1 → 0 |
+| `g` | Pick | `NULL` | 2 → 3 |
+| `i` | Input | `scan(ratl_stdin, what=character(), n=1, quiet=TRUE)` | 0 → 1 |
+| `p` | Print | `ratl_print($1)` | 1 → 0 |
+| `sC` | Cat | `cat($1)` | 1 → 0 |
+| `sM` | Message | `message($1)` | 1 → 0 |
+| `sS` | Stop | `stop($1)` | 1 → 0 |
+| `sW` | Warning | `warning($1)` | 1 → 0 |
+| `w` | Swap | `list($1, $2)` | 2 → 2 |
+| `x` | Delete | `NULL` | 1 → 0 |
+
+</details>
 
 <details><summary><strong>Arithmetic & Comparison</strong> — Tier 1 (Core) — 15 symbols</summary>
 
@@ -401,61 +423,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `mI` | IntDiv | `$2 %/% $1` | 2 → 1 |
 | `|` | Or | `$2 | $1` | 2 → 1 |
 | `~` | Not | `!$1` | 1 → 1 |
-
-</details>
-
-<details><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 11 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `D` | Duplicate | `list($1, $1)` | 1 → 2 |
-| `Ls` | Stack Length | `length(stack)` | 0 → 1 |
-| `U` | Unpack | `for(x in $1) stack[[length(stack)+1]] <- x` | 1 → 0 |
-| `i` | Input | `scan(ratl_stdin, what=character(), n=1, quiet=TRUE)` | 0 → 1 |
-| `p` | Print | `ratl_print($1)` | 1 → 0 |
-| `sC` | Cat | `cat($1)` | 1 → 0 |
-| `sM` | Message | `message($1)` | 1 → 0 |
-| `sS` | Stop | `stop($1)` | 1 → 0 |
-| `sW` | Warning | `warning($1)` | 1 → 0 |
-| `w` | Swap | `list($1, $2)` | 2 → 2 |
-| `x` | Delete | `NULL` | 1 → 0 |
-
-</details>
-
-<details><summary><strong>Constants</strong> — Tier 3 (Extensions) — 6 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `In` | Inf | `Inf` | 0 → 1 |
-| `Na` | NA | `NA` | 0 → 1 |
-| `Pi` | Pi | `pi` | 0 → 1 |
-| `s4` | EmptyLog | `logical(0)` | 0 → 1 |
-| `sQ` | EmptyChar | `character(0)` | 0 → 1 |
-| `sZ` | EmptyNum | `numeric(0)` | 0 → 1 |
-
-</details>
-
-<details><summary><strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 17 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `Fa` | Apply | `apply($3, $2, $1)` | 3 → 1 |
-| `Ff` | Filter (Func) | `Filter($2, $1)` | 2 → 1 |
-| `Fl` | Lapply | `lapply($2, $1)` | 2 → 1 |
-| `Fm` | Mapply | `mapply($1, ...)` | 1 → 1 |
-| `Fn` | Find (Func) | `Find($2, $1)` | 2 → 1 |
-| `Fp` | Position | `Position($2, $1)` | 2 → 1 |
-| `Fq` | Map (evaluator) | `NULL` | 0 → 1 |
-| `Fr` | Reduce | `Reduce($2, $1)` | 2 → 1 |
-| `Fs` | Sapply | `sapply($2, $1)` | 2 → 1 |
-| `Ft` | Filter (evaluator) | `NULL` | 0 → 1 |
-| `Fv` | Vapply | `vapply($3, $2, $1)` | 3 → 1 |
-| `Fx` | Repeat (evaluator) | `NULL` | 0 → 1 |
-| `e` | Filter (evaluator) | `NULL` | 0 → 1 |
-| `fn` | Negate | `Negate($1)` | 1 → 1 |
-| `q` | Map (evaluator) | `NULL` | 0 → 1 |
-| `y` | Reduce (evaluator) | `NULL` | 0 → 1 |
-| `z` | Repeat (evaluator) | `NULL` | 0 → 1 |
 
 </details>
 
@@ -510,12 +477,82 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Matrix</strong> — Tier 2 (Toolkit) — 28 symbols</summary>
+<details><summary><strong>Bitwise Operations</strong> — Tier 1 (Core) — 6 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `bA` | BitAnd | `bitwAnd($2, $1)` | 2 → 1 |
+| `bL` | BitShiftL | `bitwShiftL($2, $1)` | 2 → 1 |
+| `bN` | BitNot | `bitwNot($1)` | 1 → 1 |
+| `bO` | BitOr | `bitwOr($2, $1)` | 2 → 1 |
+| `bR` | BitShiftR | `bitwShiftR($2, $1)` | 2 → 1 |
+| `bX` | BitXor | `bitwXor($2, $1)` | 2 → 1 |
+
+</details>
+
+<details><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 27 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `AS` | As Type | `as($2, $1)` | 2 → 1 |
+| `Xb` | To Binary | `ratl_bin($1)` | 1 → 1 |
+| `Xd` | To Date | `as.Date($1)` | 1 → 1 |
+| `a` | To String | `as.character($1)` | 1 → 1 |
+| `ev` | Eval | `NULL` | 1 → 0 |
+| `is` | Is Type | `is($2, $1)` | 2 → 1 |
+| `mF` | Factor | `factor($1)` | 1 → 1 |
+| `n` | To Number | `as.numeric($1)` | 1 → 1 |
+| `oA` | Attr | `attr($2, $1)` | 2 → 1 |
+| `oC` | Colnames | `colnames($1)` | 1 → 1 |
+| `oa` | Attributes | `attributes($1)` | 1 → 1 |
+| `oc` | Class | `class($1)` | 1 → 1 |
+| `od` | Dim | `dim($1)` | 1 → 1 |
+| `on` | Names | `names($1)` | 1 → 1 |
+| `or` | Rownames | `rownames($1)` | 1 → 1 |
+| `ot` | Typeof | `typeof($1)` | 1 → 1 |
+| `ou` | Unlist | `unlist($1)` | 1 → 1 |
+| `zB` | Sort By | `NULL` | 2 → 1 |
+| `zC` | Scan | `NULL` | 2 → 1 |
+| `zD` | Dispatch List | `NULL` | 0 → 1 |
+| `zG` | Group By | `NULL` | 2 → 1 |
+| `zS` | Send | `NULL` | 1 → 1 |
+| `zT` | Take While | `NULL` | 2 → 1 |
+| `zW` | Drop While | `NULL` | 2 → 1 |
+| `zX` | Shell Exec | `NULL` | 1 → 1 |
+| `zZ` | Zip With | `NULL` | 3 → 1 |
+| `zd` | To Date | `as.Date($1)` | 1 → 1 |
+
+</details>
+
+<details><summary><strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 17 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `Fa` | Apply | `apply($3, $2, $1)` | 3 → 1 |
+| `Ff` | Filter (Func) | `Filter($2, $1)` | 2 → 1 |
+| `Fl` | Lapply | `lapply($2, $1)` | 2 → 1 |
+| `Fm` | Mapply | `mapply($1, ...)` | 1 → 1 |
+| `Fn` | Find (Func) | `Find($2, $1)` | 2 → 1 |
+| `Fp` | Position | `Position($2, $1)` | 2 → 1 |
+| `Fq` | Map (evaluator) | `NULL` | 0 → 1 |
+| `Fr` | Reduce | `Reduce($2, $1)` | 2 → 1 |
+| `Fs` | Sapply | `sapply($2, $1)` | 2 → 1 |
+| `Ft` | Filter (evaluator) | `NULL` | 0 → 1 |
+| `Fv` | Vapply | `vapply($3, $2, $1)` | 3 → 1 |
+| `Fx` | Repeat (evaluator) | `NULL` | 0 → 1 |
+| `e` | Filter (evaluator) | `NULL` | 0 → 1 |
+| `fn` | Negate | `Negate($1)` | 1 → 1 |
+| `q` | Map (evaluator) | `NULL` | 0 → 1 |
+| `y` | Reduce (evaluator) | `NULL` | 0 → 1 |
+| `z` | Repeat (evaluator) | `NULL` | 0 → 1 |
+
+</details>
+
+<details><summary><strong>Matrix</strong> — Tier 2 (Toolkit) — 27 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `!` | Transpose | `t($1)` | 1 → 1 |
-| `&` | Outer Product | `$2 %o% $1` | 2 → 1 |
 | `BT` | Bingo Twin | `{idx<-c(1,4,3,2,5); $1[idx,idx]}` | 1 → 1 |
 | `R9` | Rot90 | `apply(t($1), 2, rev)` | 1 → 1 |
 | `Y!` | Create Matrix | `matrix($3, nrow=$2, ncol=$1)` | 3 → 1 |
@@ -545,33 +582,62 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 42 symbols</summary>
+<details><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `C` | Concat | `paste0($2, $1)` | 2 → 1 |
+| `J` | Join List | `paste($2, collapse=$1)` | 2 → 1 |
+| `S` | Split String | `strsplit($2, $1)[[1]]` | 2 → 1 |
+| `S!` | Translate | `chartr($2, $1, $3)` | 3 → 1 |
+| `SG` | GSub | `gsub($2, $1, $3)` | 3 → 1 |
+| `Xc` | Char Translate | `chartr($1, $2, $3)` | 3 → 1 |
+| `Xt` | ToLower | `tolower($1)` | 1 → 1 |
+| `j` | Join | `paste($2, $1)` | 2 → 1 |
+| `rv` | Reverse String | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | 1 → 1 |
+| `sB` | Grepl | `grepl($2, $1)` | 2 → 1 |
+| `sG` | Grep | `grep($2, $1)` | 2 → 1 |
+| `sL` | ToLower | `tolower($1)` | 1 → 1 |
+| `sR` | Regexpr | `regexpr($2, $1)` | 2 → 1 |
+| `sU` | ToUpper | `toupper($1)` | 1 → 1 |
+| `sX` | Gregexpr | `gregexpr($2, $1)` | 2 → 1 |
+| `sf` | Sprintf | `sprintf($2, $1)` | 2 → 1 |
+| `sn` | NChar | `nchar($1)` | 1 → 1 |
+| `sr` | Sub | `sub($2, $1, $3)` | 3 → 1 |
+| `ss` | Substr | `substr($3, $2, $1)` | 3 → 1 |
+| `st` | TrimWS | `trimws($1)` | 1 → 1 |
+
+</details>
+
+<details><summary><strong>Set Operations</strong> — Tier 2 (Toolkit) — 3 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `sD` | SetDiff | `setdiff($2, $1)` | 2 → 1 |
+| `sI` | Intersect | `intersect($2, $1)` | 2 → 1 |
+| `sN` | Union | `union($2, $1)` | 2 → 1 |
+
+</details>
+
+<details><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 35 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `B5` | FiveNum | `fivenum($1)` | 1 → 1 |
-| `BC` | Covariance | `cov($2, $1)` | 2 → 1 |
-| `BS` | Summary | `summary($1)` | 1 → 1 |
 | `Ba` | MAD | `mad($1)` | 1 → 1 |
-| `Bc` | Correlation | `cor($2, $1)` | 2 → 1 |
 | `Bi` | IQR | `IQR($1)` | 1 → 1 |
 | `Bn` | Min | `min($1)` | 1 → 1 |
 | `Br` | Range | `range($1)` | 1 → 1 |
-| `Bs` | Standard Deviation | `sd($1)` | 1 → 1 |
 | `Bx` | Max | `max($1)` | 1 → 1 |
 | `Bz` | Scale | `scale($1)` | 1 → 1 |
 | `Ku` | Kurtosis | `sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)` | 1 → 1 |
 | `P` | Product | `prod($1)` | 1 → 1 |
-| `Q` | Quantile | `quantile($1)` | 1 → 1 |
 | `Sd` | CumSD | `ratl_cum_sd($1)` | 1 → 1 |
 | `Sk` | Skewness | `sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)` | 1 → 1 |
 | `Sm` | MeanNA | `mean($1, na.rm=TRUE)` | 1 → 1 |
 | `Sn` | SumNA | `sum($1, na.rm=TRUE)` | 1 → 1 |
 | `Sw` | WeightedMean | `weighted.mean($2, $1)` | 2 → 1 |
-| `V` | Variance | `var($1)` | 1 → 1 |
 | `Xo` | Mode | `ratl_mode($1)` | 1 → 1 |
-| `Xr` | RMS | `ratl_rms($1)` | 1 → 1 |
-| `Xs` | Std Dev | `sd($1)` | 1 → 1 |
 | `cr` | Correlation | `cor($2, $1)` | 2 → 1 |
 | `cv` | Covariance | `cov($2, $1)` | 2 → 1 |
 | `dT` | Table | `table($1)` | 1 → 1 |
@@ -580,6 +646,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `lA` | Any | `any($1)` | 1 → 1 |
 | `lZ` | NNZ | `sum($1 != 0)` | 1 → 1 |
 | `m` | Mean | `mean($1)` | 1 → 1 |
+| `mQ` | Quantile | `quantile($1, $2)` | 2 → 1 |
 | `mQ` | Quantile | `quantile($1, $2)` | 2 → 1 |
 | `mn` | Min2 | `min($2, $1)` | 2 → 1 |
 | `mx` | Max2 | `max($2, $1)` | 2 → 1 |
@@ -594,42 +661,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `K!` | Coef | `coef($1)` | 1 → 1 |
-| `KA` | AOV | `aov($1)` | 1 → 1 |
-| `KB` | BIC | `BIC($1)` | 1 → 1 |
-| `KE` | Residuals | `residuals($1)` | 1 → 1 |
-| `KF` | Fitted | `fitted($1)` | 1 → 1 |
-| `KL` | LogLik | `logLik($1)` | 1 → 1 |
-| `KV` | VCov | `vcov($1)` | 1 → 1 |
-| `av` | Anova | `anova($1)` | 1 → 1 |
-| `dA` | Aggregate | `aggregate($3, $2, $1)` | 3 → 1 |
-| `dE` | Cut | `cut($2, $1)` | 2 → 1 |
-| `dY` | By | `by($3, $2, $1)` | 3 → 1 |
-| `ka` | Anova | `anova($1)` | 1 → 1 |
-| `ke` | Predict | `predict($2, $1)` | 2 → 1 |
-| `kg` | GLM | `glm($1)` | 1 → 1 |
-| `ki` | AIC | `AIC($1)` | 1 → 1 |
-| `kl` | Linear Model | `lm($1)` | 1 → 1 |
-| `kn` | NLS | `nls($1)` | 1 → 1 |
-| `ko` | Loess | `loess($1)` | 1 → 1 |
-| `lm` | Linear Model | `lm($1)` | 1 → 1 |
-| `mC` | Conf Int | `confint($1)` | 1 → 1 |
-| `mL` | LM Simple | `lm($2 ~ $1)` | 2 → 1 |
-| `mM` | Model Matrix | `model.matrix($1)` | 1 → 1 |
-| `mO` | Offset | `offset($1)` | 1 → 1 |
-| `mP` | Predict | `predict($1)` | 1 → 1 |
-| `mR` | Model Frame | `model.frame($1)` | 1 → 1 |
-| `mT` | Terms | `terms($1)` | 1 → 1 |
-| `mU` | Update | `update($2, $1)` | 2 → 1 |
-| `mW` | Formula | `formula($1)` | 1 → 1 |
-| `vp` | PCA | `prcomp($1)` | 1 → 1 |
-
-</details>
-
 <details><summary><strong>Distributions & Tests</strong> — Tier 3 (Extensions) — 86 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
@@ -637,7 +668,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `DN` | Density Normal | `dnorm($3, $2, $1)` | 3 → 1 |
 | `KC` | Cor Test | `cor.test($2, $1)` | 2 → 1 |
 | `KK` | Kruskal-Wallis | `kruskal.test($1)` | 1 → 1 |
-| `N` | Random Normal | `rnorm($1)` | 1 → 1 |
 | `PN` | Prob Normal | `pnorm($3, $2, $1)` | 3 → 1 |
 | `QN` | Quantile Normal | `qnorm($3, $2, $1)` | 3 → 1 |
 | `RB` | Random Beta | `rbeta($3, $2, $1)` | 3 → 1 |
@@ -708,6 +738,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `rG` | Random Geometric | `rgeom($2, $1)` | 2 → 1 |
 | `rL` | Random Logistic | `rlogis($3, $2, $1)` | 3 → 1 |
 | `rN` | Random Neg-Binomial | `rnbinom($3, $2, $1)` | 3 → 1 |
+| `rN` | Random Normal | `rnorm($1)` | 1 → 1 |
 | `rP` | Random Poisson | `rpois($2, $1)` | 2 → 1 |
 | `rb` | Random Binomial | `rbinom($1, size=1, prob=0.5)` | 1 → 1 |
 | `rc` | Random Cauchy | `rcauchy($3, $2, $1)` | 3 → 1 |
@@ -723,41 +754,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Math Functions</strong> — Tier 3 (Extensions) — 28 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `SP` | Sin(pi*x) | `sinpi($1)` | 1 → 1 |
-| `a2` | ArcTan2 | `atan2($2, $1)` | 2 → 1 |
-| `aC` | ArcCos | `acos($1)` | 1 → 1 |
-| `aS` | ArcSin | `asin($1)` | 1 → 1 |
-| `aT` | ArcTan | `atan($1)` | 1 → 1 |
-| `ab` | Abs | `abs($1)` | 1 → 1 |
-| `ac` | ArcCosh | `acosh($1)` | 1 → 1 |
-| `as` | ArcSinh | `asinh($1)` | 1 → 1 |
-| `at` | ArcTanh | `atanh($1)` | 1 → 1 |
-| `ch` | Cosh | `cosh($1)` | 1 → 1 |
-| `cl` | Ceiling | `ceiling($1)` | 1 → 1 |
-| `cp` | Cos(pi*x) | `cospi($1)` | 1 → 1 |
-| `e-` | Exp(x)-1 | `expm1($1)` | 1 → 1 |
-| `fl` | Floor | `floor($1)` | 1 → 1 |
-| `l+` | Log(1+x) | `log1p($1)` | 1 → 1 |
-| `l1` | Log 10 | `log10($1)` | 1 → 1 |
-| `l2` | Log 2 | `log2($1)` | 1 → 1 |
-| `lg` | Log Natural | `log($1)` | 1 → 1 |
-| `mc` | Cos | `cos($1)` | 1 → 1 |
-| `ms` | Sin | `sin($1)` | 1 → 1 |
-| `mt` | Tan | `tan($1)` | 1 → 1 |
-| `ro` | Round | `round($1)` | 1 → 1 |
-| `sg` | Sign | `sign($1)` | 1 → 1 |
-| `sh` | Sinh | `sinh($1)` | 1 → 1 |
-| `sq` | Sqrt | `sqrt($1)` | 1 → 1 |
-| `th` | Tanh | `tanh($1)` | 1 → 1 |
-| `tp` | Tan(pi*x) | `tanpi($1)` | 1 → 1 |
-| `tr` | Trunc | `trunc($1)` | 1 → 1 |
-
-</details>
-
 <details><summary><strong>Combinatorics & Special</strong> — Tier 3 (Extensions) — 18 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
@@ -770,10 +766,10 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `di` | Digamma | `digamma($1)` | 1 → 1 |
 | `fa` | Factors | `ratl_factors($1)` | 1 → 1 |
 | `fp` | Factorial | `factorial($1)` | 1 → 1 |
-| `g` | GCD | `ratl_gcd($2, $1)` | 2 → 1 |
 | `lb` | Log Beta | `lbeta($2, $1)` | 2 → 1 |
 | `lc` | LCM | `ratl_lcm($2, $1)` | 2 → 1 |
 | `mB` | Beta | `beta($2, $1)` | 2 → 1 |
+| `mG` | Gamma | `gamma($1)` | 1 → 1 |
 | `mG` | Gamma | `gamma($1)` | 1 → 1 |
 | `mf` | Prime Factors | `ratl_prime_factors($1)` | 1 → 1 |
 | `ml` | LCM | `ratl_lcm($2, $1)` | 2 → 1 |
@@ -792,92 +788,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `cJ` | Conjugate | `Conj($1)` | 1 → 1 |
 | `cM` | Modulus | `Mod($1)` | 1 → 1 |
 | `cR` | Real Part | `Re($1)` | 1 → 1 |
-
-</details>
-
-<details><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `C` | Concat | `paste0($2, $1)` | 2 → 1 |
-| `J` | Join List | `paste($2, collapse=$1)` | 2 → 1 |
-| `S` | Split String | `strsplit($2, $1)[[1]]` | 2 → 1 |
-| `S!` | Translate | `chartr($2, $1, $3)` | 3 → 1 |
-| `SG` | GSub | `gsub($2, $1, $3)` | 3 → 1 |
-| `Xc` | Char Translate | `chartr($1, $2, $3)` | 3 → 1 |
-| `Xt` | ToLower | `tolower($1)` | 1 → 1 |
-| `j` | Join | `paste($2, $1)` | 2 → 1 |
-| `rv` | Reverse String | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | 1 → 1 |
-| `sB` | Grepl | `grepl($2, $1)` | 2 → 1 |
-| `sG` | Grep | `grep($2, $1)` | 2 → 1 |
-| `sL` | ToLower | `tolower($1)` | 1 → 1 |
-| `sR` | Regexpr | `regexpr($2, $1)` | 2 → 1 |
-| `sU` | ToUpper | `toupper($1)` | 1 → 1 |
-| `sX` | Gregexpr | `gregexpr($2, $1)` | 2 → 1 |
-| `sf` | Sprintf | `sprintf($2, $1)` | 2 → 1 |
-| `sn` | NChar | `nchar($1)` | 1 → 1 |
-| `sr` | Sub | `sub($2, $1, $3)` | 3 → 1 |
-| `ss` | Substr | `substr($3, $2, $1)` | 3 → 1 |
-| `st` | TrimWS | `trimws($1)` | 1 → 1 |
-
-</details>
-
-<details><summary><strong>Set Operations</strong> — Tier 2 (Toolkit) — 3 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `sD` | SetDiff | `setdiff($2, $1)` | 2 → 1 |
-| `sI` | Intersect | `intersect($2, $1)` | 2 → 1 |
-| `sN` | Union | `union($2, $1)` | 2 → 1 |
-
-</details>
-
-<details><summary><strong>Bitwise Operations</strong> — Tier 1 (Core) — 6 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `bA` | BitAnd | `bitwAnd($2, $1)` | 2 → 1 |
-| `bL` | BitShiftL | `bitwShiftL($2, $1)` | 2 → 1 |
-| `bN` | BitNot | `bitwNot($1)` | 1 → 1 |
-| `bO` | BitOr | `bitwOr($2, $1)` | 2 → 1 |
-| `bR` | BitShiftR | `bitwShiftR($2, $1)` | 2 → 1 |
-| `bX` | BitXor | `bitwXor($2, $1)` | 2 → 1 |
-
-</details>
-
-<details><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 29 symbols</summary>
-
-| Symbol | Description | R Code | Stack Effect |
-|--------|-------------|--------|--------------|
-| `A` | To ASCII | `utf8ToInt($1)` | 1 → 1 |
-| `AS` | As Type | `as($2, $1)` | 2 → 1 |
-| `Xb` | To Binary | `ratl_bin($1)` | 1 → 1 |
-| `Xd` | To Date | `as.Date($1)` | 1 → 1 |
-| `a` | To String | `as.character($1)` | 1 → 1 |
-| `c` | To Char | `intToUtf8($1)` | 1 → 1 |
-| `ev` | Eval | `NULL` | 1 → 0 |
-| `is` | Is Type | `is($2, $1)` | 2 → 1 |
-| `mF` | Factor | `factor($1)` | 1 → 1 |
-| `n` | To Number | `as.numeric($1)` | 1 → 1 |
-| `oA` | Attr | `attr($2, $1)` | 2 → 1 |
-| `oC` | Colnames | `colnames($1)` | 1 → 1 |
-| `oa` | Attributes | `attributes($1)` | 1 → 1 |
-| `oc` | Class | `class($1)` | 1 → 1 |
-| `od` | Dim | `dim($1)` | 1 → 1 |
-| `on` | Names | `names($1)` | 1 → 1 |
-| `or` | Rownames | `rownames($1)` | 1 → 1 |
-| `ot` | Typeof | `typeof($1)` | 1 → 1 |
-| `ou` | Unlist | `unlist($1)` | 1 → 1 |
-| `zB` | Sort By | `NULL` | 2 → 1 |
-| `zC` | Scan | `NULL` | 2 → 1 |
-| `zD` | Dispatch List | `NULL` | 0 → 1 |
-| `zG` | Group By | `NULL` | 2 → 1 |
-| `zS` | Send | `NULL` | 1 → 1 |
-| `zT` | Take While | `NULL` | 2 → 1 |
-| `zW` | Drop While | `NULL` | 2 → 1 |
-| `zX` | Shell Exec | `NULL` | 1 → 1 |
-| `zZ` | Zip With | `NULL` | 3 → 1 |
-| `zd` | To Date | `as.Date($1)` | 1 → 1 |
 
 </details>
 
@@ -912,7 +822,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
-| `T` | Time Epoch | `as.numeric(Sys.time())` | 0 → 1 |
 | `ZT` | Timezone | `Sys.timezone()` | 0 → 1 |
 | `ge` | Getenv | `Sys.getenv($1)` | 1 → 1 |
 | `pi` | GetPID | `Sys.getpid()` | 0 → 1 |
@@ -923,6 +832,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `sK` | Toc | `proc.time() - $1` | 1 → 1 |
 | `sP` | Sleep | `Sys.sleep($1)` | 1 → 0 |
 | `sT` | Tic | `proc.time()` | 0 → 1 |
+| `sT` | Tic | `proc.time()` | 0 → 1 |
 | `sV` | RVersion | `R.version.string` | 0 → 1 |
 | `sY` | SetScipen | `options(scipen=$1)` | 1 → 0 |
 | `se` | Setenv | `Sys.setenv(...)` | 1 → 0 |
@@ -932,6 +842,90 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `zo` | Options | `options()` | 0 → 1 |
 | `zt` | SysTime | `Sys.time()` | 0 → 1 |
 | `zv` | Version | `version` | 0 → 1 |
+
+</details>
+
+<details><summary><strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `K!` | Coef | `coef($1)` | 1 → 1 |
+| `KA` | AOV | `aov($1)` | 1 → 1 |
+| `KB` | BIC | `BIC($1)` | 1 → 1 |
+| `KE` | Residuals | `residuals($1)` | 1 → 1 |
+| `KF` | Fitted | `fitted($1)` | 1 → 1 |
+| `KL` | LogLik | `logLik($1)` | 1 → 1 |
+| `KV` | VCov | `vcov($1)` | 1 → 1 |
+| `av` | Anova | `anova($1)` | 1 → 1 |
+| `dA` | Aggregate | `aggregate($3, $2, $1)` | 3 → 1 |
+| `dE` | Cut | `cut($2, $1)` | 2 → 1 |
+| `dY` | By | `by($3, $2, $1)` | 3 → 1 |
+| `ka` | Anova | `anova($1)` | 1 → 1 |
+| `ke` | Predict | `predict($2, $1)` | 2 → 1 |
+| `kg` | GLM | `glm($1)` | 1 → 1 |
+| `ki` | AIC | `AIC($1)` | 1 → 1 |
+| `kl` | Linear Model | `lm($1)` | 1 → 1 |
+| `kn` | NLS | `nls($1)` | 1 → 1 |
+| `ko` | Loess | `loess($1)` | 1 → 1 |
+| `lm` | Linear Model | `lm($1)` | 1 → 1 |
+| `mC` | Conf Int | `confint($1)` | 1 → 1 |
+| `mL` | LM Simple | `lm($2 ~ $1)` | 2 → 1 |
+| `mM` | Model Matrix | `model.matrix($1)` | 1 → 1 |
+| `mO` | Offset | `offset($1)` | 1 → 1 |
+| `mP` | Predict | `predict($1)` | 1 → 1 |
+| `mR` | Model Frame | `model.frame($1)` | 1 → 1 |
+| `mT` | Terms | `terms($1)` | 1 → 1 |
+| `mU` | Update | `update($2, $1)` | 2 → 1 |
+| `mW` | Formula | `formula($1)` | 1 → 1 |
+| `vp` | PCA | `prcomp($1)` | 1 → 1 |
+
+</details>
+
+<details><summary><strong>Constants</strong> — Tier 3 (Extensions) — 6 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `In` | Inf | `Inf` | 0 → 1 |
+| `Na` | NA | `NA` | 0 → 1 |
+| `Pi` | Pi | `pi` | 0 → 1 |
+| `s4` | EmptyLog | `logical(0)` | 0 → 1 |
+| `sQ` | EmptyChar | `character(0)` | 0 → 1 |
+| `sZ` | EmptyNum | `numeric(0)` | 0 → 1 |
+
+</details>
+
+<details><summary><strong>Math Functions</strong> — Tier 3 (Extensions) — 28 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `&` | Sqrt | `$1` | 1 → 1 |
+| `A` | Abs | `$1` | 1 → 1 |
+| `SP` | Sin(pi*x) | `sinpi($1)` | 1 → 1 |
+| `V` | Floor | `$1` | 1 → 1 |
+| `a2` | ArcTan2 | `atan2($2, $1)` | 2 → 1 |
+| `aC` | ArcCos | `acos($1)` | 1 → 1 |
+| `aS` | ArcSin | `asin($1)` | 1 → 1 |
+| `aT` | ArcTan | `atan($1)` | 1 → 1 |
+| `ac` | ArcCosh | `acosh($1)` | 1 → 1 |
+| `as` | ArcSinh | `asinh($1)` | 1 → 1 |
+| `at` | ArcTanh | `atanh($1)` | 1 → 1 |
+| `c` | Ceiling | `$1` | 1 → 1 |
+| `ch` | Cosh | `cosh($1)` | 1 → 1 |
+| `cp` | Cos(pi*x) | `cospi($1)` | 1 → 1 |
+| `e-` | Exp(x)-1 | `expm1($1)` | 1 → 1 |
+| `l+` | Log(1+x) | `log1p($1)` | 1 → 1 |
+| `l1` | Log 10 | `log10($1)` | 1 → 1 |
+| `l2` | Log 2 | `log2($1)` | 1 → 1 |
+| `lg` | Log Natural | `log($1)` | 1 → 1 |
+| `mc` | Cos | `cos($1)` | 1 → 1 |
+| `ms` | Sin | `sin($1)` | 1 → 1 |
+| `mt` | Tan | `tan($1)` | 1 → 1 |
+| `ro` | Round | `round($1)` | 1 → 1 |
+| `sg` | Sign | `sign($1)` | 1 → 1 |
+| `sh` | Sinh | `sinh($1)` | 1 → 1 |
+| `th` | Tanh | `tanh($1)` | 1 → 1 |
+| `tp` | Tan(pi*x) | `tanpi($1)` | 1 → 1 |
+| `tr` | Trunc | `trunc($1)` | 1 → 1 |
 
 </details>
 
