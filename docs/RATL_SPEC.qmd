@@ -898,10 +898,10 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
-| `&` | Sqrt | `$1` | 1 → 1 |
-| `A` | Abs | `$1` | 1 → 1 |
+| `&` | Sqrt | `sqrt($1)` | 1 → 1 |
+| `A` | Abs | `abs($1)` | 1 → 1 |
 | `SP` | Sin(pi*x) | `sinpi($1)` | 1 → 1 |
-| `V` | Floor | `$1` | 1 → 1 |
+| `V` | Floor | `floor($1)` | 1 → 1 |
 | `a2` | ArcTan2 | `atan2($2, $1)` | 2 → 1 |
 | `aC` | ArcCos | `acos($1)` | 1 → 1 |
 | `aS` | ArcSin | `asin($1)` | 1 → 1 |
@@ -909,7 +909,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `ac` | ArcCosh | `acosh($1)` | 1 → 1 |
 | `as` | ArcSinh | `asinh($1)` | 1 → 1 |
 | `at` | ArcTanh | `atanh($1)` | 1 → 1 |
-| `c` | Ceiling | `$1` | 1 → 1 |
+| `c` | Ceiling | `ceiling($1)` | 1 → 1 |
 | `ch` | Cosh | `cosh($1)` | 1 → 1 |
 | `cp` | Cos(pi*x) | `cospi($1)` | 1 → 1 |
 | `e-` | Exp(x)-1 | `expm1($1)` | 1 → 1 |
