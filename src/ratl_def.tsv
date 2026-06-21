@@ -1,7 +1,6 @@
 src	r_code	n_in	n_out	desc	category	unsafe
 D	list($1, $1)	1	2	Duplicate	Stack & Control	
 L	NULL	0	1	Stack Length	Stack & Control	
-Ls	length(stack)	0	1	Stack Length	Stack & Control	
 N	list($2, $1, $3)	3	3	Rotate	Stack & Control	
 Q	list($2, $1, $2)	2	3	Over	Stack & Control	
 U	for(x in $1) stack[[length(stack)+1]] <- x	1	0	Unpack	Stack & Control	
