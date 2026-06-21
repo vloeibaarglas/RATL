@@ -89,8 +89,8 @@ For example, `+` has stack effect `2 → 1`: it pops two values and pushes their
 | `D` | Duplicate | Copies the top element | 1 → 2 |
 | `w` | Swap | Swaps the top two elements | 2 → 2 |
 | `x` | Delete | Removes the top element | 1 → 0 |
+| `L` | Stack Length | Pushes the current number of elements on the stack | 0 → 1 |
 | `U` | Unpack | Pushes each element of an array onto the stack individually | 1 → n |
-| `Ls` | Stack Length | Pushes the current number of elements on the stack | 0 → 1 |
 
 ### Clipboards
 
