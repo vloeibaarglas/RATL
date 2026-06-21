@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="RATL_SPEC_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="RATL_SPEC_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="RATL_SPEC_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-84c3f8f9cab20d73a7dcda44c8bf3e8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-45234c23d27d175e8b00a18fce492d00.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 <style>
   /* Force wider layout — override Quarto/Bootstrap */
@@ -53,8 +53,10 @@ ul.task-list li input[type="checkbox"] {
 
   /* Tables */
   table.dataTable th { background: #0f3460; color: white; position: sticky; top: 0; z-index: 1; }
-  table.dataTable { border-collapse: collapse !important; table-layout: auto !important; }
+  table.dataTable { border-collapse: collapse !important; table-layout: auto !important; width: 100% !important; }
   table.dataTable td, table.dataTable th { white-space: normal !important; overflow: visible !important; text-overflow: unset !important; }
+  .dataTables_wrapper { width: 100% !important; }
+  section table { width: 100% !important; }
 
   /* Custom search bar — lives below "Symbol Reference" heading */
   .spec-filter-bar {
