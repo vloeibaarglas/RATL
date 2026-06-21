@@ -282,6 +282,13 @@ ratl_eval <- function(tokens, ctx) {
           result[[length(result) + 1]] <- stack_peek(tmp_ctx$stack)
         }
         stack_push(ctx$stack, unlist(result))
+       } else if (val == "g") {
+        if (stack_length(ctx$stack) < 1) stop("Stack underflow for g (pick)")
+        n <- as.integer(stack_pop(ctx$stack))
+        sl <- stack_length(ctx$stack)
+        if (n < 0 || n >= sl) stop(paste0("Pick index out of bounds: ", n, " (stack depth: ", sl, ")"))
+        stk <- stack_to_list(ctx$stack)
+        stack_push(ctx$stack, stk[[sl - n]])
        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {

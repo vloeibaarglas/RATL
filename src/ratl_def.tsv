@@ -392,10 +392,10 @@ Pi	pi	0	1	Pi	Constants
 s4	logical(0)	0	1	EmptyLog	Constants	
 sQ	character(0)	0	1	EmptyChar	Constants	
 sZ	numeric(0)	0	1	EmptyNum	Constants	
-&	$1	1	1	Sqrt	Math Functions	
-A	$1	1	1	Abs	Math Functions	
+&	sqrt($1)	1	1	Sqrt	Math Functions	
+A	abs($1)	1	1	Abs	Math Functions	
 SP	sinpi($1)	1	1	Sin(pi*x)	Math Functions	
-V	$1	1	1	Floor	Math Functions	
+V	floor($1)	1	1	Floor	Math Functions	
 a2	atan2($2, $1)	2	1	ArcTan2	Math Functions	
 aC	acos($1)	1	1	ArcCos	Math Functions	
 aS	asin($1)	1	1	ArcSin	Math Functions	
@@ -403,7 +403,7 @@ aT	atan($1)	1	1	ArcTan	Math Functions
 ac	acosh($1)	1	1	ArcCosh	Math Functions	
 as	asinh($1)	1	1	ArcSinh	Math Functions	
 at	atanh($1)	1	1	ArcTanh	Math Functions	
-c	$1	1	1	Ceiling	Math Functions	
+c	ceiling($1)	1	1	Ceiling	Math Functions	
 ch	cosh($1)	1	1	Cosh	Math Functions	
 cp	cospi($1)	1	1	Cos(pi*x)	Math Functions	
 e-	expm1($1)	1	1	Exp(x)-1	Math Functions	
