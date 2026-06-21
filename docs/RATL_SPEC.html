@@ -289,7 +289,6 @@ ul.task-list li input[type="checkbox"] {
 220 symbols across 7 categories
 </dd>
 </dl>
-<p><strong>Note:</strong> This document excludes unsafe operations by default. Pass <code>--allow-unsafe-operations</code> to include them.</p>
 <hr>
 </section>
 </section>
@@ -744,7 +743,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>424 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>427 symbols</strong> organized by category. Click a category to expand.</p>
 <details>
 <summary>
 <strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 15 symbols
@@ -3174,7 +3173,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 26 symbols
+<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 29 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3223,100 +3222,112 @@ ul.task-list li input[type="checkbox"] {
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>ev</code></td>
+<td>Eval</td>
+<td><code>NULL</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
 <td><code>is</code></td>
 <td>Is Type</td>
 <td><code>is($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>mF</code></td>
 <td>Factor</td>
 <td><code>factor($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>n</code></td>
 <td>To Number</td>
 <td><code>as.numeric($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>oA</code></td>
 <td>Attr</td>
 <td><code>attr($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>oC</code></td>
 <td>Colnames</td>
 <td><code>colnames($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>oa</code></td>
 <td>Attributes</td>
 <td><code>attributes($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>oc</code></td>
 <td>Class</td>
 <td><code>class($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>od</code></td>
 <td>Dim</td>
 <td><code>dim($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>on</code></td>
 <td>Names</td>
 <td><code>names($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>or</code></td>
 <td>Rownames</td>
 <td><code>rownames($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ot</code></td>
 <td>Typeof</td>
 <td><code>typeof($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ou</code></td>
 <td>Unlist</td>
 <td><code>unlist($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zB</code></td>
 <td>Sort By</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zC</code></td>
 <td>Scan</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zD</code></td>
 <td>Dispatch List</td>
 <td><code>NULL</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zG</code></td>
 <td>Group By</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>zS</code></td>
+<td>Send</td>
+<td><code>NULL</code></td>
+<td>1 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>zT</code></td>
@@ -3331,12 +3342,18 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>zX</code></td>
+<td>Shell Exec</td>
+<td><code>NULL</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>zZ</code></td>
 <td>Zip With</td>
 <td><code>NULL</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zd</code></td>
 <td>To Date</td>
 <td><code>as.Date($1)</code></td>

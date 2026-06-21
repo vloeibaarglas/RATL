@@ -63,8 +63,6 @@ RATL organizes its symbol set into three conceptual tiers:
 **Tier 3 — Extensions** (statistics, distributions, filesystem, shell access, meta-programming)
 : 220 symbols across 7 categories
 
-**Note:** This document excludes unsafe operations by default. Pass `--allow-unsafe-operations` to include them.
-
 ***
 
 ## The Stack
@@ -382,7 +380,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**424 symbols** organized by category. Click a category to expand.
+**427 symbols** organized by category. Click a category to expand.
 
 <details><summary><strong>Arithmetic & Comparison</strong> — Tier 1 (Core) — 15 symbols</summary>
 
@@ -847,7 +845,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 26 symbols</summary>
+<details><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 29 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -857,6 +855,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `Xd` | To Date | `as.Date($1)` | 1 → 1 |
 | `a` | To String | `as.character($1)` | 1 → 1 |
 | `c` | To Char | `intToUtf8($1)` | 1 → 1 |
+| `ev` | Eval | `NULL` | 1 → 0 |
 | `is` | Is Type | `is($2, $1)` | 2 → 1 |
 | `mF` | Factor | `factor($1)` | 1 → 1 |
 | `n` | To Number | `as.numeric($1)` | 1 → 1 |
@@ -873,8 +872,10 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `zC` | Scan | `NULL` | 2 → 1 |
 | `zD` | Dispatch List | `NULL` | 0 → 1 |
 | `zG` | Group By | `NULL` | 2 → 1 |
+| `zS` | Send | `NULL` | 1 → 1 |
 | `zT` | Take While | `NULL` | 2 → 1 |
 | `zW` | Drop While | `NULL` | 2 → 1 |
+| `zX` | Shell Exec | `NULL` | 1 → 1 |
 | `zZ` | Zip With | `NULL` | 3 → 1 |
 | `zd` | To Date | `as.Date($1)` | 1 → 1 |
 
