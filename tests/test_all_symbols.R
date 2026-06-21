@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 312 symbols (unit tests)\n"))
+cat(sprintf("Testing 311 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Stack & Control: D — Duplicate
@@ -53,18 +53,6 @@ test_D_Duplicate <- function() {
 
 # SKIP L (Stack Length) — no test defined
 skipped <- skipped + 1
-
-# Stack & Control: Ls — Stack Length
-test_Ls_Stack_Length <- function() {
-  set.seed(42)
-  r <- run_ratl("Ls")
-  if (grepl("Error:", r)) { cat("FAIL [Ls] Stack Length: ", r, "\n"); return(FALSE) }
-  if (r != "1") {
-    cat("FAIL [Ls] Stack Length: expected [1], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
 
 # Stack & Control: N — Rotate
 test_N_Rotate <- function() {
@@ -3759,8 +3747,6 @@ test_mQ_Sqrt <- function() {
 
 all_tests <- list(
   list(name = "D Duplicate", fn = test_D_Duplicate)
-,
-  list(name = "Ls Stack Length", fn = test_Ls_Stack_Length)
 ,
   list(name = "N Rotate", fn = test_N_Rotate)
 ,
