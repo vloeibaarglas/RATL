@@ -70,7 +70,7 @@ ratl_eval <- function(tokens, ctx) {
         } else {
           stack_push(ctx$stack, results)
         }
-      } else if (val == "Ft" || val == "e") {
+       } else if (val == "Ft") {
         if (stack_length(ctx$stack) < 2) stop("Stack underflow for Ft (filter)")
         blk_token <- stack_pop(ctx$stack)
         if (blk_token$type != "block") stop("Ft requires a block")
@@ -282,6 +282,8 @@ ratl_eval <- function(tokens, ctx) {
           result[[length(result) + 1]] <- stack_peek(tmp_ctx$stack)
         }
         stack_push(ctx$stack, unlist(result))
+       } else if (val == "L") {
+        stack_push(ctx$stack, stack_length(ctx$stack))
        } else if (val == "g") {
         if (stack_length(ctx$stack) < 1) stop("Stack underflow for g (pick)")
         n <- as.integer(stack_pop(ctx$stack))

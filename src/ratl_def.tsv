@@ -1,9 +1,9 @@
 src	r_code	n_in	n_out	desc	category	unsafe
 D	list($1, $1)	1	2	Duplicate	Stack & Control	
+L	NULL	0	1	Stack Length	Stack & Control	
 Ls	length(stack)	0	1	Stack Length	Stack & Control	
 N	list($2, $1, $3)	3	3	Rotate	Stack & Control	
 Q	list($2, $1, $2)	2	3	Over	Stack & Control	
-T	list($1, $2, $1)	2	3	Tuck	Stack & Control	
 U	for(x in $1) stack[[length(stack)+1]] <- x	1	0	Unpack	Stack & Control	
 g	NULL	2	3	Pick	Stack & Control	
 i	scan(ratl_stdin, what=character(), n=1, quiet=TRUE)	0	1	Input	Stack & Control	
@@ -15,6 +15,7 @@ sW	warning($1)	1	0	Warning	Stack & Control
 w	list($1, $2)	2	2	Swap	Stack & Control	
 x	NULL	1	0	Delete	Stack & Control	
 %	$2 %% $1	2	1	Modulo	Arithmetic & Comparison	
+&	$2 & $1	2	1	Logical AND	Arithmetic & Comparison	
 *	$2 * $1	2	1	Multiply	Arithmetic & Comparison	
 +	$2 + $1	2	1	Add	Arithmetic & Comparison	
 -	$2 - $1	2	1	Subtract	Arithmetic & Comparison	
@@ -24,6 +25,7 @@ x	NULL	1	0	Delete	Stack & Control
 =	$2 == $1	2	1	Equal	Arithmetic & Comparison	
 >	$2 > $1	2	1	Greater	Arithmetic & Comparison	
 >=	$2 >= $1	2	1	GreatEqual	Arithmetic & Comparison	
+\	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison	
 ^	$2 ^ $1	2	1	Power	Arithmetic & Comparison	
 lX	xor($2, $1)	2	1	Xor	Arithmetic & Comparison	
 mI	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison	
@@ -37,34 +39,36 @@ mI	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison
 O	sort($1)	1	1	Sort	Array Operations	
 R	rev($1)	1	1	Reverse	Array Operations	
 SH	head($1)	1	1	Head	Array Operations	
-SR	rank($1)	1	1	Rank	Array Operations	
 ST	tail($1)	1	1	Tail	Array Operations	
 XC	cumsum($1)	1	1	CumSum	Array Operations	
-Xk	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE	Array Operations	
-c1	cumprod($1)	1	1	CumProd	Array Operations	
+aB	tabulate($1)	1	1	Tabulate	Array Operations	
+aD	drop($1)	1	1	Drop	Array Operations	
+aE	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE	Array Operations	
+aL	unlist($1)	1	1	Flatten	Array Operations	
+aM	match($2, $1)	2	1	IndexOf	Array Operations	
+aN	$2[[as.character($1)]]	2	1	ExtractName	Array Operations	
+aO	order($1)	1	1	Order	Array Operations	
+aP	cumprod($1)	1	1	CumProd	Array Operations	
+aQ	length(unique($1))	1	1	UniqueN	Array Operations	
+aR	rank($1)	1	1	Rank	Array Operations	
+aU	unsplit($2, $1)	2	1	Unsplit	Array Operations	
+aV	diff($1)	1	1	Diff	Array Operations	
+aX	$2[length($2)+1-$1]	2	1	NegSlice	Array Operations	
+ah	head($2, $1)	2	1	HeadN	Array Operations	
+al	tail($1, 1)	1	1	LastElem	Array Operations	
 cn	is.element($2, $1)	2	1	IsIn	Array Operations	
-dO	order($1)	1	1	Order	Array Operations	
 dS	split($2, $1)	2	1	Split	Array Operations	
-dU	unsplit($2, $1)	2	1	Unsplit	Array Operations	
+e	$2[[$1]]	2	1	Extract Element [[	Array Operations	
 el	$2[[$1]]	2	1	Extract Element [[	Array Operations	
-en	$2[[as.character($1)]]	2	1	Extract Name $	Array Operations	
 es	$2[$1]	2	1	Extract Subset [	Array Operations	
 fE	head($1, 1)	1	1	FirstElem	Array Operations	
-fu	unlist($1)	1	1	Flatten	Array Operations	
-hd	head($2, $1)	2	1	HeadN	Array Operations	
-ix	match($2, $1)	2	1	IndexOf	Array Operations	
 l	length($1)	1	1	Length	Array Operations	
-la	tail($1, 1)	1	1	LastElem	Array Operations	
-ns	$2[length($2)+1-$1]	2	1	NegSlice	Array Operations	
 r1	1:$1	1	1	Range1toN	Array Operations	
 r2	rep($2, $1)	2	1	Rep	Array Operations	
-tb	tabulate($1)	1	1	Tabulate	Array Operations	
 tl	tail($2, $1)	2	1	TailN	Array Operations	
+tm	median($1)	1	1	Median	Statistics	
 u	unique($1)	1	1	Unique	Array Operations	
-un	length(unique($1))	1	1	UniqueN	Array Operations	
 vB	pmin($2, $1)	2	1	PMin	Array Operations	
-vD	drop($1)	1	1	Drop	Array Operations	
-vF	diff($1)	1	1	Diff	Array Operations	
 vG	pmax($2, $1)	2	1	PMax	Array Operations	
 vH	which($1, arr.ind=TRUE)	1	1	WhichArr	Array Operations	
 vI	cummin($1)	1	1	CumMin	Array Operations	
@@ -73,29 +77,29 @@ vW	seq($3, $2, length.out=$1)	3	1	SeqLen	Array Operations
 vX	cummax($1)	1	1	CumMax	Array Operations	
 wh	which($1)	1	1	Which	Array Operations	
 zp	unlist(Map(list, $2, $1))	2	1	Zip	Array Operations	
+atN	tail($2, $1)	2	1	TailN	Array Operations	
 bA	bitwAnd($2, $1)	2	1	BitAnd	Bitwise Operations	
 bL	bitwShiftL($2, $1)	2	1	BitShiftL	Bitwise Operations	
 bN	bitwNot($1)	1	1	BitNot	Bitwise Operations	
 bO	bitwOr($2, $1)	2	1	BitOr	Bitwise Operations	
 bR	bitwShiftR($2, $1)	2	1	BitShiftR	Bitwise Operations	
 bX	bitwXor($2, $1)	2	1	BitXor	Bitwise Operations	
-AS	as($2, $1)	2	1	As Type	Type & Introspection	
-Xb	ratl_bin($1)	1	1	To Binary	Type & Introspection	
-Xd	as.Date($1)	1	1	To Date	Type & Introspection	
-a	as.character($1)	1	1	To String	Type & Introspection	
+TA	attr($2, $1)	2	1	Attr	Type & Introspection	
+TC	colnames($1)	1	1	Colnames	Type & Introspection	
+TD	dim($1)	1	1	Dim	Type & Introspection	
+TN	as.numeric($1)	1	1	ToNumber	Type & Introspection	
+TR	rownames($1)	1	1	Rownames	Type & Introspection	
+Ta	as($2, $1)	2	1	AsType	Type & Introspection	
+Tb	ratl_bin($1)	1	1	ToBinary	Type & Introspection	
+Tc	class($1)	1	1	Class	Type & Introspection	
+Td	as.Date($1)	1	1	ToDate	Type & Introspection	
+Tf	factor($1)	1	1	Factor	Type & Introspection	
+Ti	is($2, $1)	2	1	IsType	Type & Introspection	
+Tn	names($1)	1	1	Names	Type & Introspection	
+Tt	typeof($1)	1	1	Typeof	Type & Introspection	
+Tu	unlist($1)	1	1	Unlist	Type & Introspection	
+Tv	attributes($1)	1	1	Attributes	Type & Introspection	
 ev	NULL	1	0	Eval	Type & Introspection	1
-is	is($2, $1)	2	1	Is Type	Type & Introspection	
-mF	factor($1)	1	1	Factor	Type & Introspection	
-n	as.numeric($1)	1	1	To Number	Type & Introspection	
-oA	attr($2, $1)	2	1	Attr	Type & Introspection	
-oC	colnames($1)	1	1	Colnames	Type & Introspection	
-oa	attributes($1)	1	1	Attributes	Type & Introspection	
-oc	class($1)	1	1	Class	Type & Introspection	
-od	dim($1)	1	1	Dim	Type & Introspection	
-on	names($1)	1	1	Names	Type & Introspection	
-or	rownames($1)	1	1	Rownames	Type & Introspection	
-ot	typeof($1)	1	1	Typeof	Type & Introspection	
-ou	unlist($1)	1	1	Unlist	Type & Introspection	
 zB	NULL	2	1	Sort By	Type & Introspection	
 zC	NULL	2	1	Scan	Type & Introspection	
 zD	NULL	0	1	Dispatch List	Type & Introspection	
@@ -106,6 +110,9 @@ zW	NULL	2	1	Drop While	Type & Introspection
 zX	NULL	1	1	Shell Exec	Type & Introspection	1
 zZ	NULL	3	1	Zip With	Type & Introspection	
 zd	as.Date($1)	1	1	To Date	Type & Introspection	
+Ts	as.character($1)	1	1	ToString	Type & Introspection	
+TN	as.numeric($1)	1	1	ToNumber	Type & Introspection	
+uA	utf8ToInt($1)	1	1	To ASCII	Type & Introspection	
 Fa	apply($3, $2, $1)	3	1	Apply	Higher-Order Functions	
 Ff	Filter($2, $1)	2	1	Filter (Func)	Higher-Order Functions	
 Fl	lapply($2, $1)	2	1	Lapply	Higher-Order Functions	
@@ -118,7 +125,6 @@ Fs	sapply($2, $1)	2	1	Sapply	Higher-Order Functions
 Ft	NULL	0	1	Filter (evaluator)	Higher-Order Functions	
 Fv	vapply($3, $2, $1)	3	1	Vapply	Higher-Order Functions	
 Fx	NULL	0	1	Repeat (evaluator)	Higher-Order Functions	
-e	NULL	0	1	Filter (evaluator)	Higher-Order Functions	
 fn	Negate($1)	1	1	Negate	Higher-Order Functions	
 q	NULL	0	1	Map (evaluator)	Higher-Order Functions	
 y	NULL	0	1	Reduce (evaluator)	Higher-Order Functions	
@@ -152,60 +158,60 @@ yu	{x<-$1; x[lower.tri(x)]<-0; x}	1	1	TriUpper	Matrix
 yv	eigen($1)$values	1	1	EigenValues	Matrix	
 C	paste0($2, $1)	2	1	Concat	String Operations	
 J	paste($2, collapse=$1)	2	1	Join List	String Operations	
-S	strsplit($2, $1)[[1]]	2	1	Split String	String Operations	
-S!	chartr($2, $1, $3)	3	1	Translate	String Operations	
-SG	gsub($2, $1, $3)	3	1	GSub	String Operations	
+Sb	grepl($2, $1)	2	1	Grepl	String Operations	
+Se	regexpr($2, $1)	2	1	Regexpr	String Operations	
+Sf	sprintf($2, $1)	2	1	Sprintf	String Operations	
+Sg	gsub($2, $1, $3)	3	1	GSub	String Operations	
+Sl	tolower($1)	1	1	ToLower	String Operations	
+Sr	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	ReverseString	String Operations	
+St	chartr($2, $1, $3)	3	1	Translate	String Operations	
+Su	toupper($1)	1	1	ToUpper	String Operations	
+Sx	gregexpr($2, $1)	2	1	Gregexpr	String Operations	
 Xc	chartr($1, $2, $3)	3	1	Char Translate	String Operations	
-Xt	tolower($1)	1	1	ToLower	String Operations	
 j	paste($2, $1)	2	1	Join	String Operations	
-rv	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	Reverse String	String Operations	
-sB	grepl($2, $1)	2	1	Grepl	String Operations	
 sG	grep($2, $1)	2	1	Grep	String Operations	
 sL	tolower($1)	1	1	ToLower	String Operations	
-sR	regexpr($2, $1)	2	1	Regexpr	String Operations	
-sU	toupper($1)	1	1	ToUpper	String Operations	
-sX	gregexpr($2, $1)	2	1	Gregexpr	String Operations	
-sf	sprintf($2, $1)	2	1	Sprintf	String Operations	
 sn	nchar($1)	1	1	NChar	String Operations	
 sr	sub($2, $1, $3)	3	1	Sub	String Operations	
 ss	substr($3, $2, $1)	3	1	Substr	String Operations	
 st	trimws($1)	1	1	TrimWS	String Operations	
-sD	setdiff($2, $1)	2	1	SetDiff	Set Operations	
-sI	intersect($2, $1)	2	1	Intersect	Set Operations	
-sN	union($2, $1)	2	1	Union	Set Operations	
-B5	fivenum($1)	1	1	FiveNum	Statistics	
-Ba	mad($1)	1	1	MAD	Statistics	
-Bi	IQR($1)	1	1	IQR	Statistics	
+Ss	strsplit($2, $1)[[1]]	2	1	Split String	String Operations	
+Ud	setdiff($2, $1)	2	1	SetDiff	Set Operations	
+Ui	intersect($2, $1)	2	1	Intersect	Set Operations	
+Uu	union($2, $1)	2	1	Union	Set Operations	
+A	all($1)	1	1	All	Statistics	
 Bn	min($1)	1	1	Min	Statistics	
-Br	range($1)	1	1	Range	Statistics	
 Bx	max($1)	1	1	Max	Statistics	
-Bz	scale($1)	1	1	Scale	Statistics	
-Ku	sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)	1	1	Kurtosis	Statistics	
+E	any($1)	1	1	Any	Statistics	
 P	prod($1)	1	1	Product	Statistics	
-Sd	ratl_cum_sd($1)	1	1	CumSD	Statistics	
-Sk	sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)	1	1	Skewness	Statistics	
-Sm	mean($1, na.rm=TRUE)	1	1	MeanNA	Statistics	
-Sn	sum($1, na.rm=TRUE)	1	1	SumNA	Statistics	
 Sw	weighted.mean($2, $1)	2	1	WeightedMean	Statistics	
-Xo	ratl_mode($1)	1	1	Mode	Statistics	
-cr	cor($2, $1)	2	1	Correlation	Statistics	
-cv	cov($2, $1)	2	1	Covariance	Statistics	
-dT	table($1)	1	1	Table	Statistics	
+V	max($1)	1	1	Max	Statistics	
 dX	xtabs($2, $1)	2	1	XTabs	Statistics	
-h	median($1)	1	1	Median	Statistics	
 lA	any($1)	1	1	Any	Statistics	
 lZ	sum($1 != 0)	1	1	NNZ	Statistics	
-m	mean($1)	1	1	Mean	Statistics	
-mQ	quantile($1, $2)	2	1	Quantile	Statistics	
-mQ	quantile($1, $2)	2	1	Quantile	Statistics	
 mn	min($2, $1)	2	1	Min2	Statistics	
 mx	max($2, $1)	2	1	Max2	Statistics	
 r	runif($1)	1	1	Random (n)	Statistics	
 rm	ratl_rms($1)	1	1	RMS	Statistics	
 s	sum($1)	1	1	Sum	Statistics	
-sd	sd($1)	1	1	Standard Deviation	Statistics	
-sm	summary($1)	1	1	Summary	Statistics	
-v	var($1)	1	1	Variance	Statistics	
+t5	fivenum($1)	1	1	FiveNum	Statistics	
+tA	mad($1)	1	1	MAD	Statistics	
+tC	ratl_cum_sd($1)	1	1	CumSD	Statistics	
+tI	IQR($1)	1	1	IQR	Statistics	
+tK	sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)	1	1	Kurtosis	Statistics	
+tM	mean($1)	1	1	Mean	Statistics	
+tN	mean($1, na.rm=TRUE)	1	1	MeanNA	Statistics	
+tR	range($1)	1	1	Range	Statistics	
+tS	sd($1)	1	1	StdDev	Statistics	
+tT	table($1)	1	1	Table	Statistics	
+tU	sum($1, na.rm=TRUE)	1	1	SumNA	Statistics	
+tW	sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)	1	1	Skewness	Statistics	
+tZ	scale($1)	1	1	Scale	Statistics	
+tc	cor($2, $1)	2	1	Correlation	Statistics	
+to	ratl_mode($1)	1	1	Mode	Statistics	
+tv	cov($2, $1)	2	1	Covariance	Statistics	
+ty	summary($1)	1	1	Summary	Statistics	
+v	min($1)	1	1	Min	Statistics	
 vA	all($1)	1	1	All	Statistics	
 vd	density($1)	1	1	Density	Statistics	
 DN	dnorm($3, $2, $1)	3	1	Density Normal	Distributions & Tests	
@@ -281,7 +287,6 @@ rC	rchisq($2, $1)	2	1	Random Chi-Square	Distributions & Tests
 rG	rgeom($2, $1)	2	1	Random Geometric	Distributions & Tests	
 rL	rlogis($3, $2, $1)	3	1	Random Logistic	Distributions & Tests	
 rN	rnbinom($3, $2, $1)	3	1	Random Neg-Binomial	Distributions & Tests	
-rN	rnorm($1)	1	1	Random Normal	Distributions & Tests	
 rP	rpois($2, $1)	2	1	Random Poisson	Distributions & Tests	
 rb	rbinom($1, size=1, prob=0.5)	1	1	Random Binomial	Distributions & Tests	
 rc	rcauchy($3, $2, $1)	3	1	Random Cauchy	Distributions & Tests	
@@ -305,53 +310,48 @@ fp	factorial($1)	1	1	Factorial	Combinatorics & Special
 lb	lbeta($2, $1)	2	1	Log Beta	Combinatorics & Special	
 lc	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special	
 mB	beta($2, $1)	2	1	Beta	Combinatorics & Special	
-mG	gamma($1)	1	1	Gamma	Combinatorics & Special	
-mG	gamma($1)	1	1	Gamma	Combinatorics & Special	
 mf	ratl_prime_factors($1)	1	1	Prime Factors	Combinatorics & Special	
 ml	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special	
 mp	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special	
 ps	psigamma($2, $1)	2	1	Psigamma	Combinatorics & Special	
 tg	trigamma($1)	1	1	Trigamma	Combinatorics & Special	
+gC	ratl_gcd($2, $1)	2	1	GCD	Combinatorics & Special	
 cA	Arg($1)	1	1	Arg	Complex Numbers	
 cI	Im($1)	1	1	Imag Part	Complex Numbers	
 cJ	Conj($1)	1	1	Conjugate	Complex Numbers	
 cM	Mod($1)	1	1	Modulus	Complex Numbers	
 cR	Re($1)	1	1	Real Part	Complex Numbers	
-F	readLines($1)	1	1	Read File	File I/O	
-FL	list.files($1)	1	1	List Files	File I/O	
 FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File	File I/O	
-W	writeLines(as.character($2), $1); NULL	2	0	Write File	File I/O	
 fA	dirname($1)	1	1	Dirname	File I/O	
 fC	write.csv($2, $1)	2	0	Write CSV	File I/O	
 fD	list.dirs($1)	1	1	List Dirs	File I/O	
+fL	list.files($1)	1	1	ListFiles	File I/O	
+fM	dir.create($1)	1	1	DirCreate	File I/O	
 fN	file.create($1)	1	1	File Create	File I/O	
 fP	normalizePath($1)	1	1	Abs Path	File I/O	
-fT	tempfile()	0	1	Temp File	File I/O	
+fT	tempfile()	0	1	TempFile	File I/O	
 fX	dir.exists($1)	1	1	Dir Exists	File I/O	
 fb	basename($1)	1	1	Basename	File I/O	
 fc	read.csv($1)	1	1	Read CSV	File I/O	
-fd	dir.create($1)	1	1	Dir Create	File I/O	
 fe	file.exists($1)	1	1	File Exists	File I/O	
 fi	file.info($1)	1	1	File Info	File I/O	
 fm	file.remove($1)	1	1	File Remove	File I/O	
 fr	read.table($1)	1	1	Read Table	File I/O	
 ft	tempdir()	0	1	Temp Dir	File I/O	
 fw	write.table($2, $1)	2	0	Write Table	File I/O	
-ZT	Sys.timezone()	0	1	Timezone	System	
-ge	Sys.getenv($1)	1	1	Getenv	System	
-pi	Sys.getpid()	0	1	GetPID	System	
 sE	date()	0	1	Date	System	
-sF	options(prompt=$1)	1	0	SetPrompt	System	
-sH	getwd()	0	1	GetWD	System	
-sJ	setwd($1)	1	0	SetWD	System	
-sK	proc.time() - $1	1	1	Toc	System	
 sP	Sys.sleep($1)	1	0	Sleep	System	
-sT	proc.time()	0	1	Tic	System	
-sT	proc.time()	0	1	Tic	System	
-sV	R.version.string	0	1	RVersion	System	
-sY	options(scipen=$1)	1	0	SetScipen	System	
 se	Sys.setenv(...)	1	0	Setenv	System	
 um	Sys.umask($1)	1	1	Umask	System	
+yE	Sys.getenv($1)	1	1	Getenv	System	
+yF	options(prompt=$1)	1	0	SetPrompt	System	
+yJ	setwd($1)	1	0	SetWD	System	
+yK	proc.time() - $1	1	1	Toc	System	
+yP	Sys.getpid()	0	1	GetPID	System	
+yV	R.version.string	0	1	Version	System	
+yW	getwd()	0	1	GetWD	System	
+yY	options(scipen=$1)	1	0	SetScipen	System	
+yZ	Sys.timezone()	0	1	Timezone	System	
 zg	gc()	0	1	GC	System	
 zl	Sys.localeconv()	0	1	Locale	System	
 zo	options()	0	1	Options	System	
@@ -386,16 +386,15 @@ mT	terms($1)	1	1	Terms	Statistical Modeling
 mU	update($2, $1)	2	1	Update	Statistical Modeling	
 mW	formula($1)	1	1	Formula	Statistical Modeling	
 vp	prcomp($1)	1	1	PCA	Statistical Modeling	
+I	Inf	0	1	Inf	Constants	
 In	Inf	0	1	Inf	Constants	
 Na	NA	0	1	NA	Constants	
 Pi	pi	0	1	Pi	Constants	
+Z	NA	0	1	NA	Constants	
 s4	logical(0)	0	1	EmptyLog	Constants	
 sQ	character(0)	0	1	EmptyChar	Constants	
 sZ	numeric(0)	0	1	EmptyNum	Constants	
-&	sqrt($1)	1	1	Sqrt	Math Functions	
-A	abs($1)	1	1	Abs	Math Functions	
 SP	sinpi($1)	1	1	Sin(pi*x)	Math Functions	
-V	floor($1)	1	1	Floor	Math Functions	
 a2	atan2($2, $1)	2	1	ArcTan2	Math Functions	
 aC	acos($1)	1	1	ArcCos	Math Functions	
 aS	asin($1)	1	1	ArcSin	Math Functions	
@@ -403,7 +402,6 @@ aT	atan($1)	1	1	ArcTan	Math Functions
 ac	acosh($1)	1	1	ArcCosh	Math Functions	
 as	asinh($1)	1	1	ArcSinh	Math Functions	
 at	atanh($1)	1	1	ArcTanh	Math Functions	
-c	ceiling($1)	1	1	Ceiling	Math Functions	
 ch	cosh($1)	1	1	Cosh	Math Functions	
 cp	cospi($1)	1	1	Cos(pi*x)	Math Functions	
 e-	expm1($1)	1	1	Exp(x)-1	Math Functions	
@@ -420,3 +418,4 @@ sh	sinh($1)	1	1	Sinh	Math Functions
 th	tanh($1)	1	1	Tanh	Math Functions	
 tp	tanpi($1)	1	1	Tan(pi*x)	Math Functions	
 tr	trunc($1)	1	1	Trunc	Math Functions	
+mQ	sqrt($1)	1	1	Sqrt	Math Functions	

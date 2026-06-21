@@ -1,5 +1,5 @@
 # Rosetta Code: https://rosettacode.org/wiki/Palindrome
 'racecar' D
-  D '' S R '' J
+  D '' Ss R '' J
   = ? 'Palindrome' p ]
 x
