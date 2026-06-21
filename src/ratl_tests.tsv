@@ -1,0 +1,428 @@
+src	test_input	expected
++	3 5 +	8
+-	3 5 -	-2
+*	3 5 *	15
+/	3 5 /	0.6
+%	3 5 %	3
+^	3 5 ^	243
+=	3 5 =	FALSE
+<	3 5 <	TRUE
+>	3 5 >	FALSE
+<=	3 5 <=	TRUE
+>=	3 5 >=	FALSE
+~	5 ~	FALSE
+|	3 5 |	TRUE
+lX	3 5 lX	FALSE
+mI	3 5 mI	0
+D	5 D	5 5
+w	3 5 w	5 3
+x	5 x	
+U	5 U	ERROR: object of type 'closure' is not subsettable
+Ls	Ls	1
+i		
+p		
+sC		
+sM		
+sW		
+sS		
+Pi	Pi	3.14159265358979
+Na	Na	NA
+In	In	Inf
+sZ	sZ	
+sQ	sQ	
+s4	s4	
+q	q	ERROR: Stack underflow for Fq (map)
+e	e	ERROR: Stack underflow for Ft (filter)
+y	y	ERROR: Stack underflow for Fr (reduce)
+z	z	ERROR: Stack underflow for Fx (repeat)
+Fq	Fq	ERROR: Stack underflow for Fq (map)
+Ft	Ft	ERROR: Stack underflow for Ft (filter)
+Fx	Fx	ERROR: Stack underflow for Fx (repeat)
+Fr	3 5 Fr	ERROR: $ operator is invalid for atomic vectors
+Fa	1 2 3 Fa	ERROR: object 'v1' of mode 'function' was not found
+Fl	3 5 Fl	ERROR: object 'v1' of mode 'function' was not found
+Fs	3 5 Fs	ERROR: object 'v1' of mode 'function' was not found
+Fv	1 2 3 Fv	ERROR: object 'v2' of mode 'function' was not found
+Fm	5 Fm	ERROR: '...' used in an incorrect context
+Ff	3 5 Ff	ERROR: object 'v2' of mode 'function' was not found
+Fn	3 5 Fn	ERROR: object 'v2' of mode 'function' was not found
+Fp	3 5 Fp	ERROR: object 'v2' of mode 'function' was not found
+fn	5 fn	ERROR: object 'v1' of mode 'function' was not found
+:	3 5 :	3 4 5
+O	5 O	5
+R	5 R	5
+u	5 u	5
+l	5 l	1
+es	3 5 es	NA
+el	3 5 el	ERROR: subscript out of bounds
+en	3 5 en	ERROR: subscript out of bounds
+fu	5 fu	5
+zp	3 5 zp	3 5
+hd	3 5 hd	3
+tl	3 5 tl	3
+la	5 la	5
+fE	5 fE	5
+SH	5 SH	5
+ST	5 ST	5
+SR	5 SR	1
+r1	5 r1	1 2 3 4 5
+.	5 .	1 2 3 4 5
+vW	1 2 3 vW	1 1.5 2
+r2	3 5 r2	3 3 3 3 3
+vT	1 2 3 vT	ERROR: invalid 'nrow' value (too large or NA)
+vI	5 vI	5
+vX	5 vX	5
+vF	5 vF	
+vG	3 5 vG	5
+vB	3 5 vB	3
+XC	5 XC	5
+c1	5 c1	5
+wh	5 wh	ERROR: argument to 'which' is not logical
+vH	5 vH	ERROR: argument to 'which' is not logical
+tb	5 tb	0 0 0 0 1
+un	5 un	1
+ix	3 5 ix	NA
+cn	3 5 cn	FALSE
+ns	3 5 ns	3
+vD	5 vD	5
+,	3 5 ,	3 5
+..	3 5 ..	3 5
+#	3 5 #	3 5
+dS	3 5 dS	3
+dU	3 5 dU	3
+dO	5 dO	1
+Xk	5 Xk	5 1
+!	5 !	5
+&	3 5 &	15
+ym	1 2 3 ym	1 1 1 1 1 1
+Y*	3 5 Y*	15
+yD	5 yD	1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1
+y!	5 y!	1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1
+yf	5 yf	5
+yt	5 yt	5
+yu	5 yu	5
+yl	5 yl	5
+yk	3 5 yk	15
+yv	5 yv	5
+yc	5 yc	1
+yd	5 yd	
+R9	5 R9	5
+vL	5 vL	0.2
+v2	3 5 v2	1.66666666666667
+vQ	5 vQ	5 1 5 1
+vV	5 vV	5 1 1
+YM	1 2 3 YM	1 1 1 1 1 1
+Y!	1 2 3 Y!	1 1 1 1 1 1
+BT	5 BT	ERROR: incorrect number of dimensions
+vC	5 vC	ERROR: a matrix-like object is required as argument to 'col'
+vR	5 vR	ERROR: a matrix-like object is required as argument to 'row'
+vS	5 vS	ERROR: 'x' must be an array of at least two dimensions
+vE	5 vE	ERROR: 'x' must be an array of at least two dimensions
+vM	5 vM	ERROR: 'x' must be an array of at least two dimensions
+vN	5 vN	ERROR: 'x' must be an array of at least two dimensions
+s	5 s	5
+m	5 m	5
+P	5 P	5
+h	5 h	5
+Q	5 Q	5 5 5 5 5
+v	5 v	NA
+V	5 V	NA
+sd	5 sd	NA
+sm	5 sm	5 5 5 5 5 5
+r	5 r	0.914806043496355 0.937075413297862 0.286139534786344 0.830447626067325 0.641745518893003
+vA	5 vA	TRUE
+lA	5 lA	TRUE
+lZ	5 lZ	1
+Xo	5 Xo	5
+Xr	5 Xr	5
+Xs	5 Xs	NA
+rm	5 rm	5
+Bs	5 Bs	NA
+Ba	5 Ba	0
+Bn	5 Bn	5
+Bx	5 Bx	5
+Br	5 Br	5 5
+Bi	5 Bi	0
+BS	5 BS	5 5 5 5 5 5
+B5	5 B5	5 5 5 5 5
+Bc	3 5 Bc	NA
+BC	3 5 BC	NA
+Bz	5 Bz	NaN
+cr	3 5 cr	NA
+cv	3 5 cv	NA
+mn	3 5 mn	3
+mx	3 5 mx	5
+Sk	5 Sk	NA
+Ku	5 Ku	NA
+Sw	3 5 Sw	3
+Sm	5 Sm	5
+Sn	5 Sn	5
+Sd	5 Sd	NA
+mQ	3 5 mQ	ERROR: 'probs' outside [0,1]
+vd	5 vd	ERROR: need at least 2 points to select a bandwidth automatically
+dT	5 dT	1
+dX	3 5 dX	ERROR: invalid formula
+lm	5 lm	ERROR: invalid formula
+kl	5 kl	ERROR: invalid formula
+mL	3 5 mL	
+kg	5 kg	ERROR: invalid formula
+av	5 av	ERROR: no applicable method for 'anova' applied to an object of class "c('double', 'numeric')"
+ka	5 ka	ERROR: no applicable method for 'anova' applied to an object of class "c('double', 'numeric')"
+KA	5 KA	ERROR: $ operator is invalid for atomic vectors
+ko	5 ko	ERROR: invalid formula
+kn	5 kn	ERROR: invalid formula
+ke	3 5 ke	ERROR: no applicable method for 'predict' applied to an object of class "c('double', 'numeric')"
+mP	5 mP	ERROR: no applicable method for 'predict' applied to an object of class "c('double', 'numeric')"
+KE	5 KE	ERROR: $ operator is invalid for atomic vectors
+K!	5 K!	ERROR: $ operator is invalid for atomic vectors
+KF	5 KF	ERROR: $ operator is invalid for atomic vectors
+ki	5 ki	ERROR: no applicable method for 'logLik' applied to an object of class "c('double', 'numeric')"
+KB	5 KB	ERROR: no applicable method for 'logLik' applied to an object of class "c('double', 'numeric')"
+KL	5 KL	ERROR: no applicable method for 'logLik' applied to an object of class "c('double', 'numeric')"
+KV	5 KV	ERROR: no applicable method for 'vcov' applied to an object of class "c('double', 'numeric')"
+vp	5 vp	0 1 5 FALSE 0
+mC	5 mC	ERROR: $ operator is invalid for atomic vectors
+mU	3 5 mU	ERROR: subscript out of bounds
+mO	5 mO	5
+mW	5 mW	ERROR: invalid formula
+mT	5 mT	ERROR: $ operator is invalid for atomic vectors
+mR	5 mR	ERROR: invalid formula
+mM	5 mM	ERROR: $ operator is invalid for atomic vectors
+dY	1 2 3 dY	ERROR: could not find function "FUN"
+dA	1 2 3 dA	ERROR: object 'v1' of mode 'function' was not found
+dE	3 5 dE	(2.999,3.001]
+tt	3 5 tt	ERROR: not enough 'x' observations
+kt	3 5 kt	ERROR: not enough 'x' observations
+kc	5 kc	ERROR: 'x' must at least have 2 elements
+kw	3 5 kw	c(W = 0) NULL 1 c(`location shift` = 0) two.sided Wilcoxon rank sum exact test v2 and v1
+kp	3 5 kp	
+KC	3 5 KC	ERROR: not enough finite observations
+kf	5 kf	ERROR: if 'x' is not a matrix, 'y' must be given
+ks	5 ks	ERROR: sample size must be between 3 and 5000
+kk	3 5 kk	c(D = 1) 1 two-sided Exact two-sample Kolmogorov-Smirnov test v2 and v1 TRUE
+kv	3 5 kv	ERROR: not enough 'x' observations
+KK	5 KK	ERROR: argument "g" is missing, with no default
+kb	5 kb	ERROR: argument "g" is missing, with no default
+N	5 N	
+dn	5 dn	1.4867195147343e-06
+pn	5 pn	0.999999713348428
+qn	5 qn	NaN
+rb	5 rb	1 1 0 1 1
+rp	5 rp	2 3 0 2 1
+re	5 re	0.198336811783888 0.660895252134651 0.283491037786007 0.0381918982602656 0.473176629282534
+db	1 2 3 db	0
+pb	1 2 3 pb	1
+qb	1 2 3 qb	1
+RB	1 2 3 RB	0.268164592533162
+dB	1 2 3 dB	NaN
+pB	1 2 3 pB	NaN
+qB	1 2 3 qB	NaN
+rB	1 2 3 rB	NA
+dc	1 2 3 dc	0.0954929658551372
+pc	1 2 3 pc	0.397583617650433
+qc	1 2 3 qc	Inf
+rc	1 2 3 rc	1.17732773861949
+dC	3 5 dC	0.154180329803769
+pC	3 5 pC	0.300014164121372
+qC	3 5 qC	NaN
+rC	3 5 rC	8.81741959071096 2.56223438711777 4.1365849604057
+de	3 5 de	1.52951160250913e-06
+pe	3 5 pe	0.99999969409768
+qe	3 5 qe	NaN
+RE	3 5 RE	0.0396673623567777 0.13217905042693 0.0566982075572014
+df	1 2 3 df	0.278854800926934
+pf	1 2 3 pf	0.53524199845511
+qf	1 2 3 qf	Inf
+rf	1 2 3 rf	5.64818387541617
+dg	1 2 3 dg	0.448083615310776
+pg	1 2 3 pg	0.800851726528544
+qg	1 2 3 qg	Inf
+rg	1 2 3 rg	
+dG	3 5 dG	NaN
+pG	3 5 pG	NaN
+qG	3 5 qG	NaN
+rG	3 5 rG	NA NA NA
+dh	1 2 3 4 dh	0.4
+ph	1 2 3 4 ph	0.4
+qh	1 2 3 4 qh	2
+rh	1 2 3 4 rh	1
+dl	1 2 3 dl	0.106482668507451
+pl	1 2 3 pl	0.252492537546923
+ql	1 2 3 ql	Inf
+rl	1 2 3 rl	451.635456130485
+dL	1 2 3 dL	0.0810607203349236
+pL	1 2 3 pL	0.417429793537685
+qL	1 2 3 qL	Inf
+rL	1 2 3 rL	9.12134471066384
+dN	1 2 3 dN	NaN
+pN	1 2 3 pN	NaN
+qN	1 2 3 qN	NaN
+rN	1 2 3 rN	NA
+DN	1 2 3 DN	0.125794409230998
+PN	1 2 3 PN	0.369441340181764
+QN	1 2 3 QN	Inf
+RN	1 2 3 RN	6.11287534144001
+dP	3 5 dP	0.140373895814281
+pP	3 5 pP	0.265025915297362
+qP	3 5 qP	NaN
+rP	3 5 rP	8 9 4
+dt	3 5 dt	0.017292578800223
+pt	3 5 pt	0.984950376051269
+qt	3 5 qt	NaN
+rt	3 5 rt	1.91513708565468 0.0878422087160105 -0.0773269863272752
+du	1 2 3 du	0
+pu	1 2 3 pu	0
+qu	1 2 3 qu	3
+RU	1 2 3 RU	2.91480604349636
+pw	1 2 3 pw	0.10516068318563
+qw	1 2 3 qw	Inf
+rw	1 2 3 rw	0.895203269919986
+ms	5 ms	-0.958924274663138
+mc	5 mc	0.283662185463226
+mt	5 mt	-3.38051500624659
+aS	5 aS	NaN
+aC	5 aC	NaN
+aT	5 aT	1.37340076694502
+a2	3 5 a2	0.540419500270584
+sh	5 sh	74.2032105777888
+ch	5 ch	74.2099485247878
+th	5 th	0.999909204262595
+as	5 as	2.31243834127275
+ac	5 ac	2.29243166956118
+at	5 at	NaN
+lg	5 lg	1.6094379124341
+l1	5 l1	0.698970004336019
+l2	5 l2	2.32192809488736
+sq	5 sq	2.23606797749979
+fl	5 fl	5
+cl	5 cl	5
+tr	5 tr	5
+ro	5 ro	5
+sg	5 sg	1
+ab	5 ab	5
+l+	5 l+	1.79175946922805
+e-	5 e-	147.413159102577
+cp	5 cp	-1
+SP	5 SP	0
+tp	5 tp	0
+g	3 5 g	1
+lc	3 5 lc	15
+ml	3 5 ml	15
+Xq	5 Xq	TRUE
+mp	5 mp	TRUE
+fa	5 fa	1 5
+mf	5 mf	5
+XP	5 XP	5
+fp	5 fp	120
+MC	3 5 MC	0
+Xn	3 5 Xn	0
+mG	5 mG	24
+mB	3 5 mB	0.00952380952380952
+lb	3 5 lb	-4.65396035015752
+LG	5 LG	3.17805383034795
+di	5 di	1.5061176684318
+tg	5 tg	0.221322955737115
+ps	3 5 ps	0.206167438133897
+cR	5 cR	5
+cI	5 cI	0
+cJ	5 cJ	5
+cA	5 cA	0
+cM	5 cM	5
+C	3 5 C	35
+j	3 5 j	3 5
+J	3 5 J	ERROR: invalid 'collapse' argument
+S	3 5 S	ERROR: non-character argument
+Xc	1 2 3 Xc	ERROR: invalid 'old' argument
+S!	1 2 3 S!	ERROR: invalid 'old' argument
+SG	1 2 3 SG	1
+Xt	5 Xt	5
+sU	5 sU	5
+sL	5 sL	5
+sn	5 sn	1
+ss	1 2 3 ss	
+sr	1 2 3 sr	1
+sf	3 5 sf	ERROR: 'fmt' is not a character vector
+st	5 st	5
+sG	3 5 sG	
+sB	3 5 sB	FALSE
+sR	3 5 sR	-1
+sX	3 5 sX	-1
+rv	5 rv	5
+sI	3 5 sI	
+sN	3 5 sN	3 5
+sD	3 5 sD	3
+bA	3 5 bA	1
+bO	3 5 bO	7
+bX	3 5 bX	6
+bN	5 bN	-6
+bL	3 5 bL	96
+bR	3 5 bR	0
+n	5 n	5
+a	5 a	5
+A	5 A	ERROR: argument must be a character vector of length 1
+c	5 c	
+Xb	5 Xb	101
+Xd	5 Xd	1970-01-06
+zd	5 zd	1970-01-06
+mF	5 mF	5
+AS	3 5 AS	ERROR: no applicable method for `@` applied to an object of class "numeric"
+is	3 5 is	ERROR: no applicable method for `@` applied to an object of class "numeric"
+ot	5 ot	double
+oc	5 oc	numeric
+oa	5 oa	
+oA	3 5 oA	ERROR: 'which' must be of mode character
+on	5 on	
+or	5 or	
+oC	5 oC	
+od	5 od	
+ou	5 ou	5
+F		
+W		
+FW		
+fr		
+fc		
+fw		
+fC		
+fi	5 fi	ERROR: invalid filename argument
+fe	5 fe	ERROR: invalid 'file' argument
+fm		
+fN		
+fd		
+fX	5 fX	ERROR: invalid filename argument
+FL	5 FL	ERROR: invalid 'path' argument
+fD	5 fD	ERROR: invalid 'directory' argument
+fb	5 fb	ERROR: a character vector argument expected
+fA	5 fA	ERROR: a character vector argument expected
+fP	5 fP	ERROR: invalid 'path' argument
+ft	ft	
+fT	fT	
+T	T	
+sT	sT	
+sK	5 sK	
+sP	5 sP	
+sE	sE	
+sH	sH	
+sJ		
+zt	zt	
+sV	sV	
+sF		
+sY		
+ZT	ZT	
+zl	zl	
+zo	zo	
+zg	zg	
+zv	zv	
+ge	5 ge	
+se		
+um		
+pi	pi	
+ev		
+zD		
+zS		
+zX		
+zB		
+zG		
+zC		
+zT		
+zW		
+zZ		

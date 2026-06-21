@@ -10,7 +10,7 @@ docs/RATL_SPEC.html: docs/RATL_SPEC.qmd docs/theme.css docs/datatables-init.html
 
 gen-tests: tests/test_all_symbols.R
 
-tests/test_all_symbols.R: src/ratl_def.tsv scripts/gen_tests.py
+tests/test_all_symbols.R: src/ratl_def.tsv src/ratl_tests.tsv scripts/gen_tests.py
 	python3 scripts/gen_tests.py
 
 test: gen-tests

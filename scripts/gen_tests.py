@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
-"""Generate tests/test_all_symbols.R from src/ratl_def.tsv"""
+"""Generate tests/test_all_symbols.R from src/ratl_def.tsv + src/ratl_tests.tsv"""
 
 import sys
+import re
+from collections import OrderedDict
+
 
 def load_def(path):
     symbols = []
@@ -10,29 +13,41 @@ def load_def(path):
         for line in f:
             parts = line.rstrip('\n').split('\t')
             if len(parts) >= 6:
-                src = parts[0]
-                r_code = parts[1]
-                n_in = int(parts[2])
-                n_out = int(parts[3])
-                desc = parts[4]
-                category = parts[5]
-                test_input = parts[6] if len(parts) > 6 else ''
-                expected = parts[7] if len(parts) > 7 else ''
+                unsafe = parts[6].strip() == '1' if len(parts) > 6 else False
                 symbols.append({
-                    'src': src, 'r_code': r_code, 'n_in': n_in, 'n_out': n_out,
-                    'desc': desc, 'category': category,
-                    'test_input': test_input, 'expected': expected
+                    'src': parts[0],
+                    'r_code': parts[1],
+                    'n_in': int(parts[2]),
+                    'n_out': int(parts[3]),
+                    'desc': parts[4],
+                    'category': parts[5],
+                    'unsafe': unsafe,
                 })
     return symbols
 
+
+def load_tests(path):
+    tests = {}
+    with open(path) as f:
+        header = f.readline()
+        for line in f:
+            parts = line.rstrip('\n').split('\t')
+            if len(parts) >= 2:
+                tests[parts[0]] = {
+                    'test_input': parts[1],
+                    'expected': parts[2] if len(parts) > 2 else '',
+                }
+    return tests
+
+
 def escape_test_name(s):
-    import re
     return re.sub(r'[^A-Za-z0-9_]', '_', s)
 
-def generate_test_r(symbols):
+
+def generate_test_r(symbols, tests):
     lines = []
     lines.append('#!/usr/bin/env Rscript')
-    lines.append('# Auto-generated unit tests from src/ratl_def.tsv')
+    lines.append('# Auto-generated unit tests from src/ratl_def.tsv + src/ratl_tests.tsv')
     lines.append('# Do not edit manually — run: python3 scripts/gen_tests.py')
     lines.append('')
     lines.append('source("src/ratl_lib.R")')
@@ -70,27 +85,35 @@ def generate_test_r(symbols):
     lines.append('skipped <- 0')
     lines.append('failures <- character()')
     lines.append('')
-    lines.append(f'cat(sprintf("Testing {len(symbols)} symbols (unit tests)\\n"))')
+
+    test_count = sum(1 for s in symbols if s['src'] in tests and tests[s['src']]['test_input'])
+    lines.append(f'cat(sprintf("Testing {test_count} symbols (unit tests)\\n"))')
     lines.append('cat("============================\\n")')
     lines.append('')
+
+    random_symbols = {'rnorm','rbinom','rpois','rexp','rbeta','rcauchy',
+                      'rchisq','rgeom','rhyper','rlnorm','rlogis',
+                      'rnbinom','runif','rweibull','rf','rt'}
 
     for s in symbols:
         src = s['src']
         desc = s['desc']
         cat = s['category']
-        test_input = s['test_input']
-        expected = s['expected']
         func_name = escape_test_name(f"{src}_{desc}")
 
+        t = tests.get(src, {})
+        test_input = t.get('test_input', '')
+        expected = t.get('expected', '')
+
         if not test_input:
-            lines.append(f'# SKIP {src} ({desc}) — no test_input defined')
+            lines.append(f'# SKIP {src} ({desc}) — no test defined')
             lines.append(f'skipped <- skipped + 1')
             lines.append('')
             continue
 
         lines.append(f'# {cat}: {src} — {desc}')
         lines.append(f'test_{func_name} <- function() {{')
-        if s['n_in'] == 0 or any(s['r_code'].startswith(x) for x in ['rnorm','rbinom','rpois','rexp','rbeta','rcauchy','rchisq','rgeom','rhyper','rlnorm','rlogis','rnbinom','runif','rweibull','rf(','rt(']):
+        if s['n_in'] == 0 or any(s['r_code'].startswith(x) for x in random_symbols):
             lines.append(f'  set.seed(42)')
         lines.append(f'  r <- run_ratl("{test_input}")')
         if expected:
@@ -110,7 +133,8 @@ def generate_test_r(symbols):
     lines.append('all_tests <- list(')
     first = True
     for s in symbols:
-        if not s['test_input']:
+        t = tests.get(s['src'], {})
+        if not t.get('test_input'):
             continue
         func_name = escape_test_name(f"{s['src']}_{s['desc']}")
         if not first:
@@ -136,11 +160,19 @@ def generate_test_r(symbols):
 
     return '\n'.join(lines)
 
+
 if __name__ == '__main__':
-    tsv_path = sys.argv[1] if len(sys.argv) > 1 else 'src/ratl_def.tsv'
-    out_path = sys.argv[2] if len(sys.argv) > 2 else 'tests/test_all_symbols.R'
-    symbols = load_def(tsv_path)
-    r_code = generate_test_r(symbols)
+    def_path = sys.argv[1] if len(sys.argv) > 1 else 'src/ratl_def.tsv'
+    test_path = sys.argv[2] if len(sys.argv) > 2 else 'src/ratl_tests.tsv'
+    out_path = sys.argv[3] if len(sys.argv) > 3 else 'tests/test_all_symbols.R'
+
+    symbols = load_def(def_path)
+    tests = load_tests(test_path)
+    r_code = generate_test_r(symbols, tests)
+
     with open(out_path, 'w') as f:
         f.write(r_code)
-    print(f"Generated {out_path} with {len([s for s in symbols if s['test_input']])} tests ({len([s for s in symbols if not s['test_input']])} skipped)")
+
+    test_count = len([s for s in symbols if s['src'] in tests and tests[s['src']]['test_input']])
+    skip_count = len([s for s in symbols if s['src'] not in tests or not tests[s['src']]['test_input']])
+    print(f"Generated {out_path} with {test_count} tests ({skip_count} skipped)")
