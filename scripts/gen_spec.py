@@ -80,6 +80,8 @@ def generate_spec(symbols, include_unsafe):
 
     lines.append("RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.")
     lines.append("")
+    lines.append("RATL eliminates variable names and assignment — every character counts. The stack model means `3 5 +` instead of `result = a + b`. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.")
+    lines.append("")
     lines.append(f"**Total symbols: {len(symbols)}** (all 2-byte or shorter)")
     lines.append("")
 
@@ -189,6 +191,33 @@ def generate_spec(symbols, include_unsafe):
     lines.append("")
     lines.append("- `H`, `G`, `L`, `M` — each holds one value independently of the stack")
     lines.append("- Useful for saving intermediate results without stack gymnastics")
+    lines.append("")
+
+    # =========================================================================
+    # FORMAL GRAMMAR (before Literals)
+    # =========================================================================
+    lines.append(hr())
+    lines.append("")
+    lines.append("## Formal Grammar")
+    lines.append("")
+    lines.append("```")
+    lines.append("program     ::= statement*")
+    lines.append("statement   ::= literal | symbol | block")
+    lines.append("")
+    lines.append("literal     ::= number | array | string")
+    lines.append("number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]")
+    lines.append("array       ::= '[' statement* ']'")
+    lines.append("string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe")
+    lines.append("")
+    lines.append("block       ::= '{' statement* '}'")
+    lines.append("")
+    lines.append("symbol      ::= <any 1-2 character token not matching the above>")
+    lines.append("comment     ::= '#' { NOT_NEWLINE } NEWLINE")
+    lines.append("")
+    lines.append("# Whitespace rules:")
+    lines.append("# - Space and newline act as token separators")
+    lines.append("# - Newlines are otherwise ignored (not significant)")
+    lines.append("```")
     lines.append("")
 
     # =========================================================================
@@ -534,7 +563,7 @@ def generate_spec(symbols, include_unsafe):
         tier_name = TIER_NAMES[tier]
         count = len(filtered)
 
-        lines.append(f'<details><summary><strong>{cat}</strong> — Tier {tier} ({tier_name}) — {count} symbols</summary>')
+        lines.append(f'<details open><summary><strong>{cat}</strong> — Tier {tier} ({tier_name}) — {count} symbols</summary>')
         lines.append("")
         lines.append("| Symbol | Description | R Code | Stack Effect |")
         lines.append("|--------|-------------|--------|--------------|")
@@ -544,56 +573,6 @@ def generate_spec(symbols, include_unsafe):
         lines.append("")
         lines.append("</details>")
         lines.append("")
-
-    # =========================================================================
-    # 13. FORMAL GRAMMAR
-    # =========================================================================
-    lines.append(hr())
-    lines.append("")
-    lines.append("## Formal Grammar")
-    lines.append("")
-    lines.append("```")
-    lines.append("program     ::= statement*")
-    lines.append("statement   ::= literal | symbol | block")
-    lines.append("")
-    lines.append("literal     ::= number | array | string")
-    lines.append("number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]")
-    lines.append("array       ::= '[' statement* ']'")
-    lines.append("string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe")
-    lines.append("")
-    lines.append("block       ::= '{' statement* '}'")
-    lines.append("")
-    lines.append("symbol      ::= <any 1-2 character token not matching the above>")
-    lines.append("comment     ::= '#' { NOT_NEWLINE } NEWLINE")
-    lines.append("")
-    lines.append("# Whitespace rules:")
-    lines.append("# - Space and newline act as token separators")
-    lines.append("# - Newlines are otherwise ignored (not significant)")
-    lines.append("```")
-    lines.append("")
-
-    # =========================================================================
-    # 14. DESIGN RATIONALE
-    # =========================================================================
-    lines.append(hr())
-    lines.append("")
-    lines.append("## Design Rationale")
-    lines.append("")
-    lines.append("### Why R?")
-    lines.append("R provides powerful statistical computing, matrix operations, and a rich standard library. This lets RATL achieve golf-friendly conciseness for mathematical and statistical tasks that would require hundreds of characters in other languages.")
-    lines.append("")
-    lines.append("### Why Stack-Based?")
-    lines.append("Stack-based languages eliminate the need for variable names and assignment syntax. In code golf, every character counts — a stack model means `3 5 +` instead of `result = a + b`.")
-    lines.append("")
-    lines.append("### Why These Control Flow Delimiters?")
-    lines.append("The delimiters (`?`, `]`, `(`, `)`, `\"`, `` ` ``) were chosen for single-character compression. Block delimiters `{` and `}` follow convention and remain memorable.")
-    lines.append("")
-    lines.append("### Why Not Purely Functional?")
-    lines.append("RATL mixes functional higher-order operations with imperative stack manipulation because R itself is multi-paradigm. This pragmatic approach maximizes expressiveness for golf.")
-    lines.append("")
-    lines.append("### Implementation")
-    lines.append("RATL is implemented in R and uses R's internal data structures (vectors, lists, matrices) to handle stack operations. It translates RATL code into R code, which is then evaluated. An alternative implementation would need to replicate this stack-to-R-code translation.")
-    lines.append("")
 
     return '\n'.join(lines)
 
