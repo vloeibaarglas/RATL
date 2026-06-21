@@ -4,7 +4,7 @@ title: RATL Specification
 
 RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
-**Total symbols: 420** (all 2-byte or shorter)
+**Total symbols: 419** (all 2-byte or shorter)
 
 ## Getting Started
 
@@ -55,7 +55,7 @@ RATL is designed as a **stack-based array manipulation language** for code golf.
 RATL organizes its symbol set into three conceptual tiers:
 
 **Tier 1 — Core** (stack manipulation, arrays, blocks, control flow, arithmetic)
-: 113 symbols across 5 categories
+: 112 symbols across 5 categories
 
 **Tier 2 — Toolkit** (grouping, mapping, reduction, matrix operations, strings, sets)
 : 66 symbols across 4 categories
@@ -380,15 +380,14 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**420 symbols** organized by category. Click a category to expand.
+**419 symbols** organized by category. Click a category to expand.
 
-<details><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 15 symbols</summary>
+<details><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 14 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `D` | Duplicate | `list($1, $1)` | 1 → 2 |
 | `L` | Stack Length | `NULL` | 0 → 1 |
-| `Ls` | Stack Length | `length(stack)` | 0 → 1 |
 | `N` | Rotate | `list($2, $1, $3)` | 3 → 3 |
 | `Q` | Over | `list($2, $1, $2)` | 2 → 3 |
 | `U` | Unpack | `for(x in $1) stack[[length(stack)+1]] <- x` | 1 → 0 |

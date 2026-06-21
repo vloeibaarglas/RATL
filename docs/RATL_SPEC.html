@@ -231,7 +231,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
-<p><strong>Total symbols: 420</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 419</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -278,7 +278,7 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>Tier 1 — Core</strong> (stack manipulation, arrays, blocks, control flow, arithmetic)</dt>
 <dd>
-113 symbols across 5 categories
+112 symbols across 5 categories
 </dd>
 <dt><strong>Tier 2 — Toolkit</strong> (grouping, mapping, reduction, matrix operations, strings, sets)</dt>
 <dd>
@@ -743,10 +743,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>420 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>419 symbols</strong> organized by category. Click a category to expand.</p>
 <details>
 <summary>
-<strong>Stack &amp; Control</strong> — Tier 1 (Core) — 15 symbols
+<strong>Stack &amp; Control</strong> — Tier 1 (Core) — 14 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -777,78 +777,72 @@ ul.task-list li input[type="checkbox"] {
 <td>0 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>Ls</code></td>
-<td>Stack Length</td>
-<td><code>length(stack)</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
 <td><code>N</code></td>
 <td>Rotate</td>
 <td><code>list($2, $1, $3)</code></td>
 <td>3 → 3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Q</code></td>
 <td>Over</td>
 <td><code>list($2, $1, $2)</code></td>
 <td>2 → 3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>U</code></td>
 <td>Unpack</td>
 <td><code>for(x in $1) stack[[length(stack)+1]] &lt;- x</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>g</code></td>
 <td>Pick</td>
 <td><code>NULL</code></td>
 <td>2 → 3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>i</code></td>
 <td>Input</td>
 <td><code>scan(ratl_stdin, what=character(), n=1, quiet=TRUE)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>p</code></td>
 <td>Print</td>
 <td><code>ratl_print($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sC</code></td>
 <td>Cat</td>
 <td><code>cat($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sM</code></td>
 <td>Message</td>
 <td><code>message($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sS</code></td>
 <td>Stop</td>
 <td><code>stop($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sW</code></td>
 <td>Warning</td>
 <td><code>warning($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>w</code></td>
 <td>Swap</td>
 <td><code>list($1, $2)</code></td>
 <td>2 → 2</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>x</code></td>
 <td>Delete</td>
 <td><code>NULL</code></td>
