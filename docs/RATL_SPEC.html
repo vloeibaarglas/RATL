@@ -231,7 +231,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
-<p><strong>Total symbols: 421</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 420</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -278,15 +278,15 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>Tier 1 — Core</strong> (stack manipulation, arrays, blocks, control flow, arithmetic)</dt>
 <dd>
-107 symbols across 5 categories
+113 symbols across 5 categories
 </dd>
 <dt><strong>Tier 2 — Toolkit</strong> (grouping, mapping, reduction, matrix operations, strings, sets)</dt>
 <dd>
-67 symbols across 4 categories
+66 symbols across 4 categories
 </dd>
 <dt><strong>Tier 3 — Extensions</strong> (statistics, distributions, filesystem, shell access, meta-programming)</dt>
 <dd>
-213 symbols across 7 categories
+208 symbols across 7 categories
 </dd>
 </dl>
 <hr>
@@ -743,7 +743,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>421 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>420 symbols</strong> organized by category. Click a category to expand.</p>
 <details>
 <summary>
 <strong>Stack &amp; Control</strong> — Tier 1 (Core) — 15 symbols
@@ -771,27 +771,27 @@ ul.task-list li input[type="checkbox"] {
 <td>1 → 2</td>
 </tr>
 <tr class="even">
+<td><code>L</code></td>
+<td>Stack Length</td>
+<td><code>NULL</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>Ls</code></td>
 <td>Stack Length</td>
 <td><code>length(stack)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>N</code></td>
 <td>Rotate</td>
 <td><code>list($2, $1, $3)</code></td>
 <td>3 → 3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Q</code></td>
 <td>Over</td>
 <td><code>list($2, $1, $2)</code></td>
-<td>2 → 3</td>
-</tr>
-<tr class="odd">
-<td><code>T</code></td>
-<td>Tuck</td>
-<td><code>list($1, $2, $1)</code></td>
 <td>2 → 3</td>
 </tr>
 <tr class="even">
@@ -859,7 +859,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 15 symbols
+<strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 17 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -878,57 +878,69 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="even">
+<td><code>&amp;</code></td>
+<td>Logical AND</td>
+<td><code>$2 &amp; $1</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>*</code></td>
 <td>Multiply</td>
 <td><code>$2 * $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>+</code></td>
 <td>Add</td>
 <td><code>$2 + $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>-</code></td>
 <td>Subtract</td>
 <td><code>$2 - $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>/</code></td>
 <td>Divide</td>
 <td><code>$2 / $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>&lt;</code></td>
 <td>Less</td>
 <td><code>$2 &lt; $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>&lt;=</code></td>
 <td>LessEqual</td>
 <td><code>$2 &lt;= $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>=</code></td>
 <td>Equal</td>
 <td><code>$2 == $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>&gt;</code></td>
 <td>Greater</td>
 <td><code>$2 &gt; $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>&gt;=</code></td>
 <td>GreatEqual</td>
 <td><code>$2 &gt;= $1</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>\</code></td>
+<td>IntDiv</td>
+<td><code>$2 %/% $1</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
@@ -966,7 +978,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Array Operations</strong> — Tier 1 (Core) — 44 symbols
+<strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1027,46 +1039,118 @@ ul.task-list li input[type="checkbox"] {
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>SR</code></td>
-<td>Rank</td>
-<td><code>rank($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>ST</code></td>
 <td>Tail</td>
 <td><code>tail($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>XC</code></td>
 <td>CumSum</td>
 <td><code>cumsum($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>aB</code></td>
+<td>Tabulate</td>
+<td><code>tabulate($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="even">
-<td><code>Xk</code></td>
+<td><code>aD</code></td>
+<td>Drop</td>
+<td><code>drop($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>aE</code></td>
 <td>RLE</td>
 <td><code>{r &lt;- rle($1); list(r$values, r$lengths)}</code></td>
 <td>1 → 2</td>
 </tr>
+<tr class="even">
+<td><code>aL</code></td>
+<td>Flatten</td>
+<td><code>unlist($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="odd">
-<td><code>c1</code></td>
+<td><code>aM</code></td>
+<td>IndexOf</td>
+<td><code>match($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>aN</code></td>
+<td>ExtractName</td>
+<td><code>$2[[as.character($1)]]</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>aO</code></td>
+<td>Order</td>
+<td><code>order($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>aP</code></td>
 <td>CumProd</td>
 <td><code>cumprod($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>aQ</code></td>
+<td>UniqueN</td>
+<td><code>length(unique($1))</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="even">
+<td><code>aR</code></td>
+<td>Rank</td>
+<td><code>rank($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>aU</code></td>
+<td>Unsplit</td>
+<td><code>unsplit($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>aV</code></td>
+<td>Diff</td>
+<td><code>diff($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>aX</code></td>
+<td>NegSlice</td>
+<td><code>$2[length($2)+1-$1]</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>ah</code></td>
+<td>HeadN</td>
+<td><code>head($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>al</code></td>
+<td>LastElem</td>
+<td><code>tail($1, 1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>atN</code></td>
+<td>TailN</td>
+<td><code>tail($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>cn</code></td>
 <td>IsIn</td>
 <td><code>is.element($2, $1)</code></td>
 <td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>dO</code></td>
-<td>Order</td>
-<td><code>order($1)</code></td>
-<td>1 → 1</td>
 </tr>
 <tr class="even">
 <td><code>dS</code></td>
@@ -1075,9 +1159,9 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>dU</code></td>
-<td>Unsplit</td>
-<td><code>unsplit($2, $1)</code></td>
+<td><code>e</code></td>
+<td>Extract Element [[</td>
+<td><code>$2[[$1]]</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="even">
@@ -1087,58 +1171,22 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>en</code></td>
-<td>Extract Name $</td>
-<td><code>$2[[as.character($1)]]</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
 <td><code>es</code></td>
 <td>Extract Subset [</td>
 <td><code>$2[$1]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fE</code></td>
 <td>FirstElem</td>
 <td><code>head($1, 1)</code></td>
 <td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>fu</code></td>
-<td>Flatten</td>
-<td><code>unlist($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>hd</code></td>
-<td>HeadN</td>
-<td><code>head($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>ix</code></td>
-<td>IndexOf</td>
-<td><code>match($2, $1)</code></td>
-<td>2 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>l</code></td>
 <td>Length</td>
 <td><code>length($1)</code></td>
 <td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>la</code></td>
-<td>LastElem</td>
-<td><code>tail($1, 1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>ns</code></td>
-<td>NegSlice</td>
-<td><code>$2[length($2)+1-$1]</code></td>
-<td>2 → 1</td>
 </tr>
 <tr class="even">
 <td><code>r1</code></td>
@@ -1153,27 +1201,15 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>tb</code></td>
-<td>Tabulate</td>
-<td><code>tabulate($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>tl</code></td>
 <td>TailN</td>
 <td><code>tail($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>u</code></td>
 <td>Unique</td>
 <td><code>unique($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>un</code></td>
-<td>UniqueN</td>
-<td><code>length(unique($1))</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="even">
@@ -1181,18 +1217,6 @@ ul.task-list li input[type="checkbox"] {
 <td>PMin</td>
 <td><code>pmin($2, $1)</code></td>
 <td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>vD</code></td>
-<td>Drop</td>
-<td><code>drop($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>vF</code></td>
-<td>Diff</td>
-<td><code>diff($1)</code></td>
-<td>1 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>vG</code></td>
@@ -1241,6 +1265,245 @@ ul.task-list li input[type="checkbox"] {
 <td>Zip</td>
 <td><code>unlist(Map(list, $2, $1))</code></td>
 <td>2 → 1</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details>
+<summary>
+<strong>Statistics</strong> — Tier 3 (Extensions) — 36 symbols
+</summary>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 30%">
+<col style="width: 18%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Description</th>
+<th>R Code</th>
+<th>Stack Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>A</code></td>
+<td>All</td>
+<td><code>all($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Bn</code></td>
+<td>Min</td>
+<td><code>min($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Bx</code></td>
+<td>Max</td>
+<td><code>max($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>E</code></td>
+<td>Any</td>
+<td><code>any($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>P</code></td>
+<td>Product</td>
+<td><code>prod($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Sw</code></td>
+<td>WeightedMean</td>
+<td><code>weighted.mean($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>V</code></td>
+<td>Max</td>
+<td><code>max($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>dX</code></td>
+<td>XTabs</td>
+<td><code>xtabs($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>lA</code></td>
+<td>Any</td>
+<td><code>any($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>lZ</code></td>
+<td>NNZ</td>
+<td><code>sum($1 != 0)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>mn</code></td>
+<td>Min2</td>
+<td><code>min($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>mx</code></td>
+<td>Max2</td>
+<td><code>max($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>r</code></td>
+<td>Random (n)</td>
+<td><code>runif($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>rm</code></td>
+<td>RMS</td>
+<td><code>ratl_rms($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>s</code></td>
+<td>Sum</td>
+<td><code>sum($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>t5</code></td>
+<td>FiveNum</td>
+<td><code>fivenum($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tA</code></td>
+<td>MAD</td>
+<td><code>mad($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tC</code></td>
+<td>CumSD</td>
+<td><code>ratl_cum_sd($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tI</code></td>
+<td>IQR</td>
+<td><code>IQR($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tK</code></td>
+<td>Kurtosis</td>
+<td><code>sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tM</code></td>
+<td>Mean</td>
+<td><code>mean($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tN</code></td>
+<td>MeanNA</td>
+<td><code>mean($1, na.rm=TRUE)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tR</code></td>
+<td>Range</td>
+<td><code>range($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tS</code></td>
+<td>StdDev</td>
+<td><code>sd($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tT</code></td>
+<td>Table</td>
+<td><code>table($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tU</code></td>
+<td>SumNA</td>
+<td><code>sum($1, na.rm=TRUE)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tW</code></td>
+<td>Skewness</td>
+<td><code>sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tZ</code></td>
+<td>Scale</td>
+<td><code>scale($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tc</code></td>
+<td>Correlation</td>
+<td><code>cor($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tm</code></td>
+<td>Median</td>
+<td><code>median($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>to</code></td>
+<td>Mode</td>
+<td><code>ratl_mode($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>tv</code></td>
+<td>Covariance</td>
+<td><code>cov($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>ty</code></td>
+<td>Summary</td>
+<td><code>summary($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>v</code></td>
+<td>Min</td>
+<td><code>min($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>vA</code></td>
+<td>All</td>
+<td><code>all($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>vd</code></td>
+<td>Density</td>
+<td><code>density($1)</code></td>
+<td>1 → 1</td>
 </tr>
 </tbody>
 </table>
@@ -1300,7 +1563,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 27 symbols
+<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 29 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1313,105 +1576,117 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>AS</code></td>
-<td>As Type</td>
-<td><code>as($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Xb</code></td>
-<td>To Binary</td>
-<td><code>ratl_bin($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Xd</code></td>
-<td>To Date</td>
-<td><code>as.Date($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>a</code></td>
-<td>To String</td>
-<td><code>as.character($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>ev</code></td>
-<td>Eval</td>
-<td><code>NULL</code></td>
-<td>1 → 0</td>
-</tr>
-<tr class="even">
-<td><code>is</code></td>
-<td>Is Type</td>
-<td><code>is($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>mF</code></td>
-<td>Factor</td>
-<td><code>factor($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>n</code></td>
-<td>To Number</td>
-<td><code>as.numeric($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>oA</code></td>
+<td><code>TA</code></td>
 <td>Attr</td>
 <td><code>attr($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>oC</code></td>
+<td><code>TC</code></td>
 <td>Colnames</td>
 <td><code>colnames($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>oa</code></td>
-<td>Attributes</td>
-<td><code>attributes($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>oc</code></td>
-<td>Class</td>
-<td><code>class($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>od</code></td>
+<td><code>TD</code></td>
 <td>Dim</td>
 <td><code>dim($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>on</code></td>
-<td>Names</td>
-<td><code>names($1)</code></td>
+<td><code>TN</code></td>
+<td>ToNumber</td>
+<td><code>as.numeric($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>or</code></td>
+<td><code>TN</code></td>
+<td>ToNumber</td>
+<td><code>as.numeric($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>TR</code></td>
 <td>Rownames</td>
 <td><code>rownames($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>Ta</code></td>
+<td>AsType</td>
+<td><code>as($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
 <tr class="even">
-<td><code>ot</code></td>
+<td><code>Tb</code></td>
+<td>ToBinary</td>
+<td><code>ratl_bin($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Tc</code></td>
+<td>Class</td>
+<td><code>class($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Td</code></td>
+<td>ToDate</td>
+<td><code>as.Date($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Tf</code></td>
+<td>Factor</td>
+<td><code>factor($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Ti</code></td>
+<td>IsType</td>
+<td><code>is($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Tn</code></td>
+<td>Names</td>
+<td><code>names($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Ts</code></td>
+<td>ToString</td>
+<td><code>as.character($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Tt</code></td>
 <td>Typeof</td>
 <td><code>typeof($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
-<td><code>ou</code></td>
+<tr class="even">
+<td><code>Tu</code></td>
 <td>Unlist</td>
 <td><code>unlist($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Tv</code></td>
+<td>Attributes</td>
+<td><code>attributes($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>ev</code></td>
+<td>Eval</td>
+<td><code>NULL</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td><code>uA</code></td>
+<td>To ASCII</td>
+<td><code>utf8ToInt($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="even">
@@ -1479,7 +1754,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 17 symbols
+<strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 16 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1564,30 +1839,24 @@ ul.task-list li input[type="checkbox"] {
 <td>0 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>e</code></td>
-<td>Filter (evaluator)</td>
-<td><code>NULL</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
 <td><code>fn</code></td>
 <td>Negate</td>
 <td><code>Negate($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>q</code></td>
 <td>Map (evaluator)</td>
 <td><code>NULL</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>y</code></td>
 <td>Reduce (evaluator)</td>
 <td><code>NULL</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>z</code></td>
 <td>Repeat (evaluator)</td>
 <td><code>NULL</code></td>
@@ -1814,51 +2083,75 @@ ul.task-list li input[type="checkbox"] {
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>S</code></td>
-<td>Split String</td>
-<td><code>strsplit($2, $1)[[1]]</code></td>
+<td><code>Sb</code></td>
+<td>Grepl</td>
+<td><code>grepl($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>S!</code></td>
-<td>Translate</td>
-<td><code>chartr($2, $1, $3)</code></td>
-<td>3 → 1</td>
+<td><code>Se</code></td>
+<td>Regexpr</td>
+<td><code>regexpr($2, $1)</code></td>
+<td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>SG</code></td>
+<td><code>Sf</code></td>
+<td>Sprintf</td>
+<td><code>sprintf($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Sg</code></td>
 <td>GSub</td>
 <td><code>gsub($2, $1, $3)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
-<td><code>Xc</code></td>
-<td>Char Translate</td>
-<td><code>chartr($1, $2, $3)</code></td>
-<td>3 → 1</td>
-</tr>
 <tr class="odd">
-<td><code>Xt</code></td>
+<td><code>Sl</code></td>
 <td>ToLower</td>
 <td><code>tolower($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>j</code></td>
-<td>Join</td>
-<td><code>paste($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>rv</code></td>
-<td>Reverse String</td>
+<td><code>Sr</code></td>
+<td>ReverseString</td>
 <td><code>paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>Ss</code></td>
+<td>Split String</td>
+<td><code>strsplit($2, $1)[[1]]</code></td>
+<td>2 → 1</td>
+</tr>
 <tr class="even">
-<td><code>sB</code></td>
-<td>Grepl</td>
-<td><code>grepl($2, $1)</code></td>
+<td><code>St</code></td>
+<td>Translate</td>
+<td><code>chartr($2, $1, $3)</code></td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Su</code></td>
+<td>ToUpper</td>
+<td><code>toupper($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Sx</code></td>
+<td>Gregexpr</td>
+<td><code>gregexpr($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Xc</code></td>
+<td>Char Translate</td>
+<td><code>chartr($1, $2, $3)</code></td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td><code>j</code></td>
+<td>Join</td>
+<td><code>paste($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
@@ -1872,30 +2165,6 @@ ul.task-list li input[type="checkbox"] {
 <td>ToLower</td>
 <td><code>tolower($1)</code></td>
 <td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>sR</code></td>
-<td>Regexpr</td>
-<td><code>regexpr($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>sU</code></td>
-<td>ToUpper</td>
-<td><code>toupper($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>sX</code></td>
-<td>Gregexpr</td>
-<td><code>gregexpr($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>sf</code></td>
-<td>Sprintf</td>
-<td><code>sprintf($2, $1)</code></td>
-<td>2 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>sn</code></td>
@@ -1939,19 +2208,19 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>sD</code></td>
+<td><code>Ud</code></td>
 <td>SetDiff</td>
 <td><code>setdiff($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>sI</code></td>
+<td><code>Ui</code></td>
 <td>Intersect</td>
 <td><code>intersect($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>sN</code></td>
+<td><code>Uu</code></td>
 <td>Union</td>
 <td><code>union($2, $1)</code></td>
 <td>2 → 1</td>
@@ -1961,240 +2230,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Statistics</strong> — Tier 3 (Extensions) — 35 symbols
-</summary>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 18%">
-<col style="width: 30%">
-<col style="width: 18%">
-<col style="width: 32%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Description</th>
-<th>R Code</th>
-<th>Stack Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>B5</code></td>
-<td>FiveNum</td>
-<td><code>fivenum($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Ba</code></td>
-<td>MAD</td>
-<td><code>mad($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Bi</code></td>
-<td>IQR</td>
-<td><code>IQR($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Bn</code></td>
-<td>Min</td>
-<td><code>min($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Br</code></td>
-<td>Range</td>
-<td><code>range($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Bx</code></td>
-<td>Max</td>
-<td><code>max($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Bz</code></td>
-<td>Scale</td>
-<td><code>scale($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Ku</code></td>
-<td>Kurtosis</td>
-<td><code>sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>P</code></td>
-<td>Product</td>
-<td><code>prod($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Sd</code></td>
-<td>CumSD</td>
-<td><code>ratl_cum_sd($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Sk</code></td>
-<td>Skewness</td>
-<td><code>sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Sm</code></td>
-<td>MeanNA</td>
-<td><code>mean($1, na.rm=TRUE)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Sn</code></td>
-<td>SumNA</td>
-<td><code>sum($1, na.rm=TRUE)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Sw</code></td>
-<td>WeightedMean</td>
-<td><code>weighted.mean($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Xo</code></td>
-<td>Mode</td>
-<td><code>ratl_mode($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>cr</code></td>
-<td>Correlation</td>
-<td><code>cor($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>cv</code></td>
-<td>Covariance</td>
-<td><code>cov($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>dT</code></td>
-<td>Table</td>
-<td><code>table($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>dX</code></td>
-<td>XTabs</td>
-<td><code>xtabs($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>h</code></td>
-<td>Median</td>
-<td><code>median($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>lA</code></td>
-<td>Any</td>
-<td><code>any($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>lZ</code></td>
-<td>NNZ</td>
-<td><code>sum($1 != 0)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>m</code></td>
-<td>Mean</td>
-<td><code>mean($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>mQ</code></td>
-<td>Quantile</td>
-<td><code>quantile($1, $2)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>mQ</code></td>
-<td>Quantile</td>
-<td><code>quantile($1, $2)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>mn</code></td>
-<td>Min2</td>
-<td><code>min($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>mx</code></td>
-<td>Max2</td>
-<td><code>max($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>r</code></td>
-<td>Random (n)</td>
-<td><code>runif($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>rm</code></td>
-<td>RMS</td>
-<td><code>ratl_rms($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>s</code></td>
-<td>Sum</td>
-<td><code>sum($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>sd</code></td>
-<td>Standard Deviation</td>
-<td><code>sd($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>sm</code></td>
-<td>Summary</td>
-<td><code>summary($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>v</code></td>
-<td>Variance</td>
-<td><code>var($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>vA</code></td>
-<td>All</td>
-<td><code>all($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>vd</code></td>
-<td>Density</td>
-<td><code>density($1)</code></td>
-<td>1 → 1</td>
-</tr>
-</tbody>
-</table>
-</details>
-<details>
-<summary>
-<strong>Distributions &amp; Tests</strong> — Tier 3 (Extensions) — 86 symbols
+<strong>Distributions &amp; Tests</strong> — Tier 3 (Extensions) — 85 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -2645,78 +2681,72 @@ ul.task-list li input[type="checkbox"] {
 <td>3 → 1</td>
 </tr>
 <tr class="even">
-<td><code>rN</code></td>
-<td>Random Normal</td>
-<td><code>rnorm($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>rP</code></td>
 <td>Random Poisson</td>
 <td><code>rpois($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rb</code></td>
 <td>Random Binomial</td>
 <td><code>rbinom($1, size=1, prob=0.5)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rc</code></td>
 <td>Random Cauchy</td>
 <td><code>rcauchy($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>re</code></td>
 <td>Random Exp</td>
 <td><code>rexp($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rf</code></td>
 <td>Random F</td>
 <td><code>rf($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rg</code></td>
 <td>Random Gamma</td>
 <td><code>rgamma($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rh</code></td>
 <td>Random Hypergeometric</td>
 <td><code>rhyper($4, $3, $2, $1)</code></td>
 <td>4 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rl</code></td>
 <td>Random Log-Normal</td>
 <td><code>rlnorm($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rp</code></td>
 <td>Random Poisson</td>
 <td><code>rpois($1, lambda=1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rt</code></td>
 <td>Random Student-t</td>
 <td><code>rt($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rw</code></td>
 <td>Random Weibull</td>
 <td><code>rweibull($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tt</code></td>
 <td>T-Test</td>
 <td><code>t.test($2, $1)</code></td>
@@ -2727,7 +2757,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 18 symbols
+<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 17 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -2788,60 +2818,54 @@ ul.task-list li input[type="checkbox"] {
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>gC</code></td>
+<td>GCD</td>
+<td><code>ratl_gcd($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
 <td><code>lb</code></td>
 <td>Log Beta</td>
 <td><code>lbeta($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>lc</code></td>
 <td>LCM</td>
 <td><code>ratl_lcm($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>mB</code></td>
 <td>Beta</td>
 <td><code>beta($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
-<td><code>mG</code></td>
-<td>Gamma</td>
-<td><code>gamma($1)</code></td>
-<td>1 → 1</td>
-</tr>
 <tr class="odd">
-<td><code>mG</code></td>
-<td>Gamma</td>
-<td><code>gamma($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>mf</code></td>
 <td>Prime Factors</td>
 <td><code>ratl_prime_factors($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ml</code></td>
 <td>LCM</td>
 <td><code>ratl_lcm($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>mp</code></td>
 <td>Is Prime</td>
 <td><code>ratl_is_prime($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ps</code></td>
 <td>Psigamma</td>
 <td><code>psigamma($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tg</code></td>
 <td>Trigamma</td>
 <td><code>trigamma($1)</code></td>
@@ -2899,7 +2923,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>File I/O</strong> — Tier 3 (Extensions) — 20 symbols
+<strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -2918,87 +2942,75 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>F</code></td>
-<td>Read File</td>
-<td><code>readLines($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>FL</code></td>
-<td>List Files</td>
-<td><code>list.files($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>FW</code></td>
 <td>Write File</td>
 <td><code>{writeLines(as.character($2), $1); NULL}</code></td>
 <td>2 → 0</td>
 </tr>
 <tr class="even">
-<td><code>W</code></td>
-<td>Write File</td>
-<td><code>writeLines(as.character($2), $1); NULL</code></td>
-<td>2 → 0</td>
-</tr>
-<tr class="odd">
 <td><code>fA</code></td>
 <td>Dirname</td>
 <td><code>dirname($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fC</code></td>
 <td>Write CSV</td>
 <td><code>write.csv($2, $1)</code></td>
 <td>2 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fD</code></td>
 <td>List Dirs</td>
 <td><code>list.dirs($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>fL</code></td>
+<td>ListFiles</td>
+<td><code>list.files($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="even">
+<td><code>fM</code></td>
+<td>DirCreate</td>
+<td><code>dir.create($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>fN</code></td>
 <td>File Create</td>
 <td><code>file.create($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fP</code></td>
 <td>Abs Path</td>
 <td><code>normalizePath($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fT</code></td>
-<td>Temp File</td>
+<td>TempFile</td>
 <td><code>tempfile()</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fX</code></td>
 <td>Dir Exists</td>
 <td><code>dir.exists($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fb</code></td>
 <td>Basename</td>
 <td><code>basename($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fc</code></td>
 <td>Read CSV</td>
 <td><code>read.csv($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>fd</code></td>
-<td>Dir Create</td>
-<td><code>dir.create($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
@@ -3042,7 +3054,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>System</strong> — Tier 3 (Extensions) — 20 symbols
+<strong>System</strong> — Tier 3 (Extensions) — 18 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3055,94 +3067,82 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>ZT</code></td>
-<td>Timezone</td>
-<td><code>Sys.timezone()</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
-<td><code>ge</code></td>
-<td>Getenv</td>
-<td><code>Sys.getenv($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>pi</code></td>
-<td>GetPID</td>
-<td><code>Sys.getpid()</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
 <td><code>sE</code></td>
 <td>Date</td>
 <td><code>date()</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
-<td><code>sF</code></td>
-<td>SetPrompt</td>
-<td><code>options(prompt=$1)</code></td>
-<td>1 → 0</td>
-</tr>
 <tr class="even">
-<td><code>sH</code></td>
-<td>GetWD</td>
-<td><code>getwd()</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>sJ</code></td>
-<td>SetWD</td>
-<td><code>setwd($1)</code></td>
-<td>1 → 0</td>
-</tr>
-<tr class="even">
-<td><code>sK</code></td>
-<td>Toc</td>
-<td><code>proc.time() - $1</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>sP</code></td>
 <td>Sleep</td>
 <td><code>Sys.sleep($1)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="even">
-<td><code>sT</code></td>
-<td>Tic</td>
-<td><code>proc.time()</code></td>
-<td>0 → 1</td>
-</tr>
 <tr class="odd">
-<td><code>sT</code></td>
-<td>Tic</td>
-<td><code>proc.time()</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
-<td><code>sV</code></td>
-<td>RVersion</td>
-<td><code>R.version.string</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>sY</code></td>
-<td>SetScipen</td>
-<td><code>options(scipen=$1)</code></td>
-<td>1 → 0</td>
-</tr>
-<tr class="even">
 <td><code>se</code></td>
 <td>Setenv</td>
 <td><code>Sys.setenv(...)</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>um</code></td>
 <td>Umask</td>
 <td><code>Sys.umask($1)</code></td>
 <td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>yE</code></td>
+<td>Getenv</td>
+<td><code>Sys.getenv($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>yF</code></td>
+<td>SetPrompt</td>
+<td><code>options(prompt=$1)</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td><code>yJ</code></td>
+<td>SetWD</td>
+<td><code>setwd($1)</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td><code>yK</code></td>
+<td>Toc</td>
+<td><code>proc.time() - $1</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>yP</code></td>
+<td>GetPID</td>
+<td><code>Sys.getpid()</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>yV</code></td>
+<td>Version</td>
+<td><code>R.version.string</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>yW</code></td>
+<td>GetWD</td>
+<td><code>getwd()</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>yY</code></td>
+<td>SetScipen</td>
+<td><code>options(scipen=$1)</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td><code>yZ</code></td>
+<td>Timezone</td>
+<td><code>Sys.timezone()</code></td>
+<td>0 → 1</td>
 </tr>
 <tr class="even">
 <td><code>zg</code></td>
@@ -3370,7 +3370,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Constants</strong> — Tier 3 (Extensions) — 6 symbols
+<strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3383,21 +3383,33 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>In</code></td>
+<td><code>I</code></td>
 <td>Inf</td>
 <td><code>Inf</code></td>
 <td>0 → 1</td>
 </tr>
 <tr class="even">
+<td><code>In</code></td>
+<td>Inf</td>
+<td><code>Inf</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>Na</code></td>
 <td>NA</td>
 <td><code>NA</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Pi</code></td>
 <td>Pi</td>
 <td><code>pi</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Z</code></td>
+<td>NA</td>
+<td><code>NA</code></td>
 <td>0 → 1</td>
 </tr>
 <tr class="even">
@@ -3423,7 +3435,7 @@ ul.task-list li input[type="checkbox"] {
 </details>
 <details>
 <summary>
-<strong>Math Functions</strong> — Tier 3 (Extensions) — 28 symbols
+<strong>Math Functions</strong> — Tier 3 (Extensions) — 25 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3436,75 +3448,51 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>&amp;</code></td>
-<td>Sqrt</td>
-<td><code>sqrt($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>A</code></td>
-<td>Abs</td>
-<td><code>abs($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>SP</code></td>
 <td>Sin(pi*x)</td>
 <td><code>sinpi($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>V</code></td>
-<td>Floor</td>
-<td><code>floor($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>a2</code></td>
 <td>ArcTan2</td>
 <td><code>atan2($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aC</code></td>
 <td>ArcCos</td>
 <td><code>acos($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aS</code></td>
 <td>ArcSin</td>
 <td><code>asin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aT</code></td>
 <td>ArcTan</td>
 <td><code>atan($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ac</code></td>
 <td>ArcCosh</td>
 <td><code>acosh($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>as</code></td>
 <td>ArcSinh</td>
 <td><code>asinh($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>at</code></td>
 <td>ArcTanh</td>
 <td><code>atanh($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>c</code></td>
-<td>Ceiling</td>
-<td><code>ceiling($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
@@ -3550,54 +3538,60 @@ ul.task-list li input[type="checkbox"] {
 <td>1 → 1</td>
 </tr>
 <tr class="even">
+<td><code>mQ</code></td>
+<td>Sqrt</td>
+<td><code>sqrt($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>mc</code></td>
 <td>Cos</td>
 <td><code>cos($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ms</code></td>
 <td>Sin</td>
 <td><code>sin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>mt</code></td>
 <td>Tan</td>
 <td><code>tan($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ro</code></td>
 <td>Round</td>
 <td><code>round($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sg</code></td>
 <td>Sign</td>
 <td><code>sign($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sh</code></td>
 <td>Sinh</td>
 <td><code>sinh($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>th</code></td>
 <td>Tanh</td>
 <td><code>tanh($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tp</code></td>
 <td>Tan(pi*x)</td>
 <td><code>tanpi($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tr</code></td>
 <td>Trunc</td>
 <td><code>trunc($1)</code></td>
