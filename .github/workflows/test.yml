@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - 'specs/**'
+      - 'docs/**'
       - '*.md'
       - 'examples/**'
       - 'docs/**'
@@ -17,7 +17,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
+      - name: Cache R packages
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.local/share/renv
+            ~/.R/library
+          key: r-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: r-${{ runner.os }}-
 
       - uses: r-lib/actions/setup-r@v2
 

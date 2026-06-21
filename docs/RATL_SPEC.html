@@ -1,0 +1,3913 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>RATL Specification</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="RATL_SPEC_files/libs/clipboard/clipboard.min.js"></script>
+<script src="RATL_SPEC_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="RATL_SPEC_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="RATL_SPEC_files/libs/quarto-html/popper.min.js"></script>
+<script src="RATL_SPEC_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="RATL_SPEC_files/libs/quarto-html/anchor.min.js"></script>
+<link href="RATL_SPEC_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="RATL_SPEC_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="RATL_SPEC_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-45234c23d27d175e8b00a18fce492d00.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<style>
+  /* Force wider layout — override Quarto/Bootstrap */
+  .page-columns.page-rows-contents,
+  .page-layout-article {
+    max-width: 80vw !important;
+  }
+  #quarto-content {
+    max-width: 80vw !important;
+  }
+  main.content {
+    max-width: 100% !important;
+  }
+
+  /* Tables */
+  table.dataTable th { background: #0f3460; color: white; position: sticky; top: 0; z-index: 1; }
+  table.dataTable { border-collapse: collapse !important; table-layout: auto !important; }
+  table.dataTable td, table.dataTable th { white-space: normal !important; overflow: visible !important; text-overflow: unset !important; }
+
+  /* Custom search bar — lives below "Symbol Reference" heading */
+  .spec-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.6em 1em;
+    margin: 0.5em 0 0;
+    background: #f0f4f8;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  .spec-filter-bar label {
+    font-weight: 600;
+    color: #0f3460;
+    white-space: nowrap;
+  }
+  .spec-filter-bar input {
+    flex: 1;
+    padding: 0.35em 0.6em;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  .spec-filter-bar input:focus {
+    outline: none;
+    border-color: #0f3460;
+    box-shadow: 0 0 0 2px rgba(15,52,96,0.15);
+  }
+
+  /* Footer: info + pagination in one row */
+  .dt-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 0 0;
+    font-size: 0.85em;
+    color: #555;
+  }
+  .dt-footer .dataTables_paginate .paginate_button {
+    padding: 0.25em 0.6em;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    margin: 0 1px;
+    cursor: pointer;
+    font-size: 0.95em;
+  }
+  .dt-footer .dataTables_paginate .paginate_button:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+  }
+  .dt-footer .dataTables_paginate .paginate_button.current {
+    background: #0f3460 !important;
+    color: white !important;
+    border-color: #0f3460 !important;
+  }
+  .dt-footer .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="theme.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="-1">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1. Introduction</a>
+  <ul class="collapse">
+  <li><a href="#the-name" id="toc-the-name" class="nav-link" data-scroll-target="#the-name">1.1 The Name</a></li>
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation">1.2 Notation</a></li>
+  </ul></li>
+  <li><a href="#the-stack-and-data-types" id="toc-the-stack-and-data-types" class="nav-link" data-scroll-target="#the-stack-and-data-types">2. The Stack and Data Types</a>
+  <ul class="collapse">
+  <li><a href="#data-types" id="toc-data-types" class="nav-link" data-scroll-target="#data-types">Data Types</a></li>
+  </ul></li>
+  <li><a href="#statements-and-separators" id="toc-statements-and-separators" class="nav-link" data-scroll-target="#statements-and-separators">3. Statements and Separators</a></li>
+  <li><a href="#literals" id="toc-literals" class="nav-link" data-scroll-target="#literals">4. Literals</a>
+  <ul class="collapse">
+  <li><a href="#numbers" id="toc-numbers" class="nav-link" data-scroll-target="#numbers">4.1 Numbers</a></li>
+  <li><a href="#numerical-arrays-vectors" id="toc-numerical-arrays-vectors" class="nav-link" data-scroll-target="#numerical-arrays-vectors">4.2 Numerical Arrays (Vectors)</a></li>
+  <li><a href="#character-arrays-strings" id="toc-character-arrays-strings" class="nav-link" data-scroll-target="#character-arrays-strings">4.3 Character Arrays (Strings)</a></li>
+  <li><a href="#cell-arrays-lists" id="toc-cell-arrays-lists" class="nav-link" data-scroll-target="#cell-arrays-lists">4.4 Cell Arrays (Lists)</a></li>
+  </ul></li>
+  <li><a href="#control-flow" id="toc-control-flow" class="nav-link" data-scroll-target="#control-flow">5. Control Flow</a>
+  <ul class="collapse">
+  <li><a href="#conditional-branching-..." id="toc-conditional-branching-..." class="nav-link" data-scroll-target="#conditional-branching-...">5.1 Conditional Branching (<code>? ... ]</code>)</a></li>
+  <li><a href="#whilerepeat-loop-..." id="toc-whilerepeat-loop-..." class="nav-link" data-scroll-target="#whilerepeat-loop-...">5.2 While/Repeat Loop (<code>" ... "</code>)</a></li>
+  <li><a href="#for-each-loop-..." id="toc-for-each-loop-..." class="nav-link" data-scroll-target="#for-each-loop-...">5.3 For-Each Loop (<code>( ... )</code>)</a></li>
+  <li><a href="#infinite-loop-..." id="toc-infinite-loop-..." class="nav-link" data-scroll-target="#infinite-loop-...">5.4 Infinite Loop (<code>` ... `</code>)</a></li>
+  <li><a href="#higher-order-functions-block-consumers" id="toc-higher-order-functions-block-consumers" class="nav-link" data-scroll-target="#higher-order-functions-block-consumers">5.5 Higher-Order Functions (Block Consumers)</a></li>
+  </ul></li>
+  <li><a href="#implicit-actions" id="toc-implicit-actions" class="nav-link" data-scroll-target="#implicit-actions">6. Implicit Actions</a>
+  <ul class="collapse">
+  <li><a href="#initial-actions" id="toc-initial-actions" class="nav-link" data-scroll-target="#initial-actions">6.1 Initial Actions</a></li>
+  <li><a href="#final-actions" id="toc-final-actions" class="nav-link" data-scroll-target="#final-actions">6.2 Final Actions</a></li>
+  </ul></li>
+  <li><a href="#meta-programming" id="toc-meta-programming" class="nav-link" data-scroll-target="#meta-programming">7. Meta-Programming</a>
+  <ul class="collapse">
+  <li><a href="#dynamic-evaluation-ev" id="toc-dynamic-evaluation-ev" class="nav-link" data-scroll-target="#dynamic-evaluation-ev">7.1 Dynamic Evaluation (<code>ev</code>)</a></li>
+  <li><a href="#dispatch-list-zd" id="toc-dispatch-list-zd" class="nav-link" data-scroll-target="#dispatch-list-zd">7.2 Dispatch List (<code>zD</code>)</a></li>
+  <li><a href="#dynamic-dispatch-zs" id="toc-dynamic-dispatch-zs" class="nav-link" data-scroll-target="#dynamic-dispatch-zs">7.3 Dynamic Dispatch (<code>zS</code>)</a></li>
+  <li><a href="#shell-exec-zx" id="toc-shell-exec-zx" class="nav-link" data-scroll-target="#shell-exec-zx">7.4 Shell Exec (<code>zX</code>)</a></li>
+  <li><a href="#sort-by-zb" id="toc-sort-by-zb" class="nav-link" data-scroll-target="#sort-by-zb">7.5 Sort By (<code>zB</code>)</a></li>
+  <li><a href="#group-by-zg" id="toc-group-by-zg" class="nav-link" data-scroll-target="#group-by-zg">7.6 Group By (<code>zG</code>)</a></li>
+  <li><a href="#scan-zc" id="toc-scan-zc" class="nav-link" data-scroll-target="#scan-zc">7.7 Scan (<code>zC</code>)</a></li>
+  <li><a href="#take-while-zt" id="toc-take-while-zt" class="nav-link" data-scroll-target="#take-while-zt">7.8 Take While (<code>zT</code>)</a></li>
+  <li><a href="#drop-while-zw" id="toc-drop-while-zw" class="nav-link" data-scroll-target="#drop-while-zw">7.9 Drop While (<code>zW</code>)</a></li>
+  <li><a href="#zip-with-zz" id="toc-zip-with-zz" class="nav-link" data-scroll-target="#zip-with-zz">7.10 Zip With (<code>zZ</code>)</a></li>
+  </ul></li>
+  <li><a href="#symbol-reference" id="toc-symbol-reference" class="nav-link" data-scroll-target="#symbol-reference">8. Symbol Reference</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RATL Specification</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>RATL (R-based Array Manipulation Language) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
+<p><strong>Total symbols: 427</strong> (all 2-byte or shorter)</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
+<p>RATL is implemented in R and uses R’s internal data structures (vectors, lists, matrices) to handle stack operations. It translates RATL code into R code, which is then evaluated.</p>
+<section id="the-name" class="level3">
+<h3 class="anchored" data-anchor-id="the-name">1.1 The Name</h3>
+<p>The name stands for <strong>R-based Array Manipulation Language</strong>, reflecting its foundation in R and its primary focus on array-based operations.</p>
+</section>
+<section id="notation" class="level3">
+<h3 class="anchored" data-anchor-id="notation">1.2 Notation</h3>
+<ul>
+<li><code>$n</code>: Represents the <span class="math inline">\(n\)</span>-th element popped from the stack (starting from the top).</li>
+<li><code>stack</code>: The global list used for storage.</li>
+<li><code>H, G, L, M</code>: Clipboards for temporary storage outside the stack.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="the-stack-and-data-types" class="level2">
+<h2 class="anchored" data-anchor-id="the-stack-and-data-types">2. The Stack and Data Types</h2>
+<p>RATL is a stack-based language where every operation interacts with a global stack (an R <code>list</code>).</p>
+<section id="data-types" class="level3">
+<h3 class="anchored" data-anchor-id="data-types">Data Types</h3>
+<p>RATL uses native R types: - <strong>Numeric</strong>: Integers and floating-point numbers (R <code>numeric</code>). - <strong>Logical</strong>: Boolean values (<code>TRUE</code>, <code>FALSE</code>). - <strong>Character</strong>: Strings of text (R <code>character</code>). - <strong>List/Cell Array</strong>: Collections of items, which can be of mixed types (R <code>list</code>). - <strong>Matrix</strong>: 2D arrays (R <code>matrix</code>).</p>
+<hr>
+</section>
+</section>
+<section id="statements-and-separators" class="level2">
+<h2 class="anchored" data-anchor-id="statements-and-separators">3. Statements and Separators</h2>
+<ul>
+<li><strong>Space</strong>: Acts as a token separator.</li>
+<li><strong>Newline</strong>: Ignored by the parser but acts as a token separator.</li>
+<li><strong>Comments</strong>: Lines starting with <code>#</code> are treated as comments and ignored.</li>
+</ul>
+<hr>
+</section>
+<section id="literals" class="level2">
+<h2 class="anchored" data-anchor-id="literals">4. Literals</h2>
+<p>Literals are pushed onto the stack as soon as they are encountered.</p>
+<section id="numbers" class="level3">
+<h3 class="anchored" data-anchor-id="numbers">4.1 Numbers</h3>
+<p>Standard numeric notation: <code>1</code>, <code>10</code>, <code>3.14</code>, <code>-5</code>.</p>
+</section>
+<section id="numerical-arrays-vectors" class="level3">
+<h3 class="anchored" data-anchor-id="numerical-arrays-vectors">4.2 Numerical Arrays (Vectors)</h3>
+<p>Enclosed in square brackets <code>[...]</code>. Elements are separated by spaces. Example: <code>[1 2 3]</code> pushes a numeric vector of length 3.</p>
+</section>
+<section id="character-arrays-strings" class="level3">
+<h3 class="anchored" data-anchor-id="character-arrays-strings">4.3 Character Arrays (Strings)</h3>
+<p>Enclosed in single quotes <code>'...'</code>. Example: <code>'hello'</code> pushes a character vector of length 1.</p>
+</section>
+<section id="cell-arrays-lists" class="level3">
+<h3 class="anchored" data-anchor-id="cell-arrays-lists">4.4 Cell Arrays (Lists)</h3>
+<p>Enclosed in curly braces <code>{...}</code>. Example: <code>{1 'a' [1 2]}</code> pushes an R list containing three different types.</p>
+<hr>
+</section>
+</section>
+<section id="control-flow" class="level2">
+<h2 class="anchored" data-anchor-id="control-flow">5. Control Flow</h2>
+<p>RATL uses special symbols for conditional branching and loops.</p>
+<section id="conditional-branching-..." class="level3">
+<h3 class="anchored" data-anchor-id="conditional-branching-...">5.1 Conditional Branching (<code>? ... ]</code>)</h3>
+<ul>
+<li><strong>Symbols</strong>: <code>?</code> starts the block, <code>]</code> ends it.</li>
+<li><strong>If-Else</strong>: <code>? truthy ; falsy ]</code>. The <code>;</code> separator distinguishes the “then” and “else” branches.</li>
+<li><strong>Logic</strong>: Pops the top element. If it’s true, it executes the code until <code>]</code> (or <code>;</code>). If false and <code>;</code> is present, it executes the code between <code>;</code> and <code>]</code>.</li>
+</ul>
+</section>
+<section id="whilerepeat-loop-..." class="level3">
+<h3 class="anchored" data-anchor-id="whilerepeat-loop-...">5.2 While/Repeat Loop (<code>" ... "</code>)</h3>
+<ul>
+<li><strong>Symbol</strong>: <code>"</code></li>
+<li><strong>Logic</strong>: Starts a loop. At the end of the loop (marked by another <code>"</code>), it pops the top element. If it’s true, it repeats.</li>
+</ul>
+</section>
+<section id="for-each-loop-..." class="level3">
+<h3 class="anchored" data-anchor-id="for-each-loop-...">5.3 For-Each Loop (<code>( ... )</code>)</h3>
+<ul>
+<li><strong>Symbols</strong>: <code>(</code> and <code>)</code></li>
+<li><strong>Logic</strong>: <code>(</code> pops an array/list. It then iterates through each element, pushing it onto the stack and executing the code between <code>(</code> and <code>)</code>.</li>
+</ul>
+</section>
+<section id="infinite-loop-..." class="level3">
+<h3 class="anchored" data-anchor-id="infinite-loop-...">5.4 Infinite Loop (<code>` ... `</code>)</h3>
+<ul>
+<li><strong>Symbols</strong>: <code>`</code> starts and ends the loop.</li>
+<li><strong>Logic</strong>: Executes the code within the backticks repeatedly. Use the <code>X</code> (break) symbol to exit.</li>
+</ul>
+</section>
+<section id="higher-order-functions-block-consumers" class="level3">
+<h3 class="anchored" data-anchor-id="higher-order-functions-block-consumers">5.5 Higher-Order Functions (Block Consumers)</h3>
+<p>These functions pop a <code>{block}</code> from the stack and apply it to data.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>q</code></td>
+<td>Map</td>
+<td><code>{block} array q</code> — applies block to each element</td>
+</tr>
+<tr class="even">
+<td><code>e</code></td>
+<td>Filter</td>
+<td><code>{block} array e</code> — keeps elements where block returns truthy</td>
+</tr>
+<tr class="odd">
+<td><code>y</code></td>
+<td>Reduce</td>
+<td><code>{block} array y</code> — fold left with block</td>
+</tr>
+<tr class="even">
+<td><code>z</code></td>
+<td>Repeat</td>
+<td><code>N {block} z</code> — executes block N times</td>
+</tr>
+<tr class="odd">
+<td><code>@</code></td>
+<td>Execute</td>
+<td><code>{block} @</code> — pops and executes a block immediately</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="implicit-actions" class="level2">
+<h2 class="anchored" data-anchor-id="implicit-actions">6. Implicit Actions</h2>
+<section id="initial-actions" class="level3">
+<h3 class="anchored" data-anchor-id="initial-actions">6.1 Initial Actions</h3>
+<ul>
+<li>The stack is initialized as an empty <code>list()</code>.</li>
+<li>A connection to <code>stdin</code> is opened for input operations.</li>
+</ul>
+</section>
+<section id="final-actions" class="level3">
+<h3 class="anchored" data-anchor-id="final-actions">6.2 Final Actions</h3>
+<ul>
+<li><strong>Implicit Print</strong>: If the stack contains exactly one element, it is printed automatically. If it contains more than one, the entire stack is printed as a list.</li>
+<li><strong>Invisible Output</strong>: The final evaluation result is returned invisibly in R.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="meta-programming" class="level2">
+<h2 class="anchored" data-anchor-id="meta-programming">7. Meta-Programming</h2>
+<p>RATL supports meta-programming — code that generates or manipulates other code at runtime.</p>
+<section id="dynamic-evaluation-ev" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-evaluation-ev">7.1 Dynamic Evaluation (<code>ev</code>)</h3>
+<p>Pops a string from the stack and executes it as RATL code:</p>
+<pre><code>'3 5 +' ev        → 8
+'[1 2 3] s' ev    → 6
+'5 fp' ev         → 120</code></pre>
+</section>
+<section id="dispatch-list-zd" class="level3">
+<h3 class="anchored" data-anchor-id="dispatch-list-zd">7.2 Dispatch List (<code>zD</code>)</h3>
+<p>Pushes a list of all available symbol names onto the stack:</p>
+<pre><code>zD    → [+ - * / D w x ...]</code></pre>
+</section>
+<section id="dynamic-dispatch-zs" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-dispatch-zs">7.3 Dynamic Dispatch (<code>zS</code>)</h3>
+<p>Calls a symbol by name (string):</p>
+<pre><code>3 5 '+' zS    → 8
+5 'sq' zS     → 2.236...</code></pre>
+</section>
+<section id="shell-exec-zx" class="level3">
+<h3 class="anchored" data-anchor-id="shell-exec-zx">7.4 Shell Exec (<code>zX</code>)</h3>
+<p>Runs a shell command and pushes the output:</p>
+<pre><code>'echo hello' zX    → "hello"
+'ls' zX            → file listing</code></pre>
+</section>
+<section id="sort-by-zb" class="level3">
+<h3 class="anchored" data-anchor-id="sort-by-zb">7.5 Sort By (<code>zB</code>)</h3>
+<p>Sorts an array using a block as the key function:</p>
+<pre><code>[3 1 4 1 5] {0-} zB    → 1 1 3 4 5 (reverse sort)
+[1 2 3] {2 *} zB       → 1 2 3</code></pre>
+</section>
+<section id="group-by-zg" class="level3">
+<h3 class="anchored" data-anchor-id="group-by-zg">7.6 Group By (<code>zG</code>)</h3>
+<p>Groups array elements by the block’s return value:</p>
+<pre><code>[1 2 3 4 5 6] {2 %} zG    → $0: [2 4 6] $1: [1 3 5]</code></pre>
+</section>
+<section id="scan-zc" class="level3">
+<h3 class="anchored" data-anchor-id="scan-zc">7.7 Scan (<code>zC</code>)</h3>
+<p>Like reduce, but returns all intermediate results:</p>
+<pre><code>[1 2 3 4 5] {+} zC    → 1 3 6 10 15
+[2 3 4] {*} zC        → 2 6 24</code></pre>
+</section>
+<section id="take-while-zt" class="level3">
+<h3 class="anchored" data-anchor-id="take-while-zt">7.8 Take While (<code>zT</code>)</h3>
+<p>Takes elements while the block returns truthy:</p>
+<pre><code>[1 2 3 4 5] {4 &lt;} zT    → 1 2 3</code></pre>
+</section>
+<section id="drop-while-zw" class="level3">
+<h3 class="anchored" data-anchor-id="drop-while-zw">7.9 Drop While (<code>zW</code>)</h3>
+<p>Drops elements while the block returns truthy:</p>
+<pre><code>[1 2 3 4 5] {3 &lt;} zW    → 3 4 5</code></pre>
+</section>
+<section id="zip-with-zz" class="level3">
+<h3 class="anchored" data-anchor-id="zip-with-zz">7.10 Zip With (<code>zZ</code>)</h3>
+<p>Applies a block pairwise to two arrays:</p>
+<pre><code>[1 2 3] [4 5 6] {+} zZ    → 5 7 9</code></pre>
+<hr>
+</section>
+</section>
+<section id="symbol-reference" class="level2">
+<h2 class="anchored" data-anchor-id="symbol-reference">8. Symbol Reference</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 26%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Symbol</th>
+<th>R Code</th>
+<th>Description</th>
+<th>Stack Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>%</code></td>
+<td><code>$2 %% $1</code></td>
+<td>Modulo</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>*</code></td>
+<td><code>$2 * $1</code></td>
+<td>Multiply</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>+</code></td>
+<td><code>$2 + $1</code></td>
+<td>Add</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>-</code></td>
+<td><code>$2 - $1</code></td>
+<td>Subtract</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>/</code></td>
+<td><code>$2 / $1</code></td>
+<td>Divide</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>&lt;</code></td>
+<td><code>$2 &lt; $1</code></td>
+<td>Less</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>&lt;=</code></td>
+<td><code>$2 &lt;= $1</code></td>
+<td>LessEqual</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>=</code></td>
+<td><code>$2 == $1</code></td>
+<td>Equal</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>&gt;</code></td>
+<td><code>$2 &gt; $1</code></td>
+<td>Greater</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>&gt;=</code></td>
+<td><code>$2 &gt;= $1</code></td>
+<td>GreatEqual</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>^</code></td>
+<td><code>$2 ^ $1</code></td>
+<td>Power</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>lX</code></td>
+<td><code>xor($2, $1)</code></td>
+<td>Xor</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>mI</code></td>
+<td><code>$2 %/% $1</code></td>
+<td>IntDiv</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>|</code></td>
+<td><code>$2 | $1</code></td>
+<td>Or</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Arithmetic &amp; Comparison</td>
+<td><code>~</code></td>
+<td><code>!$1</code></td>
+<td>Not</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>#</code></td>
+<td><code>$2[$1]</code></td>
+<td>Filter</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>,</code></td>
+<td><code>c($2, $1)</code></td>
+<td>Concat Vectors</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>.</code></td>
+<td><code>1:$1</code></td>
+<td>Range 1 to N</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>..</code></td>
+<td><code>list($2, $1)</code></td>
+<td>Pair</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>:</code></td>
+<td><code>seq($2, $1)</code></td>
+<td>Sequence</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>O</code></td>
+<td><code>sort($1)</code></td>
+<td>Sort</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>R</code></td>
+<td><code>rev($1)</code></td>
+<td>Reverse</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>SH</code></td>
+<td><code>head($1)</code></td>
+<td>Head</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>SR</code></td>
+<td><code>rank($1)</code></td>
+<td>Rank</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>ST</code></td>
+<td><code>tail($1)</code></td>
+<td>Tail</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>XC</code></td>
+<td><code>cumsum($1)</code></td>
+<td>CumSum</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>Xk</code></td>
+<td><code>{r &lt;- rle($1); list(r$values, r$lengths)}</code></td>
+<td>RLE</td>
+<td>1 → 2</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>c1</code></td>
+<td><code>cumprod($1)</code></td>
+<td>CumProd</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>cn</code></td>
+<td><code>is.element($2, $1)</code></td>
+<td>IsIn</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>dO</code></td>
+<td><code>order($1)</code></td>
+<td>Order</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>dS</code></td>
+<td><code>split($2, $1)</code></td>
+<td>Split</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>dU</code></td>
+<td><code>unsplit($2, $1)</code></td>
+<td>Unsplit</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>el</code></td>
+<td><code>$2[[$1]]</code></td>
+<td>Extract Element [[</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>en</code></td>
+<td><code>$2[[as.character($1)]]</code></td>
+<td>Extract Name $</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>es</code></td>
+<td><code>$2[$1]</code></td>
+<td>Extract Subset [</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>fE</code></td>
+<td><code>head($1, 1)</code></td>
+<td>FirstElem</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>fu</code></td>
+<td><code>unlist($1)</code></td>
+<td>Flatten</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>hd</code></td>
+<td><code>head($2, $1)</code></td>
+<td>HeadN</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>ix</code></td>
+<td><code>match($2, $1)</code></td>
+<td>IndexOf</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>l</code></td>
+<td><code>length($1)</code></td>
+<td>Length</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>la</code></td>
+<td><code>tail($1, 1)</code></td>
+<td>LastElem</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>ns</code></td>
+<td><code>$2[length($2)+1-$1]</code></td>
+<td>NegSlice</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>r1</code></td>
+<td><code>1:$1</code></td>
+<td>Range1toN</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>r2</code></td>
+<td><code>rep($2, $1)</code></td>
+<td>Rep</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>tb</code></td>
+<td><code>tabulate($1)</code></td>
+<td>Tabulate</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>tl</code></td>
+<td><code>tail($2, $1)</code></td>
+<td>TailN</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>u</code></td>
+<td><code>unique($1)</code></td>
+<td>Unique</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>un</code></td>
+<td><code>length(unique($1))</code></td>
+<td>UniqueN</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>vB</code></td>
+<td><code>pmin($2, $1)</code></td>
+<td>PMin</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>vD</code></td>
+<td><code>drop($1)</code></td>
+<td>Drop</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>vF</code></td>
+<td><code>diff($1)</code></td>
+<td>Diff</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>vG</code></td>
+<td><code>pmax($2, $1)</code></td>
+<td>PMax</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>vH</code></td>
+<td><code>which($1, arr.ind=TRUE)</code></td>
+<td>WhichArr</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>vI</code></td>
+<td><code>cummin($1)</code></td>
+<td>CumMin</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>vT</code></td>
+<td><code>matrix(rep($3, $2*$1), nrow=nrow($3)*$2)</code></td>
+<td>RepMat</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>vW</code></td>
+<td><code>seq($3, $2, length.out=$1)</code></td>
+<td>SeqLen</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>vX</code></td>
+<td><code>cummax($1)</code></td>
+<td>CumMax</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Array Operations</td>
+<td><code>wh</code></td>
+<td><code>which($1)</code></td>
+<td>Which</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Array Operations</td>
+<td><code>zp</code></td>
+<td><code>unlist(Map(list, $2, $1))</code></td>
+<td>Zip</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Bitwise Operations</td>
+<td><code>bA</code></td>
+<td><code>bitwAnd($2, $1)</code></td>
+<td>BitAnd</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Bitwise Operations</td>
+<td><code>bL</code></td>
+<td><code>bitwShiftL($2, $1)</code></td>
+<td>BitShiftL</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Bitwise Operations</td>
+<td><code>bN</code></td>
+<td><code>bitwNot($1)</code></td>
+<td>BitNot</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Bitwise Operations</td>
+<td><code>bO</code></td>
+<td><code>bitwOr($2, $1)</code></td>
+<td>BitOr</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Bitwise Operations</td>
+<td><code>bR</code></td>
+<td><code>bitwShiftR($2, $1)</code></td>
+<td>BitShiftR</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Bitwise Operations</td>
+<td><code>bX</code></td>
+<td><code>bitwXor($2, $1)</code></td>
+<td>BitXor</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>LG</code></td>
+<td><code>lgamma($1)</code></td>
+<td>Log Gamma</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>MC</code></td>
+<td><code>choose($2, $1)</code></td>
+<td>Choose</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>XP</code></td>
+<td><code>ratl_prime_factors($1)</code></td>
+<td>Prime Factors</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>Xn</code></td>
+<td><code>choose($2, $1)</code></td>
+<td>Choose (nCr)</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>Xq</code></td>
+<td><code>ratl_is_prime($1)</code></td>
+<td>Is Prime</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>di</code></td>
+<td><code>digamma($1)</code></td>
+<td>Digamma</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>fa</code></td>
+<td><code>ratl_factors($1)</code></td>
+<td>Factors</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>fp</code></td>
+<td><code>factorial($1)</code></td>
+<td>Factorial</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>g</code></td>
+<td><code>ratl_gcd($2, $1)</code></td>
+<td>GCD</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>lb</code></td>
+<td><code>lbeta($2, $1)</code></td>
+<td>Log Beta</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>lc</code></td>
+<td><code>ratl_lcm($2, $1)</code></td>
+<td>LCM</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>mB</code></td>
+<td><code>beta($2, $1)</code></td>
+<td>Beta</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>mG</code></td>
+<td><code>gamma($1)</code></td>
+<td>Gamma</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>mf</code></td>
+<td><code>ratl_prime_factors($1)</code></td>
+<td>Prime Factors</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>ml</code></td>
+<td><code>ratl_lcm($2, $1)</code></td>
+<td>LCM</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>mp</code></td>
+<td><code>ratl_is_prime($1)</code></td>
+<td>Is Prime</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Combinatorics &amp; Special</td>
+<td><code>ps</code></td>
+<td><code>psigamma($2, $1)</code></td>
+<td>Psigamma</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Combinatorics &amp; Special</td>
+<td><code>tg</code></td>
+<td><code>trigamma($1)</code></td>
+<td>Trigamma</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Complex Numbers</td>
+<td><code>cA</code></td>
+<td><code>Arg($1)</code></td>
+<td>Arg</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Complex Numbers</td>
+<td><code>cI</code></td>
+<td><code>Im($1)</code></td>
+<td>Imag Part</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Complex Numbers</td>
+<td><code>cJ</code></td>
+<td><code>Conj($1)</code></td>
+<td>Conjugate</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Complex Numbers</td>
+<td><code>cM</code></td>
+<td><code>Mod($1)</code></td>
+<td>Modulus</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Complex Numbers</td>
+<td><code>cR</code></td>
+<td><code>Re($1)</code></td>
+<td>Real Part</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Constants</td>
+<td><code>In</code></td>
+<td><code>Inf</code></td>
+<td>Inf</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Constants</td>
+<td><code>Na</code></td>
+<td><code>NA</code></td>
+<td>NA</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Constants</td>
+<td><code>Pi</code></td>
+<td><code>pi</code></td>
+<td>Pi</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Constants</td>
+<td><code>s4</code></td>
+<td><code>logical(0)</code></td>
+<td>EmptyLog</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Constants</td>
+<td><code>sQ</code></td>
+<td><code>character(0)</code></td>
+<td>EmptyChar</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Constants</td>
+<td><code>sZ</code></td>
+<td><code>numeric(0)</code></td>
+<td>EmptyNum</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>DN</code></td>
+<td><code>dnorm($3, $2, $1)</code></td>
+<td>Density Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>KC</code></td>
+<td><code>cor.test($2, $1)</code></td>
+<td>Cor Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>KK</code></td>
+<td><code>kruskal.test($1)</code></td>
+<td>Kruskal-Wallis</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>N</code></td>
+<td><code>rnorm($1)</code></td>
+<td>Random Normal</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>PN</code></td>
+<td><code>pnorm($3, $2, $1)</code></td>
+<td>Prob Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>QN</code></td>
+<td><code>qnorm($3, $2, $1)</code></td>
+<td>Quantile Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>RB</code></td>
+<td><code>rbeta($3, $2, $1)</code></td>
+<td>Random Beta</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>RE</code></td>
+<td><code>rexp($2, $1)</code></td>
+<td>Random Exponential</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>RN</code></td>
+<td><code>rnorm($3, $2, $1)</code></td>
+<td>Random Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>RU</code></td>
+<td><code>runif($3, $2, $1)</code></td>
+<td>Random Uniform</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dB</code></td>
+<td><code>dbinom($3, $2, $1)</code></td>
+<td>Density Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dC</code></td>
+<td><code>dchisq($2, $1)</code></td>
+<td>Density Chi-Square</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dG</code></td>
+<td><code>dgeom($2, $1)</code></td>
+<td>Density Geometric</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dL</code></td>
+<td><code>dlogis($3, $2, $1)</code></td>
+<td>Density Logistic</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dN</code></td>
+<td><code>dnbinom($3, $2, $1)</code></td>
+<td>Density Neg-Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dP</code></td>
+<td><code>dpois($2, $1)</code></td>
+<td>Density Poisson</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>db</code></td>
+<td><code>dbeta($3, $2, $1)</code></td>
+<td>Density Beta</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dc</code></td>
+<td><code>dcauchy($3, $2, $1)</code></td>
+<td>Density Cauchy</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>de</code></td>
+<td><code>dexp($2, $1)</code></td>
+<td>Density Exponential</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>df</code></td>
+<td><code>df($3, $2, $1)</code></td>
+<td>Density F</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dg</code></td>
+<td><code>dgamma($3, $2, $1)</code></td>
+<td>Density Gamma</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dh</code></td>
+<td><code>dhyper($4, $3, $2, $1)</code></td>
+<td>Density Hypergeometric</td>
+<td>4 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dl</code></td>
+<td><code>dlnorm($3, $2, $1)</code></td>
+<td>Density Log-Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>dn</code></td>
+<td><code>dnorm($1)</code></td>
+<td>Density Normal</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>dt</code></td>
+<td><code>dt($2, $1)</code></td>
+<td>Density Student-t</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>du</code></td>
+<td><code>dunif($3, $2, $1)</code></td>
+<td>Density Uniform</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>kb</code></td>
+<td><code>bartlett.test($1)</code></td>
+<td>Bartlett Test</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>kc</code></td>
+<td><code>chisq.test($1)</code></td>
+<td>Chi-Square Test</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>kf</code></td>
+<td><code>fisher.test($1)</code></td>
+<td>Fisher Test</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>kk</code></td>
+<td><code>ks.test($2, $1)</code></td>
+<td>KS Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>kp</code></td>
+<td><code>prop.test($2, $1)</code></td>
+<td>Prop Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>ks</code></td>
+<td><code>shapiro.test($1)</code></td>
+<td>Shapiro-Wilk</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>kt</code></td>
+<td><code>t.test($2, $1)</code></td>
+<td>T-Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>kv</code></td>
+<td><code>var.test($2, $1)</code></td>
+<td>F-Test Var</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>kw</code></td>
+<td><code>wilcox.test($2, $1)</code></td>
+<td>Wilcoxon Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pB</code></td>
+<td><code>pbinom($3, $2, $1)</code></td>
+<td>Prob Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pC</code></td>
+<td><code>pchisq($2, $1)</code></td>
+<td>Prob Chi-Square</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pG</code></td>
+<td><code>pgeom($2, $1)</code></td>
+<td>Prob Geometric</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pL</code></td>
+<td><code>plogis($3, $2, $1)</code></td>
+<td>Prob Logistic</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pN</code></td>
+<td><code>pnbinom($3, $2, $1)</code></td>
+<td>Prob Neg-Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pP</code></td>
+<td><code>ppois($2, $1)</code></td>
+<td>Prob Poisson</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pb</code></td>
+<td><code>pbeta($3, $2, $1)</code></td>
+<td>Prob Beta</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pc</code></td>
+<td><code>pcauchy($3, $2, $1)</code></td>
+<td>Prob Cauchy</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pe</code></td>
+<td><code>pexp($2, $1)</code></td>
+<td>Prob Exponential</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pf</code></td>
+<td><code>pf($3, $2, $1)</code></td>
+<td>Prob F</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pg</code></td>
+<td><code>pgamma($3, $2, $1)</code></td>
+<td>Prob Gamma</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>ph</code></td>
+<td><code>phyper($4, $3, $2, $1)</code></td>
+<td>Prob Hypergeometric</td>
+<td>4 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pl</code></td>
+<td><code>plnorm($3, $2, $1)</code></td>
+<td>Prob Log-Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pn</code></td>
+<td><code>pnorm($1)</code></td>
+<td>Prob Normal</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pt</code></td>
+<td><code>pt($2, $1)</code></td>
+<td>Prob Student-t</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>pu</code></td>
+<td><code>punif($3, $2, $1)</code></td>
+<td>Prob Uniform</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>pw</code></td>
+<td><code>pweibull($3, $2, $1)</code></td>
+<td>Prob Weibull</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qB</code></td>
+<td><code>qbinom($3, $2, $1)</code></td>
+<td>Quantile Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qC</code></td>
+<td><code>qchisq($2, $1)</code></td>
+<td>Quantile Chi-Square</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qG</code></td>
+<td><code>qgeom($2, $1)</code></td>
+<td>Quantile Geometric</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qL</code></td>
+<td><code>qlogis($3, $2, $1)</code></td>
+<td>Quantile Logistic</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qN</code></td>
+<td><code>qnbinom($3, $2, $1)</code></td>
+<td>Quantile Neg-Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qP</code></td>
+<td><code>qpois($2, $1)</code></td>
+<td>Quantile Poisson</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qb</code></td>
+<td><code>qbeta($3, $2, $1)</code></td>
+<td>Quantile Beta</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qc</code></td>
+<td><code>qcauchy($3, $2, $1)</code></td>
+<td>Quantile Cauchy</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qe</code></td>
+<td><code>qexp($2, $1)</code></td>
+<td>Quantile Exponential</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qf</code></td>
+<td><code>qf($3, $2, $1)</code></td>
+<td>Quantile F</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qg</code></td>
+<td><code>qgamma($3, $2, $1)</code></td>
+<td>Quantile Gamma</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qh</code></td>
+<td><code>qhyper($4, $3, $2, $1)</code></td>
+<td>Quantile Hypergeometric</td>
+<td>4 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>ql</code></td>
+<td><code>qlnorm($3, $2, $1)</code></td>
+<td>Quantile Log-Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qn</code></td>
+<td><code>qnorm($1)</code></td>
+<td>Quantile Normal</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qt</code></td>
+<td><code>qt($2, $1)</code></td>
+<td>Quantile Student-t</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>qu</code></td>
+<td><code>qunif($3, $2, $1)</code></td>
+<td>Quantile Uniform</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>qw</code></td>
+<td><code>qweibull($3, $2, $1)</code></td>
+<td>Quantile Weibull</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rB</code></td>
+<td><code>rbinom($3, $2, $1)</code></td>
+<td>Random Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rC</code></td>
+<td><code>rchisq($2, $1)</code></td>
+<td>Random Chi-Square</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rG</code></td>
+<td><code>rgeom($2, $1)</code></td>
+<td>Random Geometric</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rL</code></td>
+<td><code>rlogis($3, $2, $1)</code></td>
+<td>Random Logistic</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rN</code></td>
+<td><code>rnbinom($3, $2, $1)</code></td>
+<td>Random Neg-Binomial</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rP</code></td>
+<td><code>rpois($2, $1)</code></td>
+<td>Random Poisson</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rb</code></td>
+<td><code>rbinom($1, size=1, prob=0.5)</code></td>
+<td>Random Binomial</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rc</code></td>
+<td><code>rcauchy($3, $2, $1)</code></td>
+<td>Random Cauchy</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>re</code></td>
+<td><code>rexp($1)</code></td>
+<td>Random Exp</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rf</code></td>
+<td><code>rf($3, $2, $1)</code></td>
+<td>Random F</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rg</code></td>
+<td><code>rgamma($3, $2, $1)</code></td>
+<td>Random Gamma</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rh</code></td>
+<td><code>rhyper($4, $3, $2, $1)</code></td>
+<td>Random Hypergeometric</td>
+<td>4 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rl</code></td>
+<td><code>rlnorm($3, $2, $1)</code></td>
+<td>Random Log-Normal</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rp</code></td>
+<td><code>rpois($1, lambda=1)</code></td>
+<td>Random Poisson</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>rt</code></td>
+<td><code>rt($2, $1)</code></td>
+<td>Random Student-t</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Distributions &amp; Tests</td>
+<td><code>rw</code></td>
+<td><code>rweibull($3, $2, $1)</code></td>
+<td>Random Weibull</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Distributions &amp; Tests</td>
+<td><code>tt</code></td>
+<td><code>t.test($2, $1)</code></td>
+<td>T-Test</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>F</code></td>
+<td><code>readLines($1)</code></td>
+<td>Read File</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>FL</code></td>
+<td><code>list.files($1)</code></td>
+<td>List Files</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>FW</code></td>
+<td><code>{writeLines(as.character($2), $1); NULL}</code></td>
+<td>Write File</td>
+<td>2 → 0</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>W</code></td>
+<td><code>writeLines(as.character($2), $1); NULL</code></td>
+<td>Write File</td>
+<td>2 → 0</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fA</code></td>
+<td><code>dirname($1)</code></td>
+<td>Dirname</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fC</code></td>
+<td><code>write.csv($2, $1)</code></td>
+<td>Write CSV</td>
+<td>2 → 0</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fD</code></td>
+<td><code>list.dirs($1)</code></td>
+<td>List Dirs</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fN</code></td>
+<td><code>file.create($1)</code></td>
+<td>File Create</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fP</code></td>
+<td><code>normalizePath($1)</code></td>
+<td>Abs Path</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fT</code></td>
+<td><code>tempfile()</code></td>
+<td>Temp File</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fX</code></td>
+<td><code>dir.exists($1)</code></td>
+<td>Dir Exists</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fb</code></td>
+<td><code>basename($1)</code></td>
+<td>Basename</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fc</code></td>
+<td><code>read.csv($1)</code></td>
+<td>Read CSV</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fd</code></td>
+<td><code>dir.create($1)</code></td>
+<td>Dir Create</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fe</code></td>
+<td><code>file.exists($1)</code></td>
+<td>File Exists</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fi</code></td>
+<td><code>file.info($1)</code></td>
+<td>File Info</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>fm</code></td>
+<td><code>file.remove($1)</code></td>
+<td>File Remove</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fr</code></td>
+<td><code>read.table($1)</code></td>
+<td>Read Table</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>File I/O</td>
+<td><code>ft</code></td>
+<td><code>tempdir()</code></td>
+<td>Temp Dir</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>File I/O</td>
+<td><code>fw</code></td>
+<td><code>write.table($2, $1)</code></td>
+<td>Write Table</td>
+<td>2 → 0</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fa</code></td>
+<td><code>apply($3, $2, $1)</code></td>
+<td>Apply</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Ff</code></td>
+<td><code>Filter($2, $1)</code></td>
+<td>Filter (Func)</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fl</code></td>
+<td><code>lapply($2, $1)</code></td>
+<td>Lapply</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Fm</code></td>
+<td><code>mapply($1, ...)</code></td>
+<td>Mapply</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fn</code></td>
+<td><code>Find($2, $1)</code></td>
+<td>Find (Func)</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Fp</code></td>
+<td><code>Position($2, $1)</code></td>
+<td>Position</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fq</code></td>
+<td><code>NULL</code></td>
+<td>Map (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Fr</code></td>
+<td><code>Reduce($2, $1)</code></td>
+<td>Reduce</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fs</code></td>
+<td><code>sapply($2, $1)</code></td>
+<td>Sapply</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Ft</code></td>
+<td><code>NULL</code></td>
+<td>Filter (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>Fv</code></td>
+<td><code>vapply($3, $2, $1)</code></td>
+<td>Vapply</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>Fx</code></td>
+<td><code>NULL</code></td>
+<td>Repeat (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>e</code></td>
+<td><code>NULL</code></td>
+<td>Filter (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>fn</code></td>
+<td><code>Negate($1)</code></td>
+<td>Negate</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>q</code></td>
+<td><code>NULL</code></td>
+<td>Map (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Higher-Order Functions</td>
+<td><code>y</code></td>
+<td><code>NULL</code></td>
+<td>Reduce (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Higher-Order Functions</td>
+<td><code>z</code></td>
+<td><code>NULL</code></td>
+<td>Repeat (evaluator)</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>SP</code></td>
+<td><code>sinpi($1)</code></td>
+<td>Sin(pi*x)</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>a2</code></td>
+<td><code>atan2($2, $1)</code></td>
+<td>ArcTan2</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>aC</code></td>
+<td><code>acos($1)</code></td>
+<td>ArcCos</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>aS</code></td>
+<td><code>asin($1)</code></td>
+<td>ArcSin</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>aT</code></td>
+<td><code>atan($1)</code></td>
+<td>ArcTan</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>ab</code></td>
+<td><code>abs($1)</code></td>
+<td>Abs</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>ac</code></td>
+<td><code>acosh($1)</code></td>
+<td>ArcCosh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>as</code></td>
+<td><code>asinh($1)</code></td>
+<td>ArcSinh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>at</code></td>
+<td><code>atanh($1)</code></td>
+<td>ArcTanh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>ch</code></td>
+<td><code>cosh($1)</code></td>
+<td>Cosh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>cl</code></td>
+<td><code>ceiling($1)</code></td>
+<td>Ceiling</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>cp</code></td>
+<td><code>cospi($1)</code></td>
+<td>Cos(pi*x)</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>e-</code></td>
+<td><code>expm1($1)</code></td>
+<td>Exp(x)-1</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>fl</code></td>
+<td><code>floor($1)</code></td>
+<td>Floor</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>l+</code></td>
+<td><code>log1p($1)</code></td>
+<td>Log(1+x)</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>l1</code></td>
+<td><code>log10($1)</code></td>
+<td>Log 10</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>l2</code></td>
+<td><code>log2($1)</code></td>
+<td>Log 2</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>lg</code></td>
+<td><code>log($1)</code></td>
+<td>Log Natural</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>mc</code></td>
+<td><code>cos($1)</code></td>
+<td>Cos</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>ms</code></td>
+<td><code>sin($1)</code></td>
+<td>Sin</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>mt</code></td>
+<td><code>tan($1)</code></td>
+<td>Tan</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>ro</code></td>
+<td><code>round($1)</code></td>
+<td>Round</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>sg</code></td>
+<td><code>sign($1)</code></td>
+<td>Sign</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>sh</code></td>
+<td><code>sinh($1)</code></td>
+<td>Sinh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>sq</code></td>
+<td><code>sqrt($1)</code></td>
+<td>Sqrt</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>th</code></td>
+<td><code>tanh($1)</code></td>
+<td>Tanh</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Math Functions</td>
+<td><code>tp</code></td>
+<td><code>tanpi($1)</code></td>
+<td>Tan(pi*x)</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Math Functions</td>
+<td><code>tr</code></td>
+<td><code>trunc($1)</code></td>
+<td>Trunc</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>!</code></td>
+<td><code>t($1)</code></td>
+<td>Transpose</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>&amp;</code></td>
+<td><code>$2 %o% $1</code></td>
+<td>Outer Product</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>BT</code></td>
+<td><code>{idx&lt;-c(1,4,3,2,5); $1[idx,idx]}</code></td>
+<td>Bingo Twin</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>R9</code></td>
+<td><code>apply(t($1), 2, rev)</code></td>
+<td>Rot90</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>Y!</code></td>
+<td><code>matrix($3, nrow=$2, ncol=$1)</code></td>
+<td>Create Matrix</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>Y*</code></td>
+<td><code>$2 %*% $1</code></td>
+<td>Matrix Mult</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>YM</code></td>
+<td><code>matrix($3, nrow=$2, ncol=$1, byrow=TRUE)</code></td>
+<td>Matrix ByRow</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>v2</code></td>
+<td><code>solve($2, $1)</code></td>
+<td>Solve 2</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>vC</code></td>
+<td><code>col($1)</code></td>
+<td>Col Indices</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>vE</code></td>
+<td><code>rowSums($1)</code></td>
+<td>Row Sums</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>vL</code></td>
+<td><code>solve($1)</code></td>
+<td>Solve</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>vM</code></td>
+<td><code>colMeans($1)</code></td>
+<td>Col Means</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>vN</code></td>
+<td><code>rowMeans($1)</code></td>
+<td>Row Means</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>vQ</code></td>
+<td><code>qr($1)</code></td>
+<td>QR Decomp</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>vR</code></td>
+<td><code>row($1)</code></td>
+<td>Row Indices</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>vS</code></td>
+<td><code>colSums($1)</code></td>
+<td>Col Sums</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>vV</code></td>
+<td><code>svd($1)</code></td>
+<td>SVD</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>y!</code></td>
+<td><code>diag($1)</code></td>
+<td>Diag</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>yD</code></td>
+<td><code>diag($1)</code></td>
+<td>Identity Matrix</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>yc</code></td>
+<td><code>eigen($1)$vectors</code></td>
+<td>EigenVectors</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>yd</code></td>
+<td><code>det($1)</code></td>
+<td>Determinant</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>yf</code></td>
+<td><code>as.matrix($1)</code></td>
+<td>Full</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>yk</code></td>
+<td><code>kronecker($2, $1)</code></td>
+<td>Kronecker</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>yl</code></td>
+<td><code>{x&lt;-$1; x[upper.tri(x)]&lt;-0; x}</code></td>
+<td>TriLower</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>ym</code></td>
+<td><code>matrix($3, nrow=$2, ncol=$1)</code></td>
+<td>Create Matrix</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>yt</code></td>
+<td><code>sum(diag($1))</code></td>
+<td>Trace</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Matrix</td>
+<td><code>yu</code></td>
+<td><code>{x&lt;-$1; x[lower.tri(x)]&lt;-0; x}</code></td>
+<td>TriUpper</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>yv</code></td>
+<td><code>eigen($1)$values</code></td>
+<td>EigenValues</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Set Operations</td>
+<td><code>sD</code></td>
+<td><code>setdiff($2, $1)</code></td>
+<td>SetDiff</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Set Operations</td>
+<td><code>sI</code></td>
+<td><code>intersect($2, $1)</code></td>
+<td>Intersect</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Set Operations</td>
+<td><code>sN</code></td>
+<td><code>union($2, $1)</code></td>
+<td>Union</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>D</code></td>
+<td><code>list($1, $1)</code></td>
+<td>Duplicate</td>
+<td>1 → 2</td>
+</tr>
+<tr class="even">
+<td>Stack &amp; Control</td>
+<td><code>Ls</code></td>
+<td><code>length(stack)</code></td>
+<td>Stack Length</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>U</code></td>
+<td><code>for(x in $1) stack[[length(stack)+1]] &lt;- x</code></td>
+<td>Unpack</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Stack &amp; Control</td>
+<td><code>i</code></td>
+<td><code>scan(ratl_stdin, what=character(), n=1, quiet=TRUE)</code></td>
+<td>Input</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>p</code></td>
+<td><code>ratl_print($1)</code></td>
+<td>Print</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Stack &amp; Control</td>
+<td><code>sC</code></td>
+<td><code>cat($1)</code></td>
+<td>Cat</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>sM</code></td>
+<td><code>message($1)</code></td>
+<td>Message</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Stack &amp; Control</td>
+<td><code>sS</code></td>
+<td><code>stop($1)</code></td>
+<td>Stop</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>sW</code></td>
+<td><code>warning($1)</code></td>
+<td>Warning</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Stack &amp; Control</td>
+<td><code>w</code></td>
+<td><code>list($1, $2)</code></td>
+<td>Swap</td>
+<td>2 → 2</td>
+</tr>
+<tr class="odd">
+<td>Stack &amp; Control</td>
+<td><code>x</code></td>
+<td><code>NULL</code></td>
+<td>Delete</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>K!</code></td>
+<td><code>coef($1)</code></td>
+<td>Coef</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>KA</code></td>
+<td><code>aov($1)</code></td>
+<td>AOV</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>KB</code></td>
+<td><code>BIC($1)</code></td>
+<td>BIC</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>KE</code></td>
+<td><code>residuals($1)</code></td>
+<td>Residuals</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>KF</code></td>
+<td><code>fitted($1)</code></td>
+<td>Fitted</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>KL</code></td>
+<td><code>logLik($1)</code></td>
+<td>LogLik</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>KV</code></td>
+<td><code>vcov($1)</code></td>
+<td>VCov</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>av</code></td>
+<td><code>anova($1)</code></td>
+<td>Anova</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>dA</code></td>
+<td><code>aggregate($3, $2, $1)</code></td>
+<td>Aggregate</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>dE</code></td>
+<td><code>cut($2, $1)</code></td>
+<td>Cut</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>dY</code></td>
+<td><code>by($3, $2, $1)</code></td>
+<td>By</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>ka</code></td>
+<td><code>anova($1)</code></td>
+<td>Anova</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>ke</code></td>
+<td><code>predict($2, $1)</code></td>
+<td>Predict</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>kg</code></td>
+<td><code>glm($1)</code></td>
+<td>GLM</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>ki</code></td>
+<td><code>AIC($1)</code></td>
+<td>AIC</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>kl</code></td>
+<td><code>lm($1)</code></td>
+<td>Linear Model</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>kn</code></td>
+<td><code>nls($1)</code></td>
+<td>NLS</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>ko</code></td>
+<td><code>loess($1)</code></td>
+<td>Loess</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>lm</code></td>
+<td><code>lm($1)</code></td>
+<td>Linear Model</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>mC</code></td>
+<td><code>confint($1)</code></td>
+<td>Conf Int</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>mL</code></td>
+<td><code>lm($2 ~ $1)</code></td>
+<td>LM Simple</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>mM</code></td>
+<td><code>model.matrix($1)</code></td>
+<td>Model Matrix</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>mO</code></td>
+<td><code>offset($1)</code></td>
+<td>Offset</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>mP</code></td>
+<td><code>predict($1)</code></td>
+<td>Predict</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>mR</code></td>
+<td><code>model.frame($1)</code></td>
+<td>Model Frame</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>mT</code></td>
+<td><code>terms($1)</code></td>
+<td>Terms</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>mU</code></td>
+<td><code>update($2, $1)</code></td>
+<td>Update</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistical Modeling</td>
+<td><code>mW</code></td>
+<td><code>formula($1)</code></td>
+<td>Formula</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistical Modeling</td>
+<td><code>vp</code></td>
+<td><code>prcomp($1)</code></td>
+<td>PCA</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>B5</code></td>
+<td><code>fivenum($1)</code></td>
+<td>FiveNum</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>BC</code></td>
+<td><code>cov($2, $1)</code></td>
+<td>Covariance</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>BS</code></td>
+<td><code>summary($1)</code></td>
+<td>Summary</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Ba</code></td>
+<td><code>mad($1)</code></td>
+<td>MAD</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Bc</code></td>
+<td><code>cor($2, $1)</code></td>
+<td>Correlation</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Bi</code></td>
+<td><code>IQR($1)</code></td>
+<td>IQR</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Bn</code></td>
+<td><code>min($1)</code></td>
+<td>Min</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Br</code></td>
+<td><code>range($1)</code></td>
+<td>Range</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Bs</code></td>
+<td><code>sd($1)</code></td>
+<td>Standard Deviation</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Bx</code></td>
+<td><code>max($1)</code></td>
+<td>Max</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Bz</code></td>
+<td><code>scale($1)</code></td>
+<td>Scale</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Ku</code></td>
+<td><code>sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)</code></td>
+<td>Kurtosis</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>P</code></td>
+<td><code>prod($1)</code></td>
+<td>Product</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Q</code></td>
+<td><code>quantile($1)</code></td>
+<td>Quantile</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Sd</code></td>
+<td><code>ratl_cum_sd($1)</code></td>
+<td>CumSD</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Sk</code></td>
+<td><code>sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)</code></td>
+<td>Skewness</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Sm</code></td>
+<td><code>mean($1, na.rm=TRUE)</code></td>
+<td>MeanNA</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Sn</code></td>
+<td><code>sum($1, na.rm=TRUE)</code></td>
+<td>SumNA</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Sw</code></td>
+<td><code>weighted.mean($2, $1)</code></td>
+<td>WeightedMean</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>V</code></td>
+<td><code>var($1)</code></td>
+<td>Variance</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Xo</code></td>
+<td><code>ratl_mode($1)</code></td>
+<td>Mode</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>Xr</code></td>
+<td><code>ratl_rms($1)</code></td>
+<td>RMS</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>Xs</code></td>
+<td><code>sd($1)</code></td>
+<td>Std Dev</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>cr</code></td>
+<td><code>cor($2, $1)</code></td>
+<td>Correlation</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>cv</code></td>
+<td><code>cov($2, $1)</code></td>
+<td>Covariance</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>dT</code></td>
+<td><code>table($1)</code></td>
+<td>Table</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>dX</code></td>
+<td><code>xtabs($2, $1)</code></td>
+<td>XTabs</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>h</code></td>
+<td><code>median($1)</code></td>
+<td>Median</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>lA</code></td>
+<td><code>any($1)</code></td>
+<td>Any</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>lZ</code></td>
+<td><code>sum($1 != 0)</code></td>
+<td>NNZ</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>m</code></td>
+<td><code>mean($1)</code></td>
+<td>Mean</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>mQ</code></td>
+<td><code>quantile($1, $2)</code></td>
+<td>Quantile</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>mn</code></td>
+<td><code>min($2, $1)</code></td>
+<td>Min2</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>mx</code></td>
+<td><code>max($2, $1)</code></td>
+<td>Max2</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>r</code></td>
+<td><code>runif($1)</code></td>
+<td>Random (n)</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>rm</code></td>
+<td><code>ratl_rms($1)</code></td>
+<td>RMS</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>s</code></td>
+<td><code>sum($1)</code></td>
+<td>Sum</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>sd</code></td>
+<td><code>sd($1)</code></td>
+<td>Standard Deviation</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>sm</code></td>
+<td><code>summary($1)</code></td>
+<td>Summary</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>v</code></td>
+<td><code>var($1)</code></td>
+<td>Variance</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Statistics</td>
+<td><code>vA</code></td>
+<td><code>all($1)</code></td>
+<td>All</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Statistics</td>
+<td><code>vd</code></td>
+<td><code>density($1)</code></td>
+<td>Density</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>C</code></td>
+<td><code>paste0($2, $1)</code></td>
+<td>Concat</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>J</code></td>
+<td><code>paste($2, collapse=$1)</code></td>
+<td>Join List</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>S</code></td>
+<td><code>strsplit($2, $1)[[1]]</code></td>
+<td>Split String</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>S!</code></td>
+<td><code>chartr($2, $1, $3)</code></td>
+<td>Translate</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>SG</code></td>
+<td><code>gsub($2, $1, $3)</code></td>
+<td>GSub</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>Xc</code></td>
+<td><code>chartr($1, $2, $3)</code></td>
+<td>Char Translate</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>Xt</code></td>
+<td><code>tolower($1)</code></td>
+<td>ToLower</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>j</code></td>
+<td><code>paste($2, $1)</code></td>
+<td>Join</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>rv</code></td>
+<td><code>paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")</code></td>
+<td>Reverse String</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>sB</code></td>
+<td><code>grepl($2, $1)</code></td>
+<td>Grepl</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>sG</code></td>
+<td><code>grep($2, $1)</code></td>
+<td>Grep</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>sL</code></td>
+<td><code>tolower($1)</code></td>
+<td>ToLower</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>sR</code></td>
+<td><code>regexpr($2, $1)</code></td>
+<td>Regexpr</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>sU</code></td>
+<td><code>toupper($1)</code></td>
+<td>ToUpper</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>sX</code></td>
+<td><code>gregexpr($2, $1)</code></td>
+<td>Gregexpr</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>sf</code></td>
+<td><code>sprintf($2, $1)</code></td>
+<td>Sprintf</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>sn</code></td>
+<td><code>nchar($1)</code></td>
+<td>NChar</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>sr</code></td>
+<td><code>sub($2, $1, $3)</code></td>
+<td>Sub</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>String Operations</td>
+<td><code>ss</code></td>
+<td><code>substr($3, $2, $1)</code></td>
+<td>Substr</td>
+<td>3 → 1</td>
+</tr>
+<tr class="even">
+<td>String Operations</td>
+<td><code>st</code></td>
+<td><code>trimws($1)</code></td>
+<td>TrimWS</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>T</code></td>
+<td><code>as.numeric(Sys.time())</code></td>
+<td>Time Epoch</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>ZT</code></td>
+<td><code>Sys.timezone()</code></td>
+<td>Timezone</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>ge</code></td>
+<td><code>Sys.getenv($1)</code></td>
+<td>Getenv</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>pi</code></td>
+<td><code>Sys.getpid()</code></td>
+<td>GetPID</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>sE</code></td>
+<td><code>date()</code></td>
+<td>Date</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>sF</code></td>
+<td><code>options(prompt=$1)</code></td>
+<td>SetPrompt</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>sH</code></td>
+<td><code>getwd()</code></td>
+<td>GetWD</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>sJ</code></td>
+<td><code>setwd($1)</code></td>
+<td>SetWD</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>sK</code></td>
+<td><code>proc.time() - $1</code></td>
+<td>Toc</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>sP</code></td>
+<td><code>Sys.sleep($1)</code></td>
+<td>Sleep</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>sT</code></td>
+<td><code>proc.time()</code></td>
+<td>Tic</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>sV</code></td>
+<td><code>R.version.string</code></td>
+<td>RVersion</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>sY</code></td>
+<td><code>options(scipen=$1)</code></td>
+<td>SetScipen</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>se</code></td>
+<td><code>Sys.setenv(...)</code></td>
+<td>Setenv</td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>um</code></td>
+<td><code>Sys.umask($1)</code></td>
+<td>Umask</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>zg</code></td>
+<td><code>gc()</code></td>
+<td>GC</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>zl</code></td>
+<td><code>Sys.localeconv()</code></td>
+<td>Locale</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>zo</code></td>
+<td><code>options()</code></td>
+<td>Options</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>System</td>
+<td><code>zt</code></td>
+<td><code>Sys.time()</code></td>
+<td>SysTime</td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td>System</td>
+<td><code>zv</code></td>
+<td><code>version</code></td>
+<td>Version</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>A</code></td>
+<td><code>utf8ToInt($1)</code></td>
+<td>To ASCII</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>AS</code></td>
+<td><code>as($2, $1)</code></td>
+<td>As Type</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>Xb</code></td>
+<td><code>ratl_bin($1)</code></td>
+<td>To Binary</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>Xd</code></td>
+<td><code>as.Date($1)</code></td>
+<td>To Date</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>a</code></td>
+<td><code>as.character($1)</code></td>
+<td>To String</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>c</code></td>
+<td><code>intToUtf8($1)</code></td>
+<td>To Char</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>ev</code></td>
+<td><code>NULL</code></td>
+<td>Eval</td>
+<td>1 → 0</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>is</code></td>
+<td><code>is($2, $1)</code></td>
+<td>Is Type</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>mF</code></td>
+<td><code>factor($1)</code></td>
+<td>Factor</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>n</code></td>
+<td><code>as.numeric($1)</code></td>
+<td>To Number</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>oA</code></td>
+<td><code>attr($2, $1)</code></td>
+<td>Attr</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>oC</code></td>
+<td><code>colnames($1)</code></td>
+<td>Colnames</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>oa</code></td>
+<td><code>attributes($1)</code></td>
+<td>Attributes</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>oc</code></td>
+<td><code>class($1)</code></td>
+<td>Class</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>od</code></td>
+<td><code>dim($1)</code></td>
+<td>Dim</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>on</code></td>
+<td><code>names($1)</code></td>
+<td>Names</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>or</code></td>
+<td><code>rownames($1)</code></td>
+<td>Rownames</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>ot</code></td>
+<td><code>typeof($1)</code></td>
+<td>Typeof</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>ou</code></td>
+<td><code>unlist($1)</code></td>
+<td>Unlist</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>zB</code></td>
+<td><code>NULL</code></td>
+<td>Sort By</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>zC</code></td>
+<td><code>NULL</code></td>
+<td>Scan</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>zD</code></td>
+<td><code>NULL</code></td>
+<td>Dispatch List</td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>zG</code></td>
+<td><code>NULL</code></td>
+<td>Group By</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>zS</code></td>
+<td><code>NULL</code></td>
+<td>Send</td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>zT</code></td>
+<td><code>NULL</code></td>
+<td>Take While</td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>zW</code></td>
+<td><code>NULL</code></td>
+<td>Drop While</td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>zX</code></td>
+<td><code>NULL</code></td>
+<td>Shell Exec</td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td>Type &amp; Introspection</td>
+<td><code>zZ</code></td>
+<td><code>NULL</code></td>
+<td>Zip With</td>
+<td>3 → 1</td>
+</tr>
+<tr class="odd">
+<td>Type &amp; Introspection</td>
+<td><code>zd</code></td>
+<td><code>as.Date($1)</code></td>
+<td>To Date</td>
+<td>1 → 1</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</main>
+<!-- /main column -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.dataTables.min.js"></script>
+<script>
+var symbolRefSection = document.getElementById('symbol-reference');
+var symbolRefTable = symbolRefSection ? symbolRefSection.querySelector('table') : null;
+var smallTables = [];
+
+// Collect small tables (skip Symbol Reference)
+document.querySelectorAll('table').forEach(function(table) {
+  if (!table.classList.contains('no-datatable') && table !== symbolRefTable) {
+    smallTables.push(table);
+  }
+});
+
+// Init small tables
+smallTables.forEach(function(table) {
+  new DataTable(table, {
+    pageLength: -1,
+    order: [],
+    searching: false,
+    dom: "t"
+  });
+});
+
+// Init Symbol Reference table with custom filter bar
+if (symbolRefTable) {
+  var heading = symbolRefSection.querySelector('h2');
+  var bar = document.createElement('div');
+  bar.className = 'spec-filter-bar';
+  bar.innerHTML = '<label for="spec-filter-input">Filter:</label>' +
+    '<input type="text" id="spec-filter-input" placeholder="Type to filter symbols, descriptions, types...">';
+  heading.insertAdjacentElement('afterend', bar);
+
+  var dt = new DataTable(symbolRefTable, {
+    pageLength: -1,
+    order: [],
+    dom: "t"
+  });
+
+  document.getElementById('spec-filter-input').addEventListener('input', function() {
+    dt.search(this.value).draw();
+  });
+}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

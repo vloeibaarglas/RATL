@@ -1,0 +1,44 @@
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.dataTables.min.js"></script>
+<script>
+var symbolRefSection = document.getElementById('symbol-reference');
+var symbolRefTable = symbolRefSection ? symbolRefSection.querySelector('table') : null;
+var smallTables = [];
+
+// Collect small tables (skip Symbol Reference)
+document.querySelectorAll('table').forEach(function(table) {
+  if (!table.classList.contains('no-datatable') && table !== symbolRefTable) {
+    smallTables.push(table);
+  }
+});
+
+// Init small tables
+smallTables.forEach(function(table) {
+  new DataTable(table, {
+    pageLength: -1,
+    order: [],
+    searching: false,
+    dom: "t"
+  });
+});
+
+// Init Symbol Reference table with custom filter bar
+if (symbolRefTable) {
+  var heading = symbolRefSection.querySelector('h2');
+  var bar = document.createElement('div');
+  bar.className = 'spec-filter-bar';
+  bar.innerHTML = '<label for="spec-filter-input">Filter:</label>' +
+    '<input type="text" id="spec-filter-input" placeholder="Type to filter symbols, descriptions, types...">';
+  heading.insertAdjacentElement('afterend', bar);
+
+  var dt = new DataTable(symbolRefTable, {
+    pageLength: -1,
+    order: [],
+    dom: "t"
+  });
+
+  document.getElementById('spec-filter-input').addEventListener('input', function() {
+    dt.search(this.value).draw();
+  });
+}
+</script>

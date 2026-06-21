@@ -1,12 +1,12 @@
 .PHONY: spec test gen-tests examples clean
 
-spec: specs/RATL_SPEC.html
+spec: docs/RATL_SPEC.html
 
-specs/RATL_SPEC.md: src/ratl_def.tsv scripts/gen_spec.py
-	python3 scripts/gen_spec.py > specs/RATL_SPEC.md
+docs/RATL_SPEC.qmd: src/ratl_def.tsv scripts/gen_spec.py
+	python3 scripts/gen_spec.py > docs/RATL_SPEC.qmd
 
-specs/RATL_SPEC.html: specs/RATL_SPEC.md
-	pandoc $< -s --embed-resources --metadata title="RATL Specification" -o $@
+docs/RATL_SPEC.html: docs/RATL_SPEC.qmd docs/theme.css docs/datatables-init.html docs/_quarto.yml
+	cd docs && quarto render RATL_SPEC.qmd
 
 gen-tests: tests/test_all_symbols.R
 
@@ -24,4 +24,4 @@ examples:
 	@echo "Done"
 
 clean:
-	rm -f specs/RATL_SPEC.html specs/RATL_SPEC.md
+	rm -f docs/RATL_SPEC.html docs/RATL_SPEC.qmd

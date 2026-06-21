@@ -1,0 +1,12 @@
+project:
+  type: default
+
+format:
+  html:
+    css: theme.css
+    toc: true
+    toc-location: left
+    toc-expand: false
+    toc-depth: 3
+    include-in-header: datatables-head.html
+    include-after-body: datatables-init.html

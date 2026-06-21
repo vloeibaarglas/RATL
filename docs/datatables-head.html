@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+<style>
+  /* Force wider layout — override Quarto/Bootstrap */
+  .page-columns.page-rows-contents,
+  .page-layout-article {
+    max-width: 80vw !important;
+  }
+  #quarto-content {
+    max-width: 80vw !important;
+  }
+  main.content {
+    max-width: 100% !important;
+  }
+
+  /* Tables */
+  table.dataTable th { background: #0f3460; color: white; position: sticky; top: 0; z-index: 1; }
+  table.dataTable { border-collapse: collapse !important; table-layout: auto !important; }
+  table.dataTable td, table.dataTable th { white-space: normal !important; overflow: visible !important; text-overflow: unset !important; }
+
+  /* Custom search bar — lives below "Symbol Reference" heading */
+  .spec-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.6em 1em;
+    margin: 0.5em 0 0;
+    background: #f0f4f8;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  .spec-filter-bar label {
+    font-weight: 600;
+    color: #0f3460;
+    white-space: nowrap;
+  }
+  .spec-filter-bar input {
+    flex: 1;
+    padding: 0.35em 0.6em;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  .spec-filter-bar input:focus {
+    outline: none;
+    border-color: #0f3460;
+    box-shadow: 0 0 0 2px rgba(15,52,96,0.15);
+  }
+
+  /* Footer: info + pagination in one row */
+  .dt-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 0 0;
+    font-size: 0.85em;
+    color: #555;
+  }
+  .dt-footer .dataTables_paginate .paginate_button {
+    padding: 0.25em 0.6em;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    margin: 0 1px;
+    cursor: pointer;
+    font-size: 0.95em;
+  }
+  .dt-footer .dataTables_paginate .paginate_button:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+  }
+  .dt-footer .dataTables_paginate .paginate_button.current {
+    background: #0f3460 !important;
+    color: white !important;
+    border-color: #0f3460 !important;
+  }
+  .dt-footer .dataTables_paginate .paginate_button.disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+</style>

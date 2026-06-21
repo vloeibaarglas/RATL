@@ -31,8 +31,8 @@ def categorize(symbols):
     return cats
 
 def format_symbol(s):
-    src = s['src'].replace('|', '\\|')
-    r_code = s['r_code'].replace('|', '\\|')
+    src = s['src']
+    r_code = s['r_code']
     desc = s['desc']
     n_in = s['n_in']
     n_out = s['n_out']
@@ -45,7 +45,9 @@ def generate_spec(symbols):
     cats = categorize(symbols)
 
     lines = []
-    lines.append("# RATL Specification")
+    lines.append("---")
+    lines.append("title: RATL Specification")
+    lines.append("---")
     lines.append("")
     lines.append("RATL (R-based Array Manipulation Language) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.")
     lines.append("")
@@ -249,15 +251,18 @@ def generate_spec(symbols):
     lines.append("")
     lines.append("## 8. Symbol Reference")
     lines.append("")
+    lines.append("| Type | Symbol | R Code | Description | Stack Effect |")
+    lines.append("|------|--------|--------|-------------|--------------|")
 
-    for i, (cat, syms) in enumerate(cats.items(), 1):
-        lines.append(f"### 8.{i} {cat}")
-        lines.append("")
-        lines.append("| Symbol | R Code | Description | Stack Effect |")
-        lines.append("|--------|--------|-------------|--------------|")
-        for s in sorted(syms, key=lambda x: x['src']):
-            lines.append(format_symbol(s))
-        lines.append("")
+    all_syms = []
+    for cat, syms in cats.items():
+        for s in syms:
+            all_syms.append((s, cat))
+
+    for s, cat in sorted(all_syms, key=lambda x: (x[1], x[0]['src'])):
+        lines.append(f"| {cat} | `{s['src']}` | `{s['r_code']}` | {s['desc']} | {s['n_in']} → {s['n_out']} |")
+
+    lines.append("")
 
     return '\n'.join(lines)
 
