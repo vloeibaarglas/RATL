@@ -152,6 +152,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#stack-manipulation-primitives" id="toc-stack-manipulation-primitives" class="nav-link" data-scroll-target="#stack-manipulation-primitives">Stack Manipulation Primitives</a></li>
   <li><a href="#clipboards" id="toc-clipboards" class="nav-link" data-scroll-target="#clipboards">Clipboards</a></li>
   </ul></li>
+  <li><a href="#formal-grammar" id="toc-formal-grammar" class="nav-link" data-scroll-target="#formal-grammar">Formal Grammar</a></li>
   <li><a href="#literals" id="toc-literals" class="nav-link" data-scroll-target="#literals">Literals</a>
   <ul class="collapse">
   <li><a href="#numbers" id="toc-numbers" class="nav-link" data-scroll-target="#numbers">Numbers</a></li>
@@ -195,15 +196,6 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#error-handling" id="toc-error-handling" class="nav-link" data-scroll-target="#error-handling">Error Handling</a></li>
   <li><a href="#symbol-reference" id="toc-symbol-reference" class="nav-link" data-scroll-target="#symbol-reference">Symbol Reference</a></li>
-  <li><a href="#formal-grammar" id="toc-formal-grammar" class="nav-link" data-scroll-target="#formal-grammar">Formal Grammar</a></li>
-  <li><a href="#design-rationale" id="toc-design-rationale" class="nav-link" data-scroll-target="#design-rationale">Design Rationale</a>
-  <ul class="collapse">
-  <li><a href="#why-r" id="toc-why-r" class="nav-link" data-scroll-target="#why-r">Why R?</a></li>
-  <li><a href="#why-stack-based" id="toc-why-stack-based" class="nav-link" data-scroll-target="#why-stack-based">Why Stack-Based?</a></li>
-  <li><a href="#why-these-control-flow-delimiters" id="toc-why-these-control-flow-delimiters" class="nav-link" data-scroll-target="#why-these-control-flow-delimiters">Why These Control Flow Delimiters?</a></li>
-  <li><a href="#why-not-purely-functional" id="toc-why-not-purely-functional" class="nav-link" data-scroll-target="#why-not-purely-functional">Why Not Purely Functional?</a></li>
-  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
-  </ul></li>
   </ul>
 </nav>
 </div>
@@ -231,6 +223,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
+<p>RATL eliminates variable names and assignment — every character counts. The stack model means <code>3 5 +</code> instead of <code>result = a + b</code>. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.</p>
 <p><strong>Total symbols: 419</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
@@ -366,6 +359,26 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
+</section>
+<section id="formal-grammar" class="level2">
+<h2 class="anchored" data-anchor-id="formal-grammar">Formal Grammar</h2>
+<pre><code>program     ::= statement*
+statement   ::= literal | symbol | block
+
+literal     ::= number | array | string
+number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
+array       ::= '[' statement* ']'
+string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
+
+block       ::= '{' statement* '}'
+
+symbol      ::= &lt;any 1-2 character token not matching the above&gt;
+comment     ::= '#' { NOT_NEWLINE } NEWLINE
+
+# Whitespace rules:
+# - Space and newline act as token separators
+# - Newlines are otherwise ignored (not significant)</code></pre>
+<hr>
 </section>
 <section id="literals" class="level2">
 <h2 class="anchored" data-anchor-id="literals">Literals</h2>
@@ -744,7 +757,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
 <p><strong>419 symbols</strong> organized by category. Click a category to expand.</p>
-<details>
+<details open="">
 <summary>
 <strong>Stack &amp; Control</strong> — Tier 1 (Core) — 14 symbols
 </summary>
@@ -851,7 +864,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 17 symbols
 </summary>
@@ -970,7 +983,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols
 </summary>
@@ -1263,7 +1276,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Statistics</strong> — Tier 3 (Extensions) — 36 symbols
 </summary>
@@ -1502,7 +1515,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Bitwise Operations</strong> — Tier 1 (Core) — 6 symbols
 </summary>
@@ -1555,7 +1568,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 29 symbols
 </summary>
@@ -1746,7 +1759,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 16 symbols
 </summary>
@@ -1859,7 +1872,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Matrix</strong> — Tier 2 (Toolkit) — 27 symbols
 </summary>
@@ -2044,7 +2057,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols
 </summary>
@@ -2187,7 +2200,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Set Operations</strong> — Tier 2 (Toolkit) — 3 symbols
 </summary>
@@ -2222,7 +2235,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Distributions &amp; Tests</strong> — Tier 3 (Extensions) — 85 symbols
 </summary>
@@ -2749,7 +2762,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 17 symbols
 </summary>
@@ -2868,7 +2881,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Complex Numbers</strong> — Tier 3 (Extensions) — 5 symbols
 </summary>
@@ -2915,7 +2928,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols
 </summary>
@@ -3046,7 +3059,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>System</strong> — Tier 3 (Extensions) — 18 symbols
 </summary>
@@ -3171,7 +3184,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols
 </summary>
@@ -3362,7 +3375,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols
 </summary>
@@ -3427,7 +3440,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<details>
+<details open="">
 <summary>
 <strong>Math Functions</strong> — Tier 3 (Extensions) — 25 symbols
 </summary>
@@ -3594,50 +3607,6 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 </details>
-<hr>
-</section>
-<section id="formal-grammar" class="level2">
-<h2 class="anchored" data-anchor-id="formal-grammar">Formal Grammar</h2>
-<pre><code>program     ::= statement*
-statement   ::= literal | symbol | block
-
-literal     ::= number | array | string
-number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
-array       ::= '[' statement* ']'
-string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
-
-block       ::= '{' statement* '}'
-
-symbol      ::= &lt;any 1-2 character token not matching the above&gt;
-comment     ::= '#' { NOT_NEWLINE } NEWLINE
-
-# Whitespace rules:
-# - Space and newline act as token separators
-# - Newlines are otherwise ignored (not significant)</code></pre>
-<hr>
-</section>
-<section id="design-rationale" class="level2">
-<h2 class="anchored" data-anchor-id="design-rationale">Design Rationale</h2>
-<section id="why-r" class="level3">
-<h3 class="anchored" data-anchor-id="why-r">Why R?</h3>
-<p>R provides powerful statistical computing, matrix operations, and a rich standard library. This lets RATL achieve golf-friendly conciseness for mathematical and statistical tasks that would require hundreds of characters in other languages.</p>
-</section>
-<section id="why-stack-based" class="level3">
-<h3 class="anchored" data-anchor-id="why-stack-based">Why Stack-Based?</h3>
-<p>Stack-based languages eliminate the need for variable names and assignment syntax. In code golf, every character counts — a stack model means <code>3 5 +</code> instead of <code>result = a + b</code>.</p>
-</section>
-<section id="why-these-control-flow-delimiters" class="level3">
-<h3 class="anchored" data-anchor-id="why-these-control-flow-delimiters">Why These Control Flow Delimiters?</h3>
-<p>The delimiters (<code>?</code>, <code>]</code>, <code>(</code>, <code>)</code>, <code>"</code>, <code>`</code>) were chosen for single-character compression. Block delimiters <code>{</code> and <code>}</code> follow convention and remain memorable.</p>
-</section>
-<section id="why-not-purely-functional" class="level3">
-<h3 class="anchored" data-anchor-id="why-not-purely-functional">Why Not Purely Functional?</h3>
-<p>RATL mixes functional higher-order operations with imperative stack manipulation because R itself is multi-paradigm. This pragmatic approach maximizes expressiveness for golf.</p>
-</section>
-<section id="implementation" class="level3">
-<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
-<p>RATL is implemented in R and uses R’s internal data structures (vectors, lists, matrices) to handle stack operations. It translates RATL code into R code, which is then evaluated. An alternative implementation would need to replicate this stack-to-R-code translation.</p>
-</section>
 </section>
 
 </main>

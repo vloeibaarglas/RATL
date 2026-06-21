@@ -4,6 +4,8 @@ title: RATL Specification
 
 RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric programming language inspired by [MATL](https://github.com/lmendo/MATL). It leverages R's powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.
 
+RATL eliminates variable names and assignment — every character counts. The stack model means `3 5 +` instead of `result = a + b`. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.
+
 **Total symbols: 419** (all 2-byte or shorter)
 
 ## Getting Started
@@ -96,6 +98,29 @@ RATL provides four clipboards for temporary storage outside the stack:
 
 - `H`, `G`, `L`, `M` — each holds one value independently of the stack
 - Useful for saving intermediate results without stack gymnastics
+
+***
+
+## Formal Grammar
+
+```
+program     ::= statement*
+statement   ::= literal | symbol | block
+
+literal     ::= number | array | string
+number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
+array       ::= '[' statement* ']'
+string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
+
+block       ::= '{' statement* '}'
+
+symbol      ::= <any 1-2 character token not matching the above>
+comment     ::= '#' { NOT_NEWLINE } NEWLINE
+
+# Whitespace rules:
+# - Space and newline act as token separators
+# - Newlines are otherwise ignored (not significant)
+```
 
 ***
 
@@ -382,7 +407,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 **419 symbols** organized by category. Click a category to expand.
 
-<details><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 14 symbols</summary>
+<details open><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 14 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -403,7 +428,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Arithmetic & Comparison</strong> — Tier 1 (Core) — 17 symbols</summary>
+<details open><summary><strong>Arithmetic & Comparison</strong> — Tier 1 (Core) — 17 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -427,7 +452,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols</summary>
+<details open><summary><strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -480,7 +505,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 36 symbols</summary>
+<details open><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 36 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -523,7 +548,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Bitwise Operations</strong> — Tier 1 (Core) — 6 symbols</summary>
+<details open><summary><strong>Bitwise Operations</strong> — Tier 1 (Core) — 6 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -536,7 +561,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 29 symbols</summary>
+<details open><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 29 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -572,7 +597,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 16 symbols</summary>
+<details open><summary><strong>Higher-Order Functions</strong> — Tier 2 (Toolkit) — 16 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -595,7 +620,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Matrix</strong> — Tier 2 (Toolkit) — 27 symbols</summary>
+<details open><summary><strong>Matrix</strong> — Tier 2 (Toolkit) — 27 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -629,7 +654,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols</summary>
+<details open><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -656,7 +681,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Set Operations</strong> — Tier 2 (Toolkit) — 3 symbols</summary>
+<details open><summary><strong>Set Operations</strong> — Tier 2 (Toolkit) — 3 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -666,7 +691,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Distributions & Tests</strong> — Tier 3 (Extensions) — 85 symbols</summary>
+<details open><summary><strong>Distributions & Tests</strong> — Tier 3 (Extensions) — 85 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -758,7 +783,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Combinatorics & Special</strong> — Tier 3 (Extensions) — 17 symbols</summary>
+<details open><summary><strong>Combinatorics & Special</strong> — Tier 3 (Extensions) — 17 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -782,7 +807,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Complex Numbers</strong> — Tier 3 (Extensions) — 5 symbols</summary>
+<details open><summary><strong>Complex Numbers</strong> — Tier 3 (Extensions) — 5 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -794,7 +819,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols</summary>
+<details open><summary><strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -819,7 +844,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>System</strong> — Tier 3 (Extensions) — 18 symbols</summary>
+<details open><summary><strong>System</strong> — Tier 3 (Extensions) — 18 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -844,7 +869,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols</summary>
+<details open><summary><strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -880,7 +905,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols</summary>
+<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -895,7 +920,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details><summary><strong>Math Functions</strong> — Tier 3 (Extensions) — 25 symbols</summary>
+<details open><summary><strong>Math Functions</strong> — Tier 3 (Extensions) — 25 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -926,46 +951,4 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `tr` | Trunc | `trunc($1)` | 1 → 1 |
 
 </details>
-
-***
-
-## Formal Grammar
-
-```
-program     ::= statement*
-statement   ::= literal | symbol | block
-
-literal     ::= number | array | string
-number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
-array       ::= '[' statement* ']'
-string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
-
-block       ::= '{' statement* '}'
-
-symbol      ::= <any 1-2 character token not matching the above>
-comment     ::= '#' { NOT_NEWLINE } NEWLINE
-
-# Whitespace rules:
-# - Space and newline act as token separators
-# - Newlines are otherwise ignored (not significant)
-```
-
-***
-
-## Design Rationale
-
-### Why R?
-R provides powerful statistical computing, matrix operations, and a rich standard library. This lets RATL achieve golf-friendly conciseness for mathematical and statistical tasks that would require hundreds of characters in other languages.
-
-### Why Stack-Based?
-Stack-based languages eliminate the need for variable names and assignment syntax. In code golf, every character counts — a stack model means `3 5 +` instead of `result = a + b`.
-
-### Why These Control Flow Delimiters?
-The delimiters (`?`, `]`, `(`, `)`, `"`, `` ` ``) were chosen for single-character compression. Block delimiters `{` and `}` follow convention and remain memorable.
-
-### Why Not Purely Functional?
-RATL mixes functional higher-order operations with imperative stack manipulation because R itself is multi-paradigm. This pragmatic approach maximizes expressiveness for golf.
-
-### Implementation
-RATL is implemented in R and uses R's internal data structures (vectors, lists, matrices) to handle stack operations. It translates RATL code into R code, which is then evaluated. An alternative implementation would need to replicate this stack-to-R-code translation.
 
