@@ -63,7 +63,7 @@ First 10 Fibonacci numbers using clipboards L/M for state.
 
 | Command | Description |
 |---------|-------------|
-| `make test` | Run all tests (399 unit + 60 integration) |
+| `make test` | Run all tests |
 | `make spec` | Regenerate spec markdown + HTML |
 | `make gen-tests` | Regenerate unit tests from TSV |
 | `make clean` | Remove generated files |
