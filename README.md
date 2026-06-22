@@ -68,12 +68,13 @@ First 10 Fibonacci numbers using clipboards L/M for state.
 | `make gen-tests` | Regenerate unit tests from TSV |
 | `make clean` | Remove generated files |
 
-### Source of Truth
+## Architecture
 
-`src/ratl_def.tsv` defines all symbols, categories, and test cases. The spec and tests are auto-generated from it:
-
-- `scripts/gen_spec.py` → `docs/RATL_SPEC.md` → `docs/RATL_SPEC.html`
-- `scripts/gen_tests.py` → `tests/test_all_symbols.R`
+1. **Parser** (`src/ratl_parse.R`) — tokenizes input into literals and blocks
+2. **Evaluator** (`src/ratl_eval.R`) — tree-walking interpreter on a live stack
+3. **Dispatch** (`src/ratl_dispatch.R`) — hashed O(1) symbol lookup
+4. **Stack** (`src/ratl_stack.R`) — pointer-based stack implementation
+5. **Library** (`src/ratl_lib.R`) — statistical and helper functions
 
 ## Contributions
 
@@ -84,14 +85,4 @@ Contributions are welcome! Open a pull request with:
 - Test coverage
 - Documentation improvements
 
-## Architecture
-
-1. **Parser** (`src/ratl_parse.R`) — tokenizes input into literals and blocks
-2. **Evaluator** (`src/ratl_eval.R`) — tree-walking interpreter on a live stack
-3. **Dispatch** (`src/ratl_dispatch.R`) — hashed O(1) symbol lookup
-4. **Stack** (`src/ratl_stack.R`) — pointer-based stack implementation
-5. **Library** (`src/ratl_lib.R`) — statistical and helper functions
-
-## [License](LICENSE)
-
-MIT
+## [License (MIT)](LICENSE)
