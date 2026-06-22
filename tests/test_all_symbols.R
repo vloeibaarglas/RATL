@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 311 symbols (unit tests)\n"))
+cat(sprintf("Testing 309 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Stack & Control: D — Duplicate
@@ -492,17 +492,6 @@ test_e_Extract_Element___ <- function() {
   if (grepl("Error:", r)) { cat("FAIL [e] Extract Element [[: ", r, "\n"); return(FALSE) }
   if (r != "20") {
     cat("FAIL [e] Extract Element [[: expected [20], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Array Operations: el — Extract Element [[
-test_el_Extract_Element___ <- function() {
-  r <- run_ratl("3 5 el")
-  if (grepl("Error:", r)) { cat("FAIL [el] Extract Element [[: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: subscript out of bounds") {
-    cat("FAIL [el] Extract Element [[: expected [ERROR: subscript out of bounds], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3407,18 +3396,6 @@ test_vp_PCA <- function() {
 # SKIP I (Inf) — no test defined
 skipped <- skipped + 1
 
-# Constants: In — Inf
-test_In_Inf <- function() {
-  set.seed(42)
-  r <- run_ratl("In")
-  if (grepl("Error:", r)) { cat("FAIL [In] Inf: ", r, "\n"); return(FALSE) }
-  if (r != "Inf") {
-    cat("FAIL [In] Inf: expected [Inf], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Constants: Na — NA
 test_Na_NA <- function() {
   set.seed(42)
@@ -3817,8 +3794,6 @@ all_tests <- list(
   list(name = "dS Split", fn = test_dS_Split)
 ,
   list(name = "e Extract Element [[", fn = test_e_Extract_Element___)
-,
-  list(name = "el Extract Element [[", fn = test_el_Extract_Element___)
 ,
   list(name = "es Extract Subset [", fn = test_es_Extract_Subset__)
 ,
@@ -4305,8 +4280,6 @@ all_tests <- list(
   list(name = "mW Formula", fn = test_mW_Formula)
 ,
   list(name = "vp PCA", fn = test_vp_PCA)
-,
-  list(name = "In Inf", fn = test_In_Inf)
 ,
   list(name = "Na NA", fn = test_Na_NA)
 ,

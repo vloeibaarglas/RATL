@@ -282,16 +282,43 @@ ratl_eval <- function(tokens, ctx) {
           result[[length(result) + 1]] <- stack_peek(tmp_ctx$stack)
         }
         stack_push(ctx$stack, unlist(result))
-       } else if (val == "L") {
-        stack_push(ctx$stack, stack_length(ctx$stack))
-       } else if (val == "g") {
-        if (stack_length(ctx$stack) < 1) stop("Stack underflow for g (pick)")
-        n <- as.integer(stack_pop(ctx$stack))
-        sl <- stack_length(ctx$stack)
-        if (n < 0 || n >= sl) stop(paste0("Pick index out of bounds: ", n, " (stack depth: ", sl, ")"))
-        stk <- stack_to_list(ctx$stack)
-        stack_push(ctx$stack, stk[[sl - n]])
-       } else {
+        } else if (val == "L") {
+         stack_push(ctx$stack, stack_length(ctx$stack))
+        } else if (val == "g") {
+         if (stack_length(ctx$stack) < 1) stop("Stack underflow for g (pick)")
+         n <- as.integer(stack_pop(ctx$stack))
+         sl <- stack_length(ctx$stack)
+         if (n < 0 || n >= sl) stop(paste0("Pick index out of bounds: ", n, " (stack depth: ", sl, ")"))
+         stk <- stack_to_list(ctx$stack)
+         stack_push(ctx$stack, stk[[sl - n]])
+        } else if (val == "+") {
+         if (stack_length(ctx$stack) >= 2) {
+           b <- stack_pop(ctx$stack)
+           a <- stack_pop(ctx$stack)
+           stack_push(ctx$stack, a + b)
+         } else if (stack_length(ctx$stack) == 1) {
+           a <- stack_pop(ctx$stack)
+           stack_push(ctx$stack, a + 1)
+         } else {
+           stop("Stack underflow for +")
+         }
+        } else if (val == "-") {
+         if (stack_length(ctx$stack) >= 2) {
+           b <- stack_pop(ctx$stack)
+           a <- stack_pop(ctx$stack)
+           stack_push(ctx$stack, a - b)
+         } else if (stack_length(ctx$stack) == 1) {
+           a <- stack_pop(ctx$stack)
+           stack_push(ctx$stack, a - 1)
+         } else {
+           stop("Stack underflow for -")
+         }
+        } else if (val == "_") {
+         if (stack_length(ctx$stack) < 2) stop("Stack underflow for _ (extract [[)")
+         idx <- stack_pop(ctx$stack)
+         obj <- stack_pop(ctx$stack)
+         stack_push(ctx$stack, obj[[idx]])
+        } else {
         entry <- ctx$dispatch[[val]]
         if (!is.null(entry)) {
           if (stack_length(ctx$stack) < entry$n_in) stop(paste0("Stack underflow for '", val, "': needs ", entry$n_in, " args, has ", stack_length(ctx$stack)))

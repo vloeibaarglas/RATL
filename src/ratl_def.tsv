@@ -58,7 +58,6 @@ al	tail($1, 1)	1	1	LastElem	Array Operations
 cn	is.element($2, $1)	2	1	IsIn	Array Operations	
 dS	split($2, $1)	2	1	Split	Array Operations	
 e	$2[[$1]]	2	1	Extract Element [[	Array Operations	
-el	$2[[$1]]	2	1	Extract Element [[	Array Operations	
 es	$2[$1]	2	1	Extract Subset [	Array Operations	
 fE	head($1, 1)	1	1	FirstElem	Array Operations	
 l	length($1)	1	1	Length	Array Operations	
@@ -386,7 +385,6 @@ mU	update($2, $1)	2	1	Update	Statistical Modeling
 mW	formula($1)	1	1	Formula	Statistical Modeling	
 vp	prcomp($1)	1	1	PCA	Statistical Modeling	
 I	Inf	0	1	Inf	Constants	
-In	Inf	0	1	Inf	Constants	
 Na	NA	0	1	NA	Constants	
 Pi	pi	0	1	Pi	Constants	
 Z	NA	0	1	NA	Constants	
