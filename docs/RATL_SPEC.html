@@ -224,7 +224,7 @@ ul.task-list li input[type="checkbox"] {
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
 <p>RATL eliminates variable names and assignment — every character counts. The stack model means <code>3 5 +</code> instead of <code>result = a + b</code>. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.</p>
-<p><strong>Total symbols: 419</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 417</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -271,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>Tier 1 — Core</strong> (stack manipulation, arrays, blocks, control flow, arithmetic)</dt>
 <dd>
-112 symbols across 5 categories
+111 symbols across 5 categories
 </dd>
 <dt><strong>Tier 2 — Toolkit</strong> (grouping, mapping, reduction, matrix operations, strings, sets)</dt>
 <dd>
@@ -756,7 +756,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>419 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>417 symbols</strong> organized by category. Click a category to expand.</p>
 <details open="">
 <summary>
 <strong>Stack &amp; Control</strong> — Tier 1 (Core) — 14 symbols
@@ -985,7 +985,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols
+<strong>Array Operations</strong> — Tier 1 (Core) — 45 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1172,102 +1172,96 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>el</code></td>
-<td>Extract Element [[</td>
-<td><code>$2[[$1]]</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>es</code></td>
 <td>Extract Subset [</td>
 <td><code>$2[$1]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fE</code></td>
 <td>FirstElem</td>
 <td><code>head($1, 1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>l</code></td>
 <td>Length</td>
 <td><code>length($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>r1</code></td>
 <td>Range1toN</td>
 <td><code>1:$1</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>r2</code></td>
 <td>Rep</td>
 <td><code>rep($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tl</code></td>
 <td>TailN</td>
 <td><code>tail($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>u</code></td>
 <td>Unique</td>
 <td><code>unique($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vB</code></td>
 <td>PMin</td>
 <td><code>pmin($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vG</code></td>
 <td>PMax</td>
 <td><code>pmax($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vH</code></td>
 <td>WhichArr</td>
 <td><code>which($1, arr.ind=TRUE)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vI</code></td>
 <td>CumMin</td>
 <td><code>cummin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vT</code></td>
 <td>RepMat</td>
 <td><code>matrix(rep($3, $2*$1), nrow=nrow($3)*$2)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vW</code></td>
 <td>SeqLen</td>
 <td><code>seq($3, $2, length.out=$1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vX</code></td>
 <td>CumMax</td>
 <td><code>cummax($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>wh</code></td>
 <td>Which</td>
 <td><code>which($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zp</code></td>
 <td>Zip</td>
 <td><code>unlist(Map(list, $2, $1))</code></td>
@@ -3377,7 +3371,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols
+<strong>Constants</strong> — Tier 3 (Extensions) — 7 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3396,42 +3390,36 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>0 → 1</td>
 </tr>
 <tr class="even">
-<td><code>In</code></td>
-<td>Inf</td>
-<td><code>Inf</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>Na</code></td>
 <td>NA</td>
 <td><code>NA</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Pi</code></td>
 <td>Pi</td>
 <td><code>pi</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Z</code></td>
 <td>NA</td>
 <td><code>NA</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>s4</code></td>
 <td>EmptyLog</td>
 <td><code>logical(0)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sQ</code></td>
 <td>EmptyChar</td>
 <td><code>character(0)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sZ</code></td>
 <td>EmptyNum</td>
 <td><code>numeric(0)</code></td>

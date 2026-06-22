@@ -6,7 +6,7 @@ RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric 
 
 RATL eliminates variable names and assignment — every character counts. The stack model means `3 5 +` instead of `result = a + b`. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.
 
-**Total symbols: 419** (all 2-byte or shorter)
+**Total symbols: 417** (all 2-byte or shorter)
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ RATL is designed as a **stack-based array manipulation language** for code golf.
 RATL organizes its symbol set into three conceptual tiers:
 
 **Tier 1 — Core** (stack manipulation, arrays, blocks, control flow, arithmetic)
-: 112 symbols across 5 categories
+: 111 symbols across 5 categories
 
 **Tier 2 — Toolkit** (grouping, mapping, reduction, matrix operations, strings, sets)
 : 66 symbols across 4 categories
@@ -405,7 +405,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**419 symbols** organized by category. Click a category to expand.
+**417 symbols** organized by category. Click a category to expand.
 
 <details open><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 14 symbols</summary>
 
@@ -452,7 +452,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Array Operations</strong> — Tier 1 (Core) — 46 symbols</summary>
+<details open><summary><strong>Array Operations</strong> — Tier 1 (Core) — 45 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -485,7 +485,6 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `cn` | IsIn | `is.element($2, $1)` | 2 → 1 |
 | `dS` | Split | `split($2, $1)` | 2 → 1 |
 | `e` | Extract Element [[ | `$2[[$1]]` | 2 → 1 |
-| `el` | Extract Element [[ | `$2[[$1]]` | 2 → 1 |
 | `es` | Extract Subset [ | `$2[$1]` | 2 → 1 |
 | `fE` | FirstElem | `head($1, 1)` | 1 → 1 |
 | `l` | Length | `length($1)` | 1 → 1 |
@@ -905,12 +904,11 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols</summary>
+<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 7 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `I` | Inf | `Inf` | 0 → 1 |
-| `In` | Inf | `Inf` | 0 → 1 |
 | `Na` | NA | `NA` | 0 → 1 |
 | `Pi` | Pi | `pi` | 0 → 1 |
 | `Z` | NA | `NA` | 0 → 1 |
