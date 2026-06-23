@@ -3667,23 +3667,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-var allTables = [];
-var allDt = [];
-
-// Init all tables as DataTables
-document.querySelectorAll('table').forEach(function(table) {
-  if (!table.classList.contains('no-datatable')) {
-    var dt = new DataTable(table, {
-      pageLength: -1,
-      order: [],
-      dom: "t"
-    });
-    allDt.push(dt);
-    allTables.push(table);
-  }
-});
-
-// Create global filter bar at top of page
+// Create filter bar FIRST (always visible)
 var filterBar = document.createElement('div');
 filterBar.className = 'spec-filter-bar';
 filterBar.innerHTML = '<label for="global-filter-input">Filter all tables:</label>' +
@@ -3695,6 +3679,22 @@ if (firstH1) {
   document.body.prepend(filterBar);
 }
 
+// Init all tables as DataTables
+var allDt = [];
+document.querySelectorAll('table').forEach(function(table) {
+  if (!table.classList.contains('no-datatable')) {
+    try {
+      var dt = new DataTable(table, {
+        pageLength: -1,
+        order: [],
+        dom: "t"
+      });
+      allDt.push(dt);
+    } catch(e) {}
+  }
+});
+
+// Connect filter to all initialized tables
 document.getElementById('global-filter-input').addEventListener('input', function() {
   var val = this.value;
   allDt.forEach(function(dt) {
