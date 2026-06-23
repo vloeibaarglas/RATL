@@ -3716,6 +3716,8 @@ var searchAll = document.getElementById('global-search-all');
 function doSearch() {
   var val = searchInput.value;
   allDt.forEach(function(dt) {
+    // Clear both search types first
+    dt.search('').column(0).search('');
     if (searchAll.checked) {
       dt.search(val).draw();
     } else {
