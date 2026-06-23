@@ -1,11 +1,14 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-// Create filter bar below the "X symbols organized by category" text
+// Create filter bar with checkbox
 var filterBar = document.createElement('div');
 filterBar.className = 'spec-filter-bar';
-filterBar.innerHTML = '<label for="global-filter-input">Filter all tables:</label>' +
-  '<input type="text" id="global-filter-input" placeholder="Type to filter across all tables...">';
+var savedAll = localStorage.getItem('ratl-search-all') === 'true';
+filterBar.innerHTML = '<label for="global-filter-input">Filter:</label>' +
+  '<input type="text" id="global-filter-input" placeholder="Search symbol column...">' +
+  '<label class="spec-filter-check"><input type="checkbox" id="global-search-all"' + (savedAll ? ' checked' : '') + '> All Columns</label>';
+
 var paras = document.querySelectorAll('p');
 for (var i = 0; i < paras.length; i++) {
   if (paras[i].textContent.indexOf('symbols organized by category') >= 0) {
@@ -29,11 +32,24 @@ document.querySelectorAll('table').forEach(function(table) {
   }
 });
 
-// Connect filter to all initialized tables
-document.getElementById('global-filter-input').addEventListener('input', function() {
-  var val = this.value;
+// Search logic: column 0 (Symbol) by default, all columns when checked
+var searchInput = document.getElementById('global-filter-input');
+var searchAll = document.getElementById('global-search-all');
+
+function doSearch() {
+  var val = searchInput.value;
   allDt.forEach(function(dt) {
-    dt.search(val).draw();
+    if (searchAll.checked) {
+      dt.search(val).draw();
+    } else {
+      dt.column(0).search(val).draw();
+    }
   });
+}
+
+searchInput.addEventListener('input', doSearch);
+searchAll.addEventListener('change', function() {
+  localStorage.setItem('ratl-search-all', this.checked);
+  doSearch();
 });
 </script>
