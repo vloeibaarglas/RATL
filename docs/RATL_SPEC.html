@@ -3667,16 +3667,17 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-// Create filter bar FIRST (always visible)
+// Create filter bar above Symbol Reference section
 var filterBar = document.createElement('div');
 filterBar.className = 'spec-filter-bar';
 filterBar.innerHTML = '<label for="global-filter-input">Filter all tables:</label>' +
   '<input type="text" id="global-filter-input" placeholder="Type to filter across all tables...">';
-var firstH1 = document.querySelector('h1');
-if (firstH1) {
-  firstH1.insertAdjacentElement('afterend', filterBar);
+var symbolRef = document.getElementById('symbol-reference');
+if (symbolRef) {
+  symbolRef.insertAdjacentElement('beforebegin', filterBar);
 } else {
-  document.body.prepend(filterBar);
+  var h1 = document.querySelector('h1');
+  if (h1) h1.insertAdjacentElement('afterend', filterBar);
 }
 
 // Init all tables as DataTables
