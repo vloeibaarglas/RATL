@@ -1,17 +1,17 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-// Create filter bar above Symbol Reference section
+// Create filter bar below the "X symbols organized by category" text
 var filterBar = document.createElement('div');
 filterBar.className = 'spec-filter-bar';
 filterBar.innerHTML = '<label for="global-filter-input">Filter all tables:</label>' +
   '<input type="text" id="global-filter-input" placeholder="Type to filter across all tables...">';
-var symbolRef = document.getElementById('symbol-reference');
-if (symbolRef) {
-  symbolRef.insertAdjacentElement('beforebegin', filterBar);
-} else {
-  var h1 = document.querySelector('h1');
-  if (h1) h1.insertAdjacentElement('afterend', filterBar);
+var paras = document.querySelectorAll('p');
+for (var i = 0; i < paras.length; i++) {
+  if (paras[i].textContent.indexOf('symbols organized by category') >= 0) {
+    paras[i].insertAdjacentElement('afterend', filterBar);
+    break;
+  }
 }
 
 // Init all tables as DataTables
