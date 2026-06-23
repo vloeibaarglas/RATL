@@ -1,44 +1,38 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script>
-var symbolRefSection = document.getElementById('symbol-reference');
-var symbolRefTable = symbolRefSection ? symbolRefSection.querySelector('table') : null;
-var smallTables = [];
+var allTables = [];
+var allDt = [];
 
-// Collect small tables (skip Symbol Reference)
+// Init all tables as DataTables
 document.querySelectorAll('table').forEach(function(table) {
-  if (!table.classList.contains('no-datatable') && table !== symbolRefTable) {
-    smallTables.push(table);
+  if (!table.classList.contains('no-datatable')) {
+    var dt = new DataTable(table, {
+      pageLength: -1,
+      order: [],
+      dom: "t"
+    });
+    allDt.push(dt);
+    allTables.push(table);
   }
 });
 
-// Init small tables
-smallTables.forEach(function(table) {
-  new DataTable(table, {
-    pageLength: -1,
-    order: [],
-    searching: false,
-    dom: "t"
+// Create global filter bar at top of page
+var filterBar = document.createElement('div');
+filterBar.className = 'spec-filter-bar';
+filterBar.innerHTML = '<label for="global-filter-input">Filter all tables:</label>' +
+  '<input type="text" id="global-filter-input" placeholder="Type to filter across all tables...">';
+var firstH1 = document.querySelector('h1');
+if (firstH1) {
+  firstH1.insertAdjacentElement('afterend', filterBar);
+} else {
+  document.body.prepend(filterBar);
+}
+
+document.getElementById('global-filter-input').addEventListener('input', function() {
+  var val = this.value;
+  allDt.forEach(function(dt) {
+    dt.search(val).draw();
   });
 });
-
-// Init Symbol Reference table with custom filter bar
-if (symbolRefTable) {
-  var heading = symbolRefSection.querySelector('h2');
-  var bar = document.createElement('div');
-  bar.className = 'spec-filter-bar';
-  bar.innerHTML = '<label for="spec-filter-input">Filter:</label>' +
-    '<input type="text" id="spec-filter-input" placeholder="Type to filter symbols, descriptions, types...">';
-  heading.insertAdjacentElement('afterend', bar);
-
-  var dt = new DataTable(symbolRefTable, {
-    pageLength: -1,
-    order: [],
-    dom: "t"
-  });
-
-  document.getElementById('spec-filter-input').addEventListener('input', function() {
-    dt.search(this.value).draw();
-  });
-}
 </script>
