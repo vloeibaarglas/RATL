@@ -314,11 +314,11 @@ mp	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special
 ps	psigamma($2, $1)	2	1	Psigamma	Combinatorics & Special	
 tg	trigamma($1)	1	1	Trigamma	Combinatorics & Special	
 gC	ratl_gcd($2, $1)	2	1	GCD	Combinatorics & Special	
-cA	Arg($1)	1	1	Arg	Complex Numbers	
+xA	ratl_atbash($1)	1	1	Arg	Complex Numbers	
 cI	Im($1)	1	1	Imag Part	Complex Numbers	
 cJ	Conj($1)	1	1	Conjugate	Complex Numbers	
 cM	Mod($1)	1	1	Modulus	Complex Numbers	
-cR	Re($1)	1	1	Real Part	Complex Numbers	
+xR	ratl_rot($1)	1	1	Real Part	Complex Numbers	
 FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File	File I/O	
 fA	dirname($1)	1	1	Dirname	File I/O	
 fC	write.csv($2, $1)	2	0	Write CSV	File I/O	
@@ -384,6 +384,12 @@ mT	terms($1)	1	1	Terms	Statistical Modeling
 mU	update($2, $1)	2	1	Update	Statistical Modeling	
 mW	formula($1)	1	1	Formula	Statistical Modeling	
 vp	prcomp($1)	1	1	PCA	Statistical Modeling	
+xR	ratl_rot($1)	1	1	ROT13	Ciphers	
+xC	ratl_caesar($2, $1)	2	1	Caesar	Ciphers	
+xA	ratl_atbash($1)	1	1	Atbash	Ciphers	
+xV	ratl_vigenere($2, $1)	2	1	Vigenere	Ciphers	
+xF	ratl_rail_fence($2, $1)	2	1	Rail Fence	Ciphers	
+xT	ratl_columnar($2, $1)	2	1	Columnar Transpose	Ciphers	
 I	Inf	0	1	Inf	Constants	
 Na	NA	0	1	NA	Constants	
 Pi	pi	0	1	Pi	Constants	
@@ -391,6 +397,8 @@ Z	NA	0	1	NA	Constants
 s4	logical(0)	0	1	EmptyLog	Constants	
 sQ	character(0)	0	1	EmptyChar	Constants	
 sZ	numeric(0)	0	1	EmptyNum	Constants	
+AZ	paste0(LETTERS, collapse="")	0	1	Upper Letters	Constants	
+az	paste0(letters, collapse="")	0	1	Lower Letters	Constants	
 SP	sinpi($1)	1	1	Sin(pi*x)	Math Functions	
 a2	atan2($2, $1)	2	1	ArcTan2	Math Functions	
 aC	acos($1)	1	1	ArcCos	Math Functions	

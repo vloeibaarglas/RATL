@@ -77,3 +77,74 @@ ratl_print <- function(x) {
     print(x)
   }
 }
+
+# --- Ciphers ---
+
+ratl_rot <- function(x, n = 13) {
+  chars <- utf8ToInt(x)
+  is_lower <- chars >= 97 & chars <= 122
+  is_upper <- chars >= 65 & chars <= 90
+  result <- chars
+  result[is_lower] <- ((chars[is_lower] - 97 + n) %% 26) + 97
+  result[is_upper] <- ((chars[is_upper] - 65 + n) %% 26) + 65
+  intToUtf8(result)
+}
+
+ratl_caesar <- function(x, n) {
+  ratl_rot(x, n)
+}
+
+ratl_atbash <- function(x) {
+  chars <- utf8ToInt(x)
+  is_lower <- chars >= 97 & chars <= 122
+  is_upper <- chars >= 65 & chars <= 90
+  result <- chars
+  result[is_lower] <- 219 - chars[is_lower]
+  result[is_upper] <- 155 - chars[is_upper]
+  intToUtf8(result)
+}
+
+ratl_vigenere <- function(text, key) {
+  txt <- utf8ToInt(text)
+  k <- utf8ToInt(key)
+  is_alpha <- (txt >= 65 & txt <= 90) | (txt >= 97 & txt <= 122)
+  result <- txt
+  ki <- 1
+  for (i in seq_along(txt)) {
+    if (is_alpha[i]) {
+      shift <- ((k[ki] - 65) %% 26)
+      if (txt[i] >= 97) {
+        result[i] <- ((txt[i] - 97 + shift) %% 26) + 97
+      } else {
+        result[i] <- ((txt[i] - 65 + shift) %% 26) + 65
+      }
+      ki <- (ki %% length(k)) + 1
+    }
+  }
+  intToUtf8(result)
+}
+
+ratl_rail_fence <- function(text, rails) {
+  chars <- strsplit(text, "")[[1]]
+  n <- length(chars)
+  fence <- matrix("", nrow = rails, ncol = n)
+  row <- 1; dir <- 1
+  for (i in 1:n) {
+    fence[row, i] <- chars[i]
+    if (rails > 1) {
+      if (row == rails) dir <- -1
+      if (row == 1) dir <- 1
+      row <- row + dir
+    }
+  }
+  paste(apply(fence, 1, function(r) paste(r[r != ""], collapse = "")), collapse = "")
+}
+
+ratl_columnar <- function(text, cols) {
+  chars <- strsplit(text, "")[[1]]
+  pad_len <- ceiling(length(chars) / cols) * cols
+  length(chars) <- pad_len
+  chars[is.na(chars)] <- "X"
+  grid <- matrix(chars, ncol = cols, byrow = TRUE)
+  paste(grid, collapse = "")
+}

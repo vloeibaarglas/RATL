@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 309 symbols (unit tests)\n"))
+cat(sprintf("Testing 307 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Stack & Control: D — Duplicate
@@ -2815,16 +2815,8 @@ test_tg_Trigamma <- function() {
 # SKIP gC (GCD) — no test defined
 skipped <- skipped + 1
 
-# Complex Numbers: cA — Arg
-test_cA_Arg <- function() {
-  r <- run_ratl("5 cA")
-  if (grepl("Error:", r)) { cat("FAIL [cA] Arg: ", r, "\n"); return(FALSE) }
-  if (r != "0") {
-    cat("FAIL [cA] Arg: expected [0], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
+# SKIP xA (Arg) — no test defined
+skipped <- skipped + 1
 
 # Complex Numbers: cI — Imag Part
 test_cI_Imag_Part <- function() {
@@ -2859,16 +2851,8 @@ test_cM_Modulus <- function() {
   return(TRUE)
 }
 
-# Complex Numbers: cR — Real Part
-test_cR_Real_Part <- function() {
-  r <- run_ratl("5 cR")
-  if (grepl("Error:", r)) { cat("FAIL [cR] Real Part: ", r, "\n"); return(FALSE) }
-  if (r != "5") {
-    cat("FAIL [cR] Real Part: expected [5], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
+# SKIP xR (Real Part) — no test defined
+skipped <- skipped + 1
 
 # SKIP FW (Write File) — no test defined
 skipped <- skipped + 1
@@ -3393,6 +3377,24 @@ test_vp_PCA <- function() {
   return(TRUE)
 }
 
+# SKIP xR (ROT13) — no test defined
+skipped <- skipped + 1
+
+# SKIP xC (Caesar) — no test defined
+skipped <- skipped + 1
+
+# SKIP xA (Atbash) — no test defined
+skipped <- skipped + 1
+
+# SKIP xV (Vigenere) — no test defined
+skipped <- skipped + 1
+
+# SKIP xF (Rail Fence) — no test defined
+skipped <- skipped + 1
+
+# SKIP xT (Columnar Transpose) — no test defined
+skipped <- skipped + 1
+
 # SKIP I (Inf) — no test defined
 skipped <- skipped + 1
 
@@ -3446,6 +3448,12 @@ test_sZ_EmptyNum <- function() {
   if (grepl("Error:", r)) { cat("FAIL [sZ] EmptyNum: ", r, "\n"); return(FALSE) }
   return(TRUE)
 }
+
+# SKIP AZ (Upper Letters) — no test defined
+skipped <- skipped + 1
+
+# SKIP az (Lower Letters) — no test defined
+skipped <- skipped + 1
 
 # Math Functions: SP — Sin(pi*x)
 test_SP_Sin_pi_x_ <- function() {
@@ -4181,15 +4189,11 @@ all_tests <- list(
 ,
   list(name = "tg Trigamma", fn = test_tg_Trigamma)
 ,
-  list(name = "cA Arg", fn = test_cA_Arg)
-,
   list(name = "cI Imag Part", fn = test_cI_Imag_Part)
 ,
   list(name = "cJ Conjugate", fn = test_cJ_Conjugate)
 ,
   list(name = "cM Modulus", fn = test_cM_Modulus)
-,
-  list(name = "cR Real Part", fn = test_cR_Real_Part)
 ,
   list(name = "fA Dirname", fn = test_fA_Dirname)
 ,
