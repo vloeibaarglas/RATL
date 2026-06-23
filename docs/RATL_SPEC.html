@@ -224,7 +224,7 @@ ul.task-list li input[type="checkbox"] {
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
 <p>RATL eliminates variable names and assignment — every character counts. The stack model means <code>3 5 +</code> instead of <code>result = a + b</code>. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.</p>
-<p><strong>Total symbols: 417</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 425</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -756,7 +756,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>417 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>425 symbols</strong> organized by category. Click a category to expand.</p>
 <details open="">
 <summary>
 <strong>Stack &amp; Control</strong> — Tier 1 (Core) — 14 symbols
@@ -2890,33 +2890,33 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>cA</code></td>
-<td>Arg</td>
-<td><code>Arg($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>cI</code></td>
 <td>Imag Part</td>
 <td><code>Im($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>cJ</code></td>
 <td>Conjugate</td>
 <td><code>Conj($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>cM</code></td>
 <td>Modulus</td>
 <td><code>Mod($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="even">
+<td><code>xA</code></td>
+<td>Arg</td>
+<td><code>ratl_atbash($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="odd">
-<td><code>cR</code></td>
+<td><code>xR</code></td>
 <td>Real Part</td>
-<td><code>Re($1)</code></td>
+<td><code>ratl_rot($1)</code></td>
 <td>1 → 1</td>
 </tr>
 </tbody>
@@ -3371,7 +3371,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Constants</strong> — Tier 3 (Extensions) — 7 symbols
+<strong>Ciphers</strong> — Tier 3 (Extensions) — 6 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3384,27 +3384,92 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </thead>
 <tbody>
 <tr class="odd">
+<td><code>xA</code></td>
+<td>Atbash</td>
+<td><code>ratl_atbash($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>xC</code></td>
+<td>Caesar</td>
+<td><code>ratl_caesar($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>xF</code></td>
+<td>Rail Fence</td>
+<td><code>ratl_rail_fence($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>xR</code></td>
+<td>ROT13</td>
+<td><code>ratl_rot($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>xT</code></td>
+<td>Columnar Transpose</td>
+<td><code>ratl_columnar($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>xV</code></td>
+<td>Vigenere</td>
+<td><code>ratl_vigenere($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details open="">
+<summary>
+<strong>Constants</strong> — Tier 3 (Extensions) — 9 symbols
+</summary>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Description</th>
+<th>R Code</th>
+<th>Stack Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>AZ</code></td>
+<td>Upper Letters</td>
+<td><code>paste0(LETTERS, collapse="")</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
 <td><code>I</code></td>
 <td>Inf</td>
 <td><code>Inf</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Na</code></td>
 <td>NA</td>
 <td><code>NA</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Pi</code></td>
 <td>Pi</td>
 <td><code>pi</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Z</code></td>
 <td>NA</td>
 <td><code>NA</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>az</code></td>
+<td>Lower Letters</td>
+<td><code>paste0(letters, collapse="")</code></td>
 <td>0 → 1</td>
 </tr>
 <tr class="odd">

@@ -6,7 +6,7 @@ RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric 
 
 RATL eliminates variable names and assignment — every character counts. The stack model means `3 5 +` instead of `result = a + b`. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.
 
-**Total symbols: 417** (all 2-byte or shorter)
+**Total symbols: 425** (all 2-byte or shorter)
 
 ## Getting Started
 
@@ -405,7 +405,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**417 symbols** organized by category. Click a category to expand.
+**425 symbols** organized by category. Click a category to expand.
 
 <details open><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 14 symbols</summary>
 
@@ -810,11 +810,11 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
-| `cA` | Arg | `Arg($1)` | 1 → 1 |
 | `cI` | Imag Part | `Im($1)` | 1 → 1 |
 | `cJ` | Conjugate | `Conj($1)` | 1 → 1 |
 | `cM` | Modulus | `Mod($1)` | 1 → 1 |
-| `cR` | Real Part | `Re($1)` | 1 → 1 |
+| `xA` | Arg | `ratl_atbash($1)` | 1 → 1 |
+| `xR` | Real Part | `ratl_rot($1)` | 1 → 1 |
 
 </details>
 
@@ -904,14 +904,29 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 7 symbols</summary>
+<details open><summary><strong>Ciphers</strong> — Tier 3 (Extensions) — 6 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
+| `xA` | Atbash | `ratl_atbash($1)` | 1 → 1 |
+| `xC` | Caesar | `ratl_caesar($2, $1)` | 2 → 1 |
+| `xF` | Rail Fence | `ratl_rail_fence($2, $1)` | 2 → 1 |
+| `xR` | ROT13 | `ratl_rot($1)` | 1 → 1 |
+| `xT` | Columnar Transpose | `ratl_columnar($2, $1)` | 2 → 1 |
+| `xV` | Vigenere | `ratl_vigenere($2, $1)` | 2 → 1 |
+
+</details>
+
+<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 9 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `AZ` | Upper Letters | `paste0(LETTERS, collapse="")` | 0 → 1 |
 | `I` | Inf | `Inf` | 0 → 1 |
 | `Na` | NA | `NA` | 0 → 1 |
 | `Pi` | Pi | `pi` | 0 → 1 |
 | `Z` | NA | `NA` | 0 → 1 |
+| `az` | Lower Letters | `paste0(letters, collapse="")` | 0 → 1 |
 | `s4` | EmptyLog | `logical(0)` | 0 → 1 |
 | `sQ` | EmptyChar | `character(0)` | 0 → 1 |
 | `sZ` | EmptyNum | `numeric(0)` | 0 → 1 |
