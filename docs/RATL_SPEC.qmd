@@ -96,8 +96,8 @@ For example, `+` has stack effect `2 → 1`: it pops two values and pushes their
 
 RATL provides four clipboards for temporary storage outside the stack:
 
-- `c1` (save), `c2` (load) — clipboard register 1
-- `c3` (save), `c4` (load) — clipboard register 2
+- `H`, `G`, `L`, `M` — each holds one value independently of the stack
+- Useful for saving intermediate results without stack gymnastics
 
 ***
 
@@ -416,10 +416,10 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `N` | Rotate | `list($2, $1, $3)` | 3 → 3 |
 | `Q` | Over | `list($2, $1, $2)` | 2 → 3 |
 | `U` | Unpack | `for(x in $1) stack[[length(stack)+1]] <- x` | 1 → 0 |
-| `c1` | ClipSave1 | `NULL` | 1 → 0 |
-| `c2` | ClipLoad1 | `NULL` | 0 → 1 |
-| `c3` | ClipSave2 | `NULL` | 1 → 0 |
-| `c4` | ClipLoad2 | `NULL` | 0 → 1 |
+| `a` | ClipSave1 | `NULL` | 1 → 0 |
+| `b` | ClipLoad1 | `NULL` | 0 → 1 |
+| `c` | ClipSave2 | `NULL` | 1 → 0 |
+| `d` | ClipLoad2 | `NULL` | 0 → 1 |
 | `g` | Pick | `NULL` | 2 → 3 |
 | `i` | Input | `scan(ratl_stdin, what=character(), n=1, quiet=TRUE)` | 0 → 1 |
 | `p` | Print | `ratl_print($1)` | 1 → 0 |

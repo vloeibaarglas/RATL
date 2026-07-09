@@ -13,10 +13,10 @@ sS	stop($1)	1	0	Stop	Stack & Control
 sW	warning($1)	1	0	Warning	Stack & Control	
 w	list($1, $2)	2	2	Swap	Stack & Control	
 x	NULL	1	0	Delete	Stack & Control	
-c1	NULL	1	0	ClipSave1	Stack & Control	
-c2	NULL	0	1	ClipLoad1	Stack & Control	
-c3	NULL	1	0	ClipSave2	Stack & Control	
-c4	NULL	0	1	ClipLoad2	Stack & Control	
+a	NULL	1	0	ClipSave1	Stack & Control	
+b	NULL	0	1	ClipLoad1	Stack & Control	
+c	NULL	1	0	ClipSave2	Stack & Control	
+d	NULL	0	1	ClipLoad2	Stack & Control	
 %	$2 %% $1	2	1	Modulo	Arithmetic & Comparison	
 &	$2 & $1	2	1	Logical AND	Arithmetic & Comparison	
 *	$2 * $1	2	1	Multiply	Arithmetic & Comparison	

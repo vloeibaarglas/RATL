@@ -1,20 +1,20 @@
 # Rosetta Code: https://rosettacode.org/wiki/99_bottles_of_beer
 99 D "
-  c3
-  c4 D 1 = ? '1 bottle' ]
-  c4 1 = ~ ? c4 a ' bottles' C ]
+  c
+  d D 1 = ? '1 bottle' ]
+  d 1 = ~ ? d a ' bottles' C ]
   ' of beer on the wall, ' C p
-  c4 D 1 = ? '1 bottle' ]
-  c4 1 = ~ ? c4 a ' bottles' C ]
+  d D 1 = ? '1 bottle' ]
+  d 1 = ~ ? d a ' bottles' C ]
   ' of beer.' C p
   'Take one down and pass it around, ' p
-  c4 1 - c3
-  c4 D 0 = ? 'No more bottles' ]
-  c4 0 = ~ ?
-    c4 D 1 = ? '1 bottle' ]
-    c4 1 = ~ ? c4 a ' bottles' C ]
+  d 1 - c
+  d D 0 = ? 'No more bottles' ]
+  d 0 = ~ ?
+    d D 1 = ? '1 bottle' ]
+    d 1 = ~ ? d a ' bottles' C ]
   ]
   ' of beer on the wall.' C p
   '' p
-  c4
+  d
 " x

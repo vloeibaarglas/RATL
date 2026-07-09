@@ -40,18 +40,18 @@ ratl_eval <- function(tokens, ctx) {
       } else if (type == "block") {
         stack_push(ctx$stack, t)
       } else if (type == "symbol") {
-        if (val == "c1") {
-          if (stack_length(ctx$stack) == 0) stop("Stack underflow for c1")
-          ctx$clipboards$c1 <- stack_pop(ctx$stack)
-        } else if (val == "c2") {
-          if (is.null(ctx$clipboards$c1)) stop("Clipboard c1 is empty")
-          stack_push(ctx$stack, ctx$clipboards$c1)
-        } else if (val == "c3") {
-          if (stack_length(ctx$stack) == 0) stop("Stack underflow for c3")
-          ctx$clipboards$c3 <- stack_pop(ctx$stack)
-        } else if (val == "c4") {
-          if (is.null(ctx$clipboards$c3)) stop("Clipboard c3 is empty")
-          stack_push(ctx$stack, ctx$clipboards$c3)
+        if (val == "a") {
+          if (stack_length(ctx$stack) == 0) stop("Stack underflow for a")
+          ctx$clipboards$a <- stack_pop(ctx$stack)
+        } else if (val == "b") {
+          if (is.null(ctx$clipboards$a)) stop("Clipboard a is empty")
+          stack_push(ctx$stack, ctx$clipboards$a)
+        } else if (val == "c") {
+          if (stack_length(ctx$stack) == 0) stop("Stack underflow for c")
+          ctx$clipboards$c <- stack_pop(ctx$stack)
+        } else if (val == "d") {
+          if (is.null(ctx$clipboards$c)) stop("Clipboard c is empty")
+          stack_push(ctx$stack, ctx$clipboards$c)
         } else if (val == "i") {
           inp <- scan(ctx$stdin, what=character(), n=1, quiet=TRUE)
           if (length(inp) > 0) stack_push(ctx$stack, inp) else stack_push(ctx$stack, NA)
