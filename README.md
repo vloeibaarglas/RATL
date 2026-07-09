@@ -52,12 +52,12 @@ Read the [specification](https://vloeibaarglas.github.io/RATL/RATL_SPEC.html) fo
 0 1
 10.(
   x
-  D p D L + M w
+  D p D c3 + c4 w
 )
 x x
 ```
 
-First 10 Fibonacci numbers using clipboards L/M for state.
+First 10 Fibonacci numbers using clipboards c3/c4 for state.
 
 ## Development
 
