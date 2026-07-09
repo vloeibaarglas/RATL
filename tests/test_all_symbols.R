@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 307 symbols (unit tests)\n"))
+cat(sprintf("Testing 295 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Stack & Control: D — Duplicate
@@ -75,9 +75,8 @@ test_Q_Over <- function() {
 # Stack & Control: U — Unpack
 test_U_Unpack <- function() {
   r <- run_ratl("5 U")
-  if (grepl("Error:", r)) { cat("FAIL [U] Unpack: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object of type 'closure' is not subsettable") {
-    cat("FAIL [U] Unpack: expected [ERROR: object of type 'closure' is not subsettable], got [", r, "]\n")
+  if (!grepl("ERROR: object of type 'closure' is not subsettable", r, fixed = TRUE)) {
+    cat("FAIL [U] Unpack: expected error containing [ERROR: object of type 'closure' is not subsettable], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -129,6 +128,18 @@ test_x_Delete <- function() {
   if (grepl("Error:", r)) { cat("FAIL [x] Delete: ", r, "\n"); return(FALSE) }
   return(TRUE)
 }
+
+# SKIP c1 (ClipSave1) — no test defined
+skipped <- skipped + 1
+
+# SKIP c2 (ClipLoad1) — no test defined
+skipped <- skipped + 1
+
+# SKIP c3 (ClipSave2) — no test defined
+skipped <- skipped + 1
+
+# SKIP c4 (ClipLoad2) — no test defined
+skipped <- skipped + 1
 
 # Arithmetic & Comparison: % — Modulo
 test___Modulo <- function() {
@@ -251,8 +262,16 @@ test____GreatEqual <- function() {
   return(TRUE)
 }
 
-# SKIP \ (IntDiv) — no test defined
-skipped <- skipped + 1
+# Arithmetic & Comparison: \ — IntDiv
+test___IntDiv <- function() {
+  r <- run_ratl("3 5 \\")
+  if (grepl("Error:", r)) { cat("FAIL [\\] IntDiv: ", r, "\n"); return(FALSE) }
+  if (r != "0") {
+    cat("FAIL [\\] IntDiv: expected [0], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # Arithmetic & Comparison: ^ — Power
 test___Power <- function() {
@@ -271,17 +290,6 @@ test_lX_Xor <- function() {
   if (grepl("Error:", r)) { cat("FAIL [lX] Xor: ", r, "\n"); return(FALSE) }
   if (r != "FALSE") {
     cat("FAIL [lX] Xor: expected [FALSE], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Arithmetic & Comparison: mI — IntDiv
-test_mI_IntDiv <- function() {
-  r <- run_ratl("3 5 mI")
-  if (grepl("Error:", r)) { cat("FAIL [mI] IntDiv: ", r, "\n"); return(FALSE) }
-  if (r != "0") {
-    cat("FAIL [mI] IntDiv: expected [0], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -313,8 +321,8 @@ test___Not <- function() {
 test___Filter <- function() {
   r <- run_ratl("3 5 #")
   if (grepl("Error:", r)) { cat("FAIL [#] Filter: ", r, "\n"); return(FALSE) }
-  if (r != "3 5") {
-    cat("FAIL [#] Filter: expected [3 5], got [", r, "]\n")
+  if (r != "NA") {
+    cat("FAIL [#] Filter: expected [NA], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -497,17 +505,6 @@ test_e_Extract_Element___ <- function() {
   return(TRUE)
 }
 
-# Array Operations: es — Extract Subset [
-test_es_Extract_Subset__ <- function() {
-  r <- run_ratl("3 5 es")
-  if (grepl("Error:", r)) { cat("FAIL [es] Extract Subset [: ", r, "\n"); return(FALSE) }
-  if (r != "NA") {
-    cat("FAIL [es] Extract Subset [: expected [NA], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Array Operations: fE — FirstElem
 test_fE_FirstElem <- function() {
   r <- run_ratl("5 fE")
@@ -525,17 +522,6 @@ test_l_Length <- function() {
   if (grepl("Error:", r)) { cat("FAIL [l] Length: ", r, "\n"); return(FALSE) }
   if (r != "1") {
     cat("FAIL [l] Length: expected [1], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Array Operations: r1 — Range1toN
-test_r1_Range1toN <- function() {
-  r <- run_ratl("5 r1")
-  if (grepl("Error:", r)) { cat("FAIL [r1] Range1toN: ", r, "\n"); return(FALSE) }
-  if (r != "1 2 3 4 5") {
-    cat("FAIL [r1] Range1toN: expected [1 2 3 4 5], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -602,9 +588,8 @@ test_vG_PMax <- function() {
 # Array Operations: vH — WhichArr
 test_vH_WhichArr <- function() {
   r <- run_ratl("5 vH")
-  if (grepl("Error:", r)) { cat("FAIL [vH] WhichArr: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: argument to 'which' is not logical") {
-    cat("FAIL [vH] WhichArr: expected [ERROR: argument to 'which' is not logical], got [", r, "]\n")
+  if (!grepl("ERROR: argument to 'which' is not logical", r, fixed = TRUE)) {
+    cat("FAIL [vH] WhichArr: expected error containing [ERROR: argument to 'which' is not logical], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -624,9 +609,8 @@ test_vI_CumMin <- function() {
 # Array Operations: vT — RepMat
 test_vT_RepMat <- function() {
   r <- run_ratl("1 2 3 vT")
-  if (grepl("Error:", r)) { cat("FAIL [vT] RepMat: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'nrow' value (too large or NA)") {
-    cat("FAIL [vT] RepMat: expected [ERROR: invalid 'nrow' value (too large or NA)], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'nrow' value (too large or NA)", r, fixed = TRUE)) {
+    cat("FAIL [vT] RepMat: expected error containing [ERROR: invalid 'nrow' value (too large or NA)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -657,9 +641,8 @@ test_vX_CumMax <- function() {
 # Array Operations: wh — Which
 test_wh_Which <- function() {
   r <- run_ratl("5 wh")
-  if (grepl("Error:", r)) { cat("FAIL [wh] Which: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: argument to 'which' is not logical") {
-    cat("FAIL [wh] Which: expected [ERROR: argument to 'which' is not logical], got [", r, "]\n")
+  if (!grepl("ERROR: argument to 'which' is not logical", r, fixed = TRUE)) {
+    cat("FAIL [wh] Which: expected error containing [ERROR: argument to 'which' is not logical], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -675,9 +658,6 @@ test_zp_Zip <- function() {
   }
   return(TRUE)
 }
-
-# SKIP atN (TailN) — no test defined
-skipped <- skipped + 1
 
 # Bitwise Operations: bA — BitAnd
 test_bA_BitAnd <- function() {
@@ -769,8 +749,16 @@ skipped <- skipped + 1
 # SKIP Tc (Class) — no test defined
 skipped <- skipped + 1
 
-# SKIP Td (ToDate) — no test defined
-skipped <- skipped + 1
+# Type & Introspection: Td — ToDate
+test_Td_ToDate <- function() {
+  r <- run_ratl("5 Td")
+  if (grepl("Error:", r)) { cat("FAIL [Td] ToDate: ", r, "\n"); return(FALSE) }
+  if (r != "1970-01-06") {
+    cat("FAIL [Td] ToDate: expected [1970-01-06], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # SKIP Tf (Factor) — no test defined
 skipped <- skipped + 1
@@ -782,9 +770,6 @@ skipped <- skipped + 1
 skipped <- skipped + 1
 
 # SKIP Tt (Typeof) — no test defined
-skipped <- skipped + 1
-
-# SKIP Tu (Unlist) — no test defined
 skipped <- skipped + 1
 
 # SKIP Tv (Attributes) — no test defined
@@ -820,17 +805,6 @@ skipped <- skipped + 1
 # SKIP zZ (Zip With) — no test defined
 skipped <- skipped + 1
 
-# Type & Introspection: zd — To Date
-test_zd_To_Date <- function() {
-  r <- run_ratl("5 zd")
-  if (grepl("Error:", r)) { cat("FAIL [zd] To Date: ", r, "\n"); return(FALSE) }
-  if (r != "1970-01-06") {
-    cat("FAIL [zd] To Date: expected [1970-01-06], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # SKIP Ts (ToString) — no test defined
 skipped <- skipped + 1
 
@@ -843,9 +817,8 @@ skipped <- skipped + 1
 # Higher-Order Functions: Fa — Apply
 test_Fa_Apply <- function() {
   r <- run_ratl("1 2 3 Fa")
-  if (grepl("Error:", r)) { cat("FAIL [Fa] Apply: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v1' of mode 'function' was not found") {
-    cat("FAIL [Fa] Apply: expected [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v1' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fa] Apply: expected error containing [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -854,9 +827,8 @@ test_Fa_Apply <- function() {
 # Higher-Order Functions: Ff — Filter (Func)
 test_Ff_Filter__Func_ <- function() {
   r <- run_ratl("3 5 Ff")
-  if (grepl("Error:", r)) { cat("FAIL [Ff] Filter (Func): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v2' of mode 'function' was not found") {
-    cat("FAIL [Ff] Filter (Func): expected [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v2' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Ff] Filter (Func): expected error containing [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -865,9 +837,8 @@ test_Ff_Filter__Func_ <- function() {
 # Higher-Order Functions: Fl — Lapply
 test_Fl_Lapply <- function() {
   r <- run_ratl("3 5 Fl")
-  if (grepl("Error:", r)) { cat("FAIL [Fl] Lapply: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v1' of mode 'function' was not found") {
-    cat("FAIL [Fl] Lapply: expected [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v1' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fl] Lapply: expected error containing [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -876,9 +847,8 @@ test_Fl_Lapply <- function() {
 # Higher-Order Functions: Fm — Mapply
 test_Fm_Mapply <- function() {
   r <- run_ratl("5 Fm")
-  if (grepl("Error:", r)) { cat("FAIL [Fm] Mapply: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: '...' used in an incorrect context") {
-    cat("FAIL [Fm] Mapply: expected [ERROR: '...' used in an incorrect context], got [", r, "]\n")
+  if (!grepl("ERROR: '...' used in an incorrect context", r, fixed = TRUE)) {
+    cat("FAIL [Fm] Mapply: expected error containing [ERROR: '...' used in an incorrect context], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -887,9 +857,8 @@ test_Fm_Mapply <- function() {
 # Higher-Order Functions: Fn — Find (Func)
 test_Fn_Find__Func_ <- function() {
   r <- run_ratl("3 5 Fn")
-  if (grepl("Error:", r)) { cat("FAIL [Fn] Find (Func): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v2' of mode 'function' was not found") {
-    cat("FAIL [Fn] Find (Func): expected [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v2' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fn] Find (Func): expected error containing [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -898,9 +867,8 @@ test_Fn_Find__Func_ <- function() {
 # Higher-Order Functions: Fp — Position
 test_Fp_Position <- function() {
   r <- run_ratl("3 5 Fp")
-  if (grepl("Error:", r)) { cat("FAIL [Fp] Position: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v2' of mode 'function' was not found") {
-    cat("FAIL [Fp] Position: expected [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v2' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fp] Position: expected error containing [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -910,9 +878,8 @@ test_Fp_Position <- function() {
 test_Fq_Map__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("Fq")
-  if (grepl("Error:", r)) { cat("FAIL [Fq] Map (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Fq (map)") {
-    cat("FAIL [Fq] Map (evaluator): expected [ERROR: Stack underflow for Fq (map)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Fq (map)", r, fixed = TRUE)) {
+    cat("FAIL [Fq] Map (evaluator): expected error containing [ERROR: Stack underflow for Fq (map)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -921,9 +888,8 @@ test_Fq_Map__evaluator_ <- function() {
 # Higher-Order Functions: Fr — Reduce
 test_Fr_Reduce <- function() {
   r <- run_ratl("3 5 Fr")
-  if (grepl("Error:", r)) { cat("FAIL [Fr] Reduce: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [Fr] Reduce: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [Fr] Reduce: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -932,9 +898,8 @@ test_Fr_Reduce <- function() {
 # Higher-Order Functions: Fs — Sapply
 test_Fs_Sapply <- function() {
   r <- run_ratl("3 5 Fs")
-  if (grepl("Error:", r)) { cat("FAIL [Fs] Sapply: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v1' of mode 'function' was not found") {
-    cat("FAIL [Fs] Sapply: expected [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v1' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fs] Sapply: expected error containing [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -944,9 +909,8 @@ test_Fs_Sapply <- function() {
 test_Ft_Filter__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("Ft")
-  if (grepl("Error:", r)) { cat("FAIL [Ft] Filter (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Ft (filter)") {
-    cat("FAIL [Ft] Filter (evaluator): expected [ERROR: Stack underflow for Ft (filter)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Ft (filter)", r, fixed = TRUE)) {
+    cat("FAIL [Ft] Filter (evaluator): expected error containing [ERROR: Stack underflow for Ft (filter)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -955,9 +919,8 @@ test_Ft_Filter__evaluator_ <- function() {
 # Higher-Order Functions: Fv — Vapply
 test_Fv_Vapply <- function() {
   r <- run_ratl("1 2 3 Fv")
-  if (grepl("Error:", r)) { cat("FAIL [Fv] Vapply: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v2' of mode 'function' was not found") {
-    cat("FAIL [Fv] Vapply: expected [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v2' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [Fv] Vapply: expected error containing [ERROR: object 'v2' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -967,9 +930,8 @@ test_Fv_Vapply <- function() {
 test_Fx_Repeat__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("Fx")
-  if (grepl("Error:", r)) { cat("FAIL [Fx] Repeat (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Fx (repeat)") {
-    cat("FAIL [Fx] Repeat (evaluator): expected [ERROR: Stack underflow for Fx (repeat)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Fx (repeat)", r, fixed = TRUE)) {
+    cat("FAIL [Fx] Repeat (evaluator): expected error containing [ERROR: Stack underflow for Fx (repeat)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -978,9 +940,8 @@ test_Fx_Repeat__evaluator_ <- function() {
 # Higher-Order Functions: fn — Negate
 test_fn_Negate <- function() {
   r <- run_ratl("5 fn")
-  if (grepl("Error:", r)) { cat("FAIL [fn] Negate: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v1' of mode 'function' was not found") {
-    cat("FAIL [fn] Negate: expected [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v1' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [fn] Negate: expected error containing [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -990,9 +951,8 @@ test_fn_Negate <- function() {
 test_q_Map__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("q")
-  if (grepl("Error:", r)) { cat("FAIL [q] Map (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Fq (map)") {
-    cat("FAIL [q] Map (evaluator): expected [ERROR: Stack underflow for Fq (map)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Fq (map)", r, fixed = TRUE)) {
+    cat("FAIL [q] Map (evaluator): expected error containing [ERROR: Stack underflow for Fq (map)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1002,9 +962,8 @@ test_q_Map__evaluator_ <- function() {
 test_y_Reduce__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("y")
-  if (grepl("Error:", r)) { cat("FAIL [y] Reduce (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Fr (reduce)") {
-    cat("FAIL [y] Reduce (evaluator): expected [ERROR: Stack underflow for Fr (reduce)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Fr (reduce)", r, fixed = TRUE)) {
+    cat("FAIL [y] Reduce (evaluator): expected error containing [ERROR: Stack underflow for Fr (reduce)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1014,9 +973,8 @@ test_y_Reduce__evaluator_ <- function() {
 test_z_Repeat__evaluator_ <- function() {
   set.seed(42)
   r <- run_ratl("z")
-  if (grepl("Error:", r)) { cat("FAIL [z] Repeat (evaluator): ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: Stack underflow for Fx (repeat)") {
-    cat("FAIL [z] Repeat (evaluator): expected [ERROR: Stack underflow for Fx (repeat)], got [", r, "]\n")
+  if (!grepl("ERROR: Stack underflow for Fx (repeat)", r, fixed = TRUE)) {
+    cat("FAIL [z] Repeat (evaluator): expected error containing [ERROR: Stack underflow for Fx (repeat)], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1036,9 +994,8 @@ test___Transpose <- function() {
 # Matrix: BT — Bingo Twin
 test_BT_Bingo_Twin <- function() {
   r <- run_ratl("5 BT")
-  if (grepl("Error:", r)) { cat("FAIL [BT] Bingo Twin: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: incorrect number of dimensions") {
-    cat("FAIL [BT] Bingo Twin: expected [ERROR: incorrect number of dimensions], got [", r, "]\n")
+  if (!grepl("ERROR: incorrect number of dimensions", r, fixed = TRUE)) {
+    cat("FAIL [BT] Bingo Twin: expected error containing [ERROR: incorrect number of dimensions], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1102,9 +1059,8 @@ test_v2_Solve_2 <- function() {
 # Matrix: vC — Col Indices
 test_vC_Col_Indices <- function() {
   r <- run_ratl("5 vC")
-  if (grepl("Error:", r)) { cat("FAIL [vC] Col Indices: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: a matrix-like object is required as argument to 'col'") {
-    cat("FAIL [vC] Col Indices: expected [ERROR: a matrix-like object is required as argument to 'col'], got [", r, "]\n")
+  if (!grepl("ERROR: a matrix-like object is required as argument to 'col'", r, fixed = TRUE)) {
+    cat("FAIL [vC] Col Indices: expected error containing [ERROR: a matrix-like object is required as argument to 'col'], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1113,9 +1069,8 @@ test_vC_Col_Indices <- function() {
 # Matrix: vE — Row Sums
 test_vE_Row_Sums <- function() {
   r <- run_ratl("5 vE")
-  if (grepl("Error:", r)) { cat("FAIL [vE] Row Sums: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: 'x' must be an array of at least two dimensions") {
-    cat("FAIL [vE] Row Sums: expected [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
+  if (!grepl("ERROR: 'x' must be an array of at least two dimensions", r, fixed = TRUE)) {
+    cat("FAIL [vE] Row Sums: expected error containing [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1135,9 +1090,8 @@ test_vL_Solve <- function() {
 # Matrix: vM — Col Means
 test_vM_Col_Means <- function() {
   r <- run_ratl("5 vM")
-  if (grepl("Error:", r)) { cat("FAIL [vM] Col Means: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: 'x' must be an array of at least two dimensions") {
-    cat("FAIL [vM] Col Means: expected [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
+  if (!grepl("ERROR: 'x' must be an array of at least two dimensions", r, fixed = TRUE)) {
+    cat("FAIL [vM] Col Means: expected error containing [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1146,9 +1100,8 @@ test_vM_Col_Means <- function() {
 # Matrix: vN — Row Means
 test_vN_Row_Means <- function() {
   r <- run_ratl("5 vN")
-  if (grepl("Error:", r)) { cat("FAIL [vN] Row Means: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: 'x' must be an array of at least two dimensions") {
-    cat("FAIL [vN] Row Means: expected [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
+  if (!grepl("ERROR: 'x' must be an array of at least two dimensions", r, fixed = TRUE)) {
+    cat("FAIL [vN] Row Means: expected error containing [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1168,9 +1121,8 @@ test_vQ_QR_Decomp <- function() {
 # Matrix: vR — Row Indices
 test_vR_Row_Indices <- function() {
   r <- run_ratl("5 vR")
-  if (grepl("Error:", r)) { cat("FAIL [vR] Row Indices: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: a matrix-like object is required as argument to 'row'") {
-    cat("FAIL [vR] Row Indices: expected [ERROR: a matrix-like object is required as argument to 'row'], got [", r, "]\n")
+  if (!grepl("ERROR: a matrix-like object is required as argument to 'row'", r, fixed = TRUE)) {
+    cat("FAIL [vR] Row Indices: expected error containing [ERROR: a matrix-like object is required as argument to 'row'], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1179,9 +1131,8 @@ test_vR_Row_Indices <- function() {
 # Matrix: vS — Col Sums
 test_vS_Col_Sums <- function() {
   r <- run_ratl("5 vS")
-  if (grepl("Error:", r)) { cat("FAIL [vS] Col Sums: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: 'x' must be an array of at least two dimensions") {
-    cat("FAIL [vS] Col Sums: expected [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
+  if (!grepl("ERROR: 'x' must be an array of at least two dimensions", r, fixed = TRUE)) {
+    cat("FAIL [vS] Col Sums: expected error containing [ERROR: 'x' must be an array of at least two dimensions], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1193,17 +1144,6 @@ test_vV_SVD <- function() {
   if (grepl("Error:", r)) { cat("FAIL [vV] SVD: ", r, "\n"); return(FALSE) }
   if (r != "5 1 1") {
     cat("FAIL [vV] SVD: expected [5 1 1], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Matrix: y! — Diag
-test_y__Diag <- function() {
-  r <- run_ratl("5 y!")
-  if (grepl("Error:", r)) { cat("FAIL [y!] Diag: ", r, "\n"); return(FALSE) }
-  if (r != "1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1") {
-    cat("FAIL [y!] Diag: expected [1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1271,17 +1211,6 @@ test_yl_TriLower <- function() {
   return(TRUE)
 }
 
-# Matrix: ym — Create Matrix
-test_ym_Create_Matrix <- function() {
-  r <- run_ratl("1 2 3 ym")
-  if (grepl("Error:", r)) { cat("FAIL [ym] Create Matrix: ", r, "\n"); return(FALSE) }
-  if (r != "1 1 1 1 1 1") {
-    cat("FAIL [ym] Create Matrix: expected [1 1 1 1 1 1], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Matrix: yt — Trace
 test_yt_Trace <- function() {
   r <- run_ratl("5 yt")
@@ -1329,9 +1258,8 @@ test_C_Concat <- function() {
 # String Operations: J — Join List
 test_J_Join_List <- function() {
   r <- run_ratl("3 5 J")
-  if (grepl("Error:", r)) { cat("FAIL [J] Join List: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'collapse' argument") {
-    cat("FAIL [J] Join List: expected [ERROR: invalid 'collapse' argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'collapse' argument", r, fixed = TRUE)) {
+    cat("FAIL [J] Join List: expected error containing [ERROR: invalid 'collapse' argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1349,8 +1277,16 @@ skipped <- skipped + 1
 # SKIP Sg (GSub) — no test defined
 skipped <- skipped + 1
 
-# SKIP Sl (ToLower) — no test defined
-skipped <- skipped + 1
+# String Operations: Sl — ToLower
+test_Sl_ToLower <- function() {
+  r <- run_ratl("5 Sl")
+  if (grepl("Error:", r)) { cat("FAIL [Sl] ToLower: ", r, "\n"); return(FALSE) }
+  if (r != "5") {
+    cat("FAIL [Sl] ToLower: expected [5], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # SKIP Sr (ReverseString) — no test defined
 skipped <- skipped + 1
@@ -1367,9 +1303,8 @@ skipped <- skipped + 1
 # String Operations: Xc — Char Translate
 test_Xc_Char_Translate <- function() {
   r <- run_ratl("1 2 3 Xc")
-  if (grepl("Error:", r)) { cat("FAIL [Xc] Char Translate: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'old' argument") {
-    cat("FAIL [Xc] Char Translate: expected [ERROR: invalid 'old' argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'old' argument", r, fixed = TRUE)) {
+    cat("FAIL [Xc] Char Translate: expected error containing [ERROR: invalid 'old' argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1390,17 +1325,6 @@ test_j_Join <- function() {
 test_sG_Grep <- function() {
   r <- run_ratl("3 5 sG")
   if (grepl("Error:", r)) { cat("FAIL [sG] Grep: ", r, "\n"); return(FALSE) }
-  return(TRUE)
-}
-
-# String Operations: sL — ToLower
-test_sL_ToLower <- function() {
-  r <- run_ratl("5 sL")
-  if (grepl("Error:", r)) { cat("FAIL [sL] ToLower: ", r, "\n"); return(FALSE) }
-  if (r != "5") {
-    cat("FAIL [sL] ToLower: expected [5], got [", r, "]\n")
-    return(FALSE)
-  }
   return(TRUE)
 }
 
@@ -1458,7 +1382,7 @@ skipped <- skipped + 1
 
 # Statistics: A — All
 test_A_All <- function() {
-  r <- run_ratl("[1 2 3] A")
+  r <- run_ratl("5 A")
   if (grepl("Error:", r)) { cat("FAIL [A] All: ", r, "\n"); return(FALSE) }
   if (r != "TRUE") {
     cat("FAIL [A] All: expected [TRUE], got [", r, "]\n")
@@ -1469,10 +1393,10 @@ test_A_All <- function() {
 
 # Statistics: Bn — Min
 test_Bn_Min <- function() {
-  r <- run_ratl("5 Bn")
+  r <- run_ratl("[3 1 4 1 5] Bn")
   if (grepl("Error:", r)) { cat("FAIL [Bn] Min: ", r, "\n"); return(FALSE) }
-  if (r != "5") {
-    cat("FAIL [Bn] Min: expected [5], got [", r, "]\n")
+  if (r != "1") {
+    cat("FAIL [Bn] Min: expected [1], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1480,7 +1404,7 @@ test_Bn_Min <- function() {
 
 # Statistics: Bx — Max
 test_Bx_Max <- function() {
-  r <- run_ratl("5 Bx")
+  r <- run_ratl("[3 1 4 1 5] Bx")
   if (grepl("Error:", r)) { cat("FAIL [Bx] Max: ", r, "\n"); return(FALSE) }
   if (r != "5") {
     cat("FAIL [Bx] Max: expected [5], got [", r, "]\n")
@@ -1489,8 +1413,16 @@ test_Bx_Max <- function() {
   return(TRUE)
 }
 
-# SKIP E (Any) — no test defined
-skipped <- skipped + 1
+# Statistics: E — Any
+test_E_Any <- function() {
+  r <- run_ratl("5 E")
+  if (grepl("Error:", r)) { cat("FAIL [E] Any: ", r, "\n"); return(FALSE) }
+  if (r != "TRUE") {
+    cat("FAIL [E] Any: expected [TRUE], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # Statistics: P — Product
 test_P_Product <- function() {
@@ -1514,34 +1446,11 @@ test_Sw_WeightedMean <- function() {
   return(TRUE)
 }
 
-# Statistics: V — Max
-test_V_Max <- function() {
-  r <- run_ratl("[3 1 4 1 5] V")
-  if (grepl("Error:", r)) { cat("FAIL [V] Max: ", r, "\n"); return(FALSE) }
-  if (r != "5") {
-    cat("FAIL [V] Max: expected [5], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Statistics: dX — XTabs
 test_dX_XTabs <- function() {
   r <- run_ratl("3 5 dX")
-  if (grepl("Error:", r)) { cat("FAIL [dX] XTabs: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [dX] XTabs: expected [ERROR: invalid formula], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Statistics: lA — Any
-test_lA_Any <- function() {
-  r <- run_ratl("5 lA")
-  if (grepl("Error:", r)) { cat("FAIL [lA] Any: ", r, "\n"); return(FALSE) }
-  if (r != "TRUE") {
-    cat("FAIL [lA] Any: expected [TRUE], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [dX] XTabs: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1665,28 +1574,6 @@ skipped <- skipped + 1
 # SKIP ty (Summary) — no test defined
 skipped <- skipped + 1
 
-# Statistics: v — Min
-test_v_Min <- function() {
-  r <- run_ratl("[3 1 4 1 5] v")
-  if (grepl("Error:", r)) { cat("FAIL [v] Min: ", r, "\n"); return(FALSE) }
-  if (r != "1") {
-    cat("FAIL [v] Min: expected [1], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Statistics: vA — All
-test_vA_All <- function() {
-  r <- run_ratl("5 vA")
-  if (grepl("Error:", r)) { cat("FAIL [vA] All: ", r, "\n"); return(FALSE) }
-  if (r != "TRUE") {
-    cat("FAIL [vA] All: expected [TRUE], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # SKIP vd (Density) — no test defined
 skipped <- skipped + 1
 
@@ -1704,9 +1591,8 @@ test_DN_Density_Normal <- function() {
 # Distributions & Tests: KC — Cor Test
 test_KC_Cor_Test <- function() {
   r <- run_ratl("3 5 KC")
-  if (grepl("Error:", r)) { cat("FAIL [KC] Cor Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: not enough finite observations") {
-    cat("FAIL [KC] Cor Test: expected [ERROR: not enough finite observations], got [", r, "]\n")
+  if (!grepl("ERROR: not enough finite observations", r, fixed = TRUE)) {
+    cat("FAIL [KC] Cor Test: expected error containing [ERROR: not enough finite observations], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1715,9 +1601,8 @@ test_KC_Cor_Test <- function() {
 # Distributions & Tests: KK — Kruskal-Wallis
 test_KK_Kruskal_Wallis <- function() {
   r <- run_ratl("5 KK")
-  if (grepl("Error:", r)) { cat("FAIL [KK] Kruskal-Wallis: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: argument \"g\" is missing, with no default") {
-    cat("FAIL [KK] Kruskal-Wallis: expected [ERROR: argument \"g\" is missing, with no default], got [", r, "]\n")
+  if (!grepl("ERROR: argument \"g\" is missing, with no default", r, fixed = TRUE)) {
+    cat("FAIL [KK] Kruskal-Wallis: expected error containing [ERROR: argument \"g\" is missing, with no default], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1972,9 +1857,8 @@ test_du_Density_Uniform <- function() {
 # Distributions & Tests: kb — Bartlett Test
 test_kb_Bartlett_Test <- function() {
   r <- run_ratl("5 kb")
-  if (grepl("Error:", r)) { cat("FAIL [kb] Bartlett Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: argument \"g\" is missing, with no default") {
-    cat("FAIL [kb] Bartlett Test: expected [ERROR: argument \"g\" is missing, with no default], got [", r, "]\n")
+  if (!grepl("ERROR: argument \"g\" is missing, with no default", r, fixed = TRUE)) {
+    cat("FAIL [kb] Bartlett Test: expected error containing [ERROR: argument \"g\" is missing, with no default], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1983,9 +1867,8 @@ test_kb_Bartlett_Test <- function() {
 # Distributions & Tests: kc — Chi-Square Test
 test_kc_Chi_Square_Test <- function() {
   r <- run_ratl("5 kc")
-  if (grepl("Error:", r)) { cat("FAIL [kc] Chi-Square Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: 'x' must at least have 2 elements") {
-    cat("FAIL [kc] Chi-Square Test: expected [ERROR: 'x' must at least have 2 elements], got [", r, "]\n")
+  if (!grepl("ERROR: 'x' must at least have 2 elements", r, fixed = TRUE)) {
+    cat("FAIL [kc] Chi-Square Test: expected error containing [ERROR: 'x' must at least have 2 elements], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -1994,9 +1877,8 @@ test_kc_Chi_Square_Test <- function() {
 # Distributions & Tests: kf — Fisher Test
 test_kf_Fisher_Test <- function() {
   r <- run_ratl("5 kf")
-  if (grepl("Error:", r)) { cat("FAIL [kf] Fisher Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: if 'x' is not a matrix, 'y' must be given") {
-    cat("FAIL [kf] Fisher Test: expected [ERROR: if 'x' is not a matrix, 'y' must be given], got [", r, "]\n")
+  if (!grepl("ERROR: if 'x' is not a matrix, 'y' must be given", r, fixed = TRUE)) {
+    cat("FAIL [kf] Fisher Test: expected error containing [ERROR: if 'x' is not a matrix, 'y' must be given], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2023,9 +1905,8 @@ test_kp_Prop_Test <- function() {
 # Distributions & Tests: ks — Shapiro-Wilk
 test_ks_Shapiro_Wilk <- function() {
   r <- run_ratl("5 ks")
-  if (grepl("Error:", r)) { cat("FAIL [ks] Shapiro-Wilk: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: sample size must be between 3 and 5000") {
-    cat("FAIL [ks] Shapiro-Wilk: expected [ERROR: sample size must be between 3 and 5000], got [", r, "]\n")
+  if (!grepl("ERROR: sample size must be between 3 and 5000", r, fixed = TRUE)) {
+    cat("FAIL [ks] Shapiro-Wilk: expected error containing [ERROR: sample size must be between 3 and 5000], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2034,9 +1915,8 @@ test_ks_Shapiro_Wilk <- function() {
 # Distributions & Tests: kt — T-Test
 test_kt_T_Test <- function() {
   r <- run_ratl("3 5 kt")
-  if (grepl("Error:", r)) { cat("FAIL [kt] T-Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: not enough 'x' observations") {
-    cat("FAIL [kt] T-Test: expected [ERROR: not enough 'x' observations], got [", r, "]\n")
+  if (!grepl("ERROR: not enough 'x' observations", r, fixed = TRUE)) {
+    cat("FAIL [kt] T-Test: expected error containing [ERROR: not enough 'x' observations], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2045,9 +1925,8 @@ test_kt_T_Test <- function() {
 # Distributions & Tests: kv — F-Test Var
 test_kv_F_Test_Var <- function() {
   r <- run_ratl("3 5 kv")
-  if (grepl("Error:", r)) { cat("FAIL [kv] F-Test Var: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: not enough 'x' observations") {
-    cat("FAIL [kv] F-Test Var: expected [ERROR: not enough 'x' observations], got [", r, "]\n")
+  if (!grepl("ERROR: not enough 'x' observations", r, fixed = TRUE)) {
+    cat("FAIL [kv] F-Test Var: expected error containing [ERROR: not enough 'x' observations], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2625,17 +2504,6 @@ test_rw_Random_Weibull <- function() {
   return(TRUE)
 }
 
-# Distributions & Tests: tt — T-Test
-test_tt_T_Test <- function() {
-  r <- run_ratl("3 5 tt")
-  if (grepl("Error:", r)) { cat("FAIL [tt] T-Test: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: not enough 'x' observations") {
-    cat("FAIL [tt] T-Test: expected [ERROR: not enough 'x' observations], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Combinatorics & Special: LG — Log Gamma
 test_LG_Log_Gamma <- function() {
   r <- run_ratl("5 LG")
@@ -2653,39 +2521,6 @@ test_MC_Choose <- function() {
   if (grepl("Error:", r)) { cat("FAIL [MC] Choose: ", r, "\n"); return(FALSE) }
   if (r != "0") {
     cat("FAIL [MC] Choose: expected [0], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Combinatorics & Special: XP — Prime Factors
-test_XP_Prime_Factors <- function() {
-  r <- run_ratl("5 XP")
-  if (grepl("Error:", r)) { cat("FAIL [XP] Prime Factors: ", r, "\n"); return(FALSE) }
-  if (r != "5") {
-    cat("FAIL [XP] Prime Factors: expected [5], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Combinatorics & Special: Xn — Choose (nCr)
-test_Xn_Choose__nCr_ <- function() {
-  r <- run_ratl("3 5 Xn")
-  if (grepl("Error:", r)) { cat("FAIL [Xn] Choose (nCr): ", r, "\n"); return(FALSE) }
-  if (r != "0") {
-    cat("FAIL [Xn] Choose (nCr): expected [0], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Combinatorics & Special: Xq — Is Prime
-test_Xq_Is_Prime <- function() {
-  r <- run_ratl("5 Xq")
-  if (grepl("Error:", r)) { cat("FAIL [Xq] Is Prime: ", r, "\n"); return(FALSE) }
-  if (r != "TRUE") {
-    cat("FAIL [Xq] Is Prime: expected [TRUE], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2768,17 +2603,6 @@ test_mf_Prime_Factors <- function() {
   return(TRUE)
 }
 
-# Combinatorics & Special: ml — LCM
-test_ml_LCM <- function() {
-  r <- run_ratl("3 5 ml")
-  if (grepl("Error:", r)) { cat("FAIL [ml] LCM: ", r, "\n"); return(FALSE) }
-  if (r != "15") {
-    cat("FAIL [ml] LCM: expected [15], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
 # Combinatorics & Special: mp — Is Prime
 test_mp_Is_Prime <- function() {
   r <- run_ratl("5 mp")
@@ -2815,8 +2639,16 @@ test_tg_Trigamma <- function() {
 # SKIP gC (GCD) — no test defined
 skipped <- skipped + 1
 
-# SKIP xA (Arg) — no test defined
-skipped <- skipped + 1
+# Complex Numbers: cA — Arg
+test_cA_Arg <- function() {
+  r <- run_ratl("5 cA")
+  if (grepl("Error:", r)) { cat("FAIL [cA] Arg: ", r, "\n"); return(FALSE) }
+  if (r != "0") {
+    cat("FAIL [cA] Arg: expected [0], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # Complex Numbers: cI — Imag Part
 test_cI_Imag_Part <- function() {
@@ -2851,8 +2683,16 @@ test_cM_Modulus <- function() {
   return(TRUE)
 }
 
-# SKIP xR (Real Part) — no test defined
-skipped <- skipped + 1
+# Complex Numbers: cR — Real Part
+test_cR_Real_Part <- function() {
+  r <- run_ratl("5 cR")
+  if (grepl("Error:", r)) { cat("FAIL [cR] Real Part: ", r, "\n"); return(FALSE) }
+  if (r != "5") {
+    cat("FAIL [cR] Real Part: expected [5], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
 
 # SKIP FW (Write File) — no test defined
 skipped <- skipped + 1
@@ -2860,9 +2700,8 @@ skipped <- skipped + 1
 # File I/O: fA — Dirname
 test_fA_Dirname <- function() {
   r <- run_ratl("5 fA")
-  if (grepl("Error:", r)) { cat("FAIL [fA] Dirname: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: a character vector argument expected") {
-    cat("FAIL [fA] Dirname: expected [ERROR: a character vector argument expected], got [", r, "]\n")
+  if (!grepl("ERROR: a character vector argument expected", r, fixed = TRUE)) {
+    cat("FAIL [fA] Dirname: expected error containing [ERROR: a character vector argument expected], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2874,9 +2713,8 @@ skipped <- skipped + 1
 # File I/O: fD — List Dirs
 test_fD_List_Dirs <- function() {
   r <- run_ratl("5 fD")
-  if (grepl("Error:", r)) { cat("FAIL [fD] List Dirs: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'directory' argument") {
-    cat("FAIL [fD] List Dirs: expected [ERROR: invalid 'directory' argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'directory' argument", r, fixed = TRUE)) {
+    cat("FAIL [fD] List Dirs: expected error containing [ERROR: invalid 'directory' argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2894,9 +2732,8 @@ skipped <- skipped + 1
 # File I/O: fP — Abs Path
 test_fP_Abs_Path <- function() {
   r <- run_ratl("5 fP")
-  if (grepl("Error:", r)) { cat("FAIL [fP] Abs Path: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'path' argument") {
-    cat("FAIL [fP] Abs Path: expected [ERROR: invalid 'path' argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'path' argument", r, fixed = TRUE)) {
+    cat("FAIL [fP] Abs Path: expected error containing [ERROR: invalid 'path' argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2913,9 +2750,8 @@ test_fT_TempFile <- function() {
 # File I/O: fX — Dir Exists
 test_fX_Dir_Exists <- function() {
   r <- run_ratl("5 fX")
-  if (grepl("Error:", r)) { cat("FAIL [fX] Dir Exists: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid filename argument") {
-    cat("FAIL [fX] Dir Exists: expected [ERROR: invalid filename argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid filename argument", r, fixed = TRUE)) {
+    cat("FAIL [fX] Dir Exists: expected error containing [ERROR: invalid filename argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2924,9 +2760,8 @@ test_fX_Dir_Exists <- function() {
 # File I/O: fb — Basename
 test_fb_Basename <- function() {
   r <- run_ratl("5 fb")
-  if (grepl("Error:", r)) { cat("FAIL [fb] Basename: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: a character vector argument expected") {
-    cat("FAIL [fb] Basename: expected [ERROR: a character vector argument expected], got [", r, "]\n")
+  if (!grepl("ERROR: a character vector argument expected", r, fixed = TRUE)) {
+    cat("FAIL [fb] Basename: expected error containing [ERROR: a character vector argument expected], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2938,9 +2773,8 @@ skipped <- skipped + 1
 # File I/O: fe — File Exists
 test_fe_File_Exists <- function() {
   r <- run_ratl("5 fe")
-  if (grepl("Error:", r)) { cat("FAIL [fe] File Exists: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid 'file' argument") {
-    cat("FAIL [fe] File Exists: expected [ERROR: invalid 'file' argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid 'file' argument", r, fixed = TRUE)) {
+    cat("FAIL [fe] File Exists: expected error containing [ERROR: invalid 'file' argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -2949,9 +2783,8 @@ test_fe_File_Exists <- function() {
 # File I/O: fi — File Info
 test_fi_File_Info <- function() {
   r <- run_ratl("5 fi")
-  if (grepl("Error:", r)) { cat("FAIL [fi] File Info: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid filename argument") {
-    cat("FAIL [fi] File Info: expected [ERROR: invalid filename argument], got [", r, "]\n")
+  if (!grepl("ERROR: invalid filename argument", r, fixed = TRUE)) {
+    cat("FAIL [fi] File Info: expected error containing [ERROR: invalid filename argument], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3065,9 +2898,8 @@ test_zv_Version <- function() {
 # Statistical Modeling: K! — Coef
 test_K__Coef <- function() {
   r <- run_ratl("5 K!")
-  if (grepl("Error:", r)) { cat("FAIL [K!] Coef: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [K!] Coef: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [K!] Coef: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3076,9 +2908,8 @@ test_K__Coef <- function() {
 # Statistical Modeling: KA — AOV
 test_KA_AOV <- function() {
   r <- run_ratl("5 KA")
-  if (grepl("Error:", r)) { cat("FAIL [KA] AOV: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [KA] AOV: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [KA] AOV: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3087,9 +2918,8 @@ test_KA_AOV <- function() {
 # Statistical Modeling: KB — BIC
 test_KB_BIC <- function() {
   r <- run_ratl("5 KB")
-  if (grepl("Error:", r)) { cat("FAIL [KB] BIC: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [KB] BIC: expected [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [KB] BIC: expected error containing [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3098,9 +2928,8 @@ test_KB_BIC <- function() {
 # Statistical Modeling: KE — Residuals
 test_KE_Residuals <- function() {
   r <- run_ratl("5 KE")
-  if (grepl("Error:", r)) { cat("FAIL [KE] Residuals: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [KE] Residuals: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [KE] Residuals: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3109,9 +2938,8 @@ test_KE_Residuals <- function() {
 # Statistical Modeling: KF — Fitted
 test_KF_Fitted <- function() {
   r <- run_ratl("5 KF")
-  if (grepl("Error:", r)) { cat("FAIL [KF] Fitted: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [KF] Fitted: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [KF] Fitted: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3120,9 +2948,8 @@ test_KF_Fitted <- function() {
 # Statistical Modeling: KL — LogLik
 test_KL_LogLik <- function() {
   r <- run_ratl("5 KL")
-  if (grepl("Error:", r)) { cat("FAIL [KL] LogLik: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [KL] LogLik: expected [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [KL] LogLik: expected error containing [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3131,9 +2958,8 @@ test_KL_LogLik <- function() {
 # Statistical Modeling: KV — VCov
 test_KV_VCov <- function() {
   r <- run_ratl("5 KV")
-  if (grepl("Error:", r)) { cat("FAIL [KV] VCov: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'vcov' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [KV] VCov: expected [ERROR: no applicable method for 'vcov' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'vcov' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [KV] VCov: expected error containing [ERROR: no applicable method for 'vcov' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3142,9 +2968,8 @@ test_KV_VCov <- function() {
 # Statistical Modeling: av — Anova
 test_av_Anova <- function() {
   r <- run_ratl("5 av")
-  if (grepl("Error:", r)) { cat("FAIL [av] Anova: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [av] Anova: expected [ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [av] Anova: expected error containing [ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3153,9 +2978,8 @@ test_av_Anova <- function() {
 # Statistical Modeling: dA — Aggregate
 test_dA_Aggregate <- function() {
   r <- run_ratl("1 2 3 dA")
-  if (grepl("Error:", r)) { cat("FAIL [dA] Aggregate: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: object 'v1' of mode 'function' was not found") {
-    cat("FAIL [dA] Aggregate: expected [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
+  if (!grepl("ERROR: object 'v1' of mode 'function' was not found", r, fixed = TRUE)) {
+    cat("FAIL [dA] Aggregate: expected error containing [ERROR: object 'v1' of mode 'function' was not found], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3175,20 +2999,8 @@ test_dE_Cut <- function() {
 # Statistical Modeling: dY — By
 test_dY_By <- function() {
   r <- run_ratl("1 2 3 dY")
-  if (grepl("Error:", r)) { cat("FAIL [dY] By: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: could not find function \"FUN\"") {
-    cat("FAIL [dY] By: expected [ERROR: could not find function \"FUN\"], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Statistical Modeling: ka — Anova
-test_ka_Anova <- function() {
-  r <- run_ratl("5 ka")
-  if (grepl("Error:", r)) { cat("FAIL [ka] Anova: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [ka] Anova: expected [ERROR: no applicable method for 'anova' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: could not find function \"FUN\"", r, fixed = TRUE)) {
+    cat("FAIL [dY] By: expected error containing [ERROR: could not find function \"FUN\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3197,9 +3009,8 @@ test_ka_Anova <- function() {
 # Statistical Modeling: ke — Predict
 test_ke_Predict <- function() {
   r <- run_ratl("3 5 ke")
-  if (grepl("Error:", r)) { cat("FAIL [ke] Predict: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [ke] Predict: expected [ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [ke] Predict: expected error containing [ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3208,9 +3019,8 @@ test_ke_Predict <- function() {
 # Statistical Modeling: kg — GLM
 test_kg_GLM <- function() {
   r <- run_ratl("5 kg")
-  if (grepl("Error:", r)) { cat("FAIL [kg] GLM: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [kg] GLM: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [kg] GLM: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3219,20 +3029,8 @@ test_kg_GLM <- function() {
 # Statistical Modeling: ki — AIC
 test_ki_AIC <- function() {
   r <- run_ratl("5 ki")
-  if (grepl("Error:", r)) { cat("FAIL [ki] AIC: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [ki] AIC: expected [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
-    return(FALSE)
-  }
-  return(TRUE)
-}
-
-# Statistical Modeling: kl — Linear Model
-test_kl_Linear_Model <- function() {
-  r <- run_ratl("5 kl")
-  if (grepl("Error:", r)) { cat("FAIL [kl] Linear Model: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [kl] Linear Model: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [ki] AIC: expected error containing [ERROR: no applicable method for 'logLik' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3241,9 +3039,8 @@ test_kl_Linear_Model <- function() {
 # Statistical Modeling: kn — NLS
 test_kn_NLS <- function() {
   r <- run_ratl("5 kn")
-  if (grepl("Error:", r)) { cat("FAIL [kn] NLS: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [kn] NLS: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [kn] NLS: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3252,9 +3049,8 @@ test_kn_NLS <- function() {
 # Statistical Modeling: ko — Loess
 test_ko_Loess <- function() {
   r <- run_ratl("5 ko")
-  if (grepl("Error:", r)) { cat("FAIL [ko] Loess: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [ko] Loess: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [ko] Loess: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3263,9 +3059,8 @@ test_ko_Loess <- function() {
 # Statistical Modeling: lm — Linear Model
 test_lm_Linear_Model <- function() {
   r <- run_ratl("5 lm")
-  if (grepl("Error:", r)) { cat("FAIL [lm] Linear Model: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [lm] Linear Model: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [lm] Linear Model: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3274,9 +3069,8 @@ test_lm_Linear_Model <- function() {
 # Statistical Modeling: mC — Conf Int
 test_mC_Conf_Int <- function() {
   r <- run_ratl("5 mC")
-  if (grepl("Error:", r)) { cat("FAIL [mC] Conf Int: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [mC] Conf Int: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [mC] Conf Int: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3292,9 +3086,8 @@ test_mL_LM_Simple <- function() {
 # Statistical Modeling: mM — Model Matrix
 test_mM_Model_Matrix <- function() {
   r <- run_ratl("5 mM")
-  if (grepl("Error:", r)) { cat("FAIL [mM] Model Matrix: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [mM] Model Matrix: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [mM] Model Matrix: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3314,9 +3107,8 @@ test_mO_Offset <- function() {
 # Statistical Modeling: mP — Predict
 test_mP_Predict <- function() {
   r <- run_ratl("5 mP")
-  if (grepl("Error:", r)) { cat("FAIL [mP] Predict: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"") {
-    cat("FAIL [mP] Predict: expected [ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
+  if (!grepl("ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"", r, fixed = TRUE)) {
+    cat("FAIL [mP] Predict: expected error containing [ERROR: no applicable method for 'predict' applied to an object of class \"c('double', 'numeric')\"], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3325,9 +3117,8 @@ test_mP_Predict <- function() {
 # Statistical Modeling: mR — Model Frame
 test_mR_Model_Frame <- function() {
   r <- run_ratl("5 mR")
-  if (grepl("Error:", r)) { cat("FAIL [mR] Model Frame: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [mR] Model Frame: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [mR] Model Frame: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3336,9 +3127,8 @@ test_mR_Model_Frame <- function() {
 # Statistical Modeling: mT — Terms
 test_mT_Terms <- function() {
   r <- run_ratl("5 mT")
-  if (grepl("Error:", r)) { cat("FAIL [mT] Terms: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: $ operator is invalid for atomic vectors") {
-    cat("FAIL [mT] Terms: expected [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
+  if (!grepl("ERROR: $ operator is invalid for atomic vectors", r, fixed = TRUE)) {
+    cat("FAIL [mT] Terms: expected error containing [ERROR: $ operator is invalid for atomic vectors], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3347,9 +3137,8 @@ test_mT_Terms <- function() {
 # Statistical Modeling: mU — Update
 test_mU_Update <- function() {
   r <- run_ratl("3 5 mU")
-  if (grepl("Error:", r)) { cat("FAIL [mU] Update: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: subscript out of bounds") {
-    cat("FAIL [mU] Update: expected [ERROR: subscript out of bounds], got [", r, "]\n")
+  if (!grepl("ERROR: subscript out of bounds", r, fixed = TRUE)) {
+    cat("FAIL [mU] Update: expected error containing [ERROR: subscript out of bounds], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3358,9 +3147,8 @@ test_mU_Update <- function() {
 # Statistical Modeling: mW — Formula
 test_mW_Formula <- function() {
   r <- run_ratl("5 mW")
-  if (grepl("Error:", r)) { cat("FAIL [mW] Formula: ", r, "\n"); return(FALSE) }
-  if (r != "ERROR: invalid formula") {
-    cat("FAIL [mW] Formula: expected [ERROR: invalid formula], got [", r, "]\n")
+  if (!grepl("ERROR: invalid formula", r, fixed = TRUE)) {
+    cat("FAIL [mW] Formula: expected error containing [ERROR: invalid formula], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -3421,9 +3209,6 @@ test_Pi_Pi <- function() {
   }
   return(TRUE)
 }
-
-# SKIP Z (NA) — no test defined
-skipped <- skipped + 1
 
 # Constants: s4 — EmptyLog
 test_s4_EmptyLog <- function() {
@@ -3767,11 +3552,11 @@ all_tests <- list(
 ,
   list(name = ">= GreatEqual", fn = test____GreatEqual)
 ,
+  list(name = "\\ IntDiv", fn = test___IntDiv)
+,
   list(name = "^ Power", fn = test___Power)
 ,
   list(name = "lX Xor", fn = test_lX_Xor)
-,
-  list(name = "mI IntDiv", fn = test_mI_IntDiv)
 ,
   list(name = "| Or", fn = test___Or)
 ,
@@ -3803,13 +3588,9 @@ all_tests <- list(
 ,
   list(name = "e Extract Element [[", fn = test_e_Extract_Element___)
 ,
-  list(name = "es Extract Subset [", fn = test_es_Extract_Subset__)
-,
   list(name = "fE FirstElem", fn = test_fE_FirstElem)
 ,
   list(name = "l Length", fn = test_l_Length)
-,
-  list(name = "r1 Range1toN", fn = test_r1_Range1toN)
 ,
   list(name = "r2 Rep", fn = test_r2_Rep)
 ,
@@ -3847,7 +3628,7 @@ all_tests <- list(
 ,
   list(name = "bX BitXor", fn = test_bX_BitXor)
 ,
-  list(name = "zd To Date", fn = test_zd_To_Date)
+  list(name = "Td ToDate", fn = test_Td_ToDate)
 ,
   list(name = "Fa Apply", fn = test_Fa_Apply)
 ,
@@ -3913,8 +3694,6 @@ all_tests <- list(
 ,
   list(name = "vV SVD", fn = test_vV_SVD)
 ,
-  list(name = "y! Diag", fn = test_y__Diag)
-,
   list(name = "yD Identity Matrix", fn = test_yD_Identity_Matrix)
 ,
   list(name = "yc EigenVectors", fn = test_yc_EigenVectors)
@@ -3927,8 +3706,6 @@ all_tests <- list(
 ,
   list(name = "yl TriLower", fn = test_yl_TriLower)
 ,
-  list(name = "ym Create Matrix", fn = test_ym_Create_Matrix)
-,
   list(name = "yt Trace", fn = test_yt_Trace)
 ,
   list(name = "yu TriUpper", fn = test_yu_TriUpper)
@@ -3939,13 +3716,13 @@ all_tests <- list(
 ,
   list(name = "J Join List", fn = test_J_Join_List)
 ,
+  list(name = "Sl ToLower", fn = test_Sl_ToLower)
+,
   list(name = "Xc Char Translate", fn = test_Xc_Char_Translate)
 ,
   list(name = "j Join", fn = test_j_Join)
 ,
   list(name = "sG Grep", fn = test_sG_Grep)
-,
-  list(name = "sL ToLower", fn = test_sL_ToLower)
 ,
   list(name = "sn NChar", fn = test_sn_NChar)
 ,
@@ -3961,15 +3738,13 @@ all_tests <- list(
 ,
   list(name = "Bx Max", fn = test_Bx_Max)
 ,
+  list(name = "E Any", fn = test_E_Any)
+,
   list(name = "P Product", fn = test_P_Product)
 ,
   list(name = "Sw WeightedMean", fn = test_Sw_WeightedMean)
 ,
-  list(name = "V Max", fn = test_V_Max)
-,
   list(name = "dX XTabs", fn = test_dX_XTabs)
-,
-  list(name = "lA Any", fn = test_lA_Any)
 ,
   list(name = "lZ NNZ", fn = test_lZ_NNZ)
 ,
@@ -3982,10 +3757,6 @@ all_tests <- list(
   list(name = "rm RMS", fn = test_rm_RMS)
 ,
   list(name = "s Sum", fn = test_s_Sum)
-,
-  list(name = "v Min", fn = test_v_Min)
-,
-  list(name = "vA All", fn = test_vA_All)
 ,
   list(name = "DN Density Normal", fn = test_DN_Density_Normal)
 ,
@@ -4155,17 +3926,9 @@ all_tests <- list(
 ,
   list(name = "rw Random Weibull", fn = test_rw_Random_Weibull)
 ,
-  list(name = "tt T-Test", fn = test_tt_T_Test)
-,
   list(name = "LG Log Gamma", fn = test_LG_Log_Gamma)
 ,
   list(name = "MC Choose", fn = test_MC_Choose)
-,
-  list(name = "XP Prime Factors", fn = test_XP_Prime_Factors)
-,
-  list(name = "Xn Choose (nCr)", fn = test_Xn_Choose__nCr_)
-,
-  list(name = "Xq Is Prime", fn = test_Xq_Is_Prime)
 ,
   list(name = "di Digamma", fn = test_di_Digamma)
 ,
@@ -4181,19 +3944,21 @@ all_tests <- list(
 ,
   list(name = "mf Prime Factors", fn = test_mf_Prime_Factors)
 ,
-  list(name = "ml LCM", fn = test_ml_LCM)
-,
   list(name = "mp Is Prime", fn = test_mp_Is_Prime)
 ,
   list(name = "ps Psigamma", fn = test_ps_Psigamma)
 ,
   list(name = "tg Trigamma", fn = test_tg_Trigamma)
 ,
+  list(name = "cA Arg", fn = test_cA_Arg)
+,
   list(name = "cI Imag Part", fn = test_cI_Imag_Part)
 ,
   list(name = "cJ Conjugate", fn = test_cJ_Conjugate)
 ,
   list(name = "cM Modulus", fn = test_cM_Modulus)
+,
+  list(name = "cR Real Part", fn = test_cR_Real_Part)
 ,
   list(name = "fA Dirname", fn = test_fA_Dirname)
 ,
@@ -4249,15 +4014,11 @@ all_tests <- list(
 ,
   list(name = "dY By", fn = test_dY_By)
 ,
-  list(name = "ka Anova", fn = test_ka_Anova)
-,
   list(name = "ke Predict", fn = test_ke_Predict)
 ,
   list(name = "kg GLM", fn = test_kg_GLM)
 ,
   list(name = "ki AIC", fn = test_ki_AIC)
-,
-  list(name = "kl Linear Model", fn = test_kl_Linear_Model)
 ,
   list(name = "kn NLS", fn = test_kn_NLS)
 ,

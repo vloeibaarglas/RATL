@@ -51,7 +51,7 @@ test_cases <- list(
   list(name = "Is element true", code = "3 [1 2 3 4] cn", expected = "TRUE"),
   list(name = "Is element false", code = "9 [1 2 3 4] cn", expected = "FALSE"),
   list(name = "Head N", code = "[10 20 30 40 50] 3 ah", expected = "10 20 30"),
-  list(name = "Tail N", code = "[10 20 30 40 50] 3 atN", expected = "30 40 50"),
+  list(name = "Tail N", code = "[10 20 30 40 50] 3 tl", expected = "30 40 50"),
   list(name = "Map string upper", code = "['hello' 'world'] {Su} Fq", expected = "HELLO WORLD"),
   list(name = "DNA to RNA", code = "'ATGC' 'UACG' 'ATCG' Xc", expected = "UAGC"),
   list(name = "Sum digits", code = "123 Ts uA {48 -} Fq s", expected = "6"),
@@ -67,7 +67,7 @@ test_cases <- list(
   list(name = "Tail 1", code = "[1 2 3] 1 tl", expected = "3"),
   list(name = "First", code = "[10 20 30] fE", expected = "10"),
   list(name = "Last", code = "[10 20 30] al", expected = "30"),
-  list(name = "Range 1 to N", code = "5 r1", expected = "1 2 3 4 5"),
+  list(name = "Range 1 to N", code = "5 .", expected = "1 2 3 4 5"),
   list(name = "Neg slice", code = "[10 20 30 40 50] 1 aX", expected = "50"),
   list(name = "Neg slice 2", code = "[10 20 30 40 50] 2 aX", expected = "40")
 )

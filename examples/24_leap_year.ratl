@@ -1,11 +1,11 @@
 # Rosetta Code: https://rosettacode.org/wiki/Leap_year
 2024
-D 400 % 0 = vA ? 'Leap' p ]
-D 400 % 0 = vA ~ ?
-  D 100 % 0 = vA ? 'Common' p ]
-  D 100 % 0 = vA ~ ?
-    D 4 % 0 = vA ? 'Leap' p ]
-    D 4 % 0 = vA ~ ? 'Common' p ]
+D 400 % 0 = A ? 'Leap' p ]
+D 400 % 0 = A ~ ?
+  D 100 % 0 = A ? 'Common' p ]
+  D 100 % 0 = A ~ ?
+    D 4 % 0 = A ? 'Leap' p ]
+    D 4 % 0 = A ~ ? 'Common' p ]
   ]
 ]
 x

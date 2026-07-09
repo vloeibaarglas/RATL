@@ -12,7 +12,7 @@ ratl_parse <- function(code, defs) {
     while (i <= len) {
       char <- substr(code, i, i)
       
-      if (char == "#") {
+      if (char == "#" && (i == 1 || i == start_idx || substr(code, i-1, i-1) == "\n")) {
         while (i <= len && substr(code, i, i) != "\n") i <- i + 1
         i <- i + 1; next
       }

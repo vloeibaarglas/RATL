@@ -13,6 +13,10 @@ sS	stop($1)	1	0	Stop	Stack & Control
 sW	warning($1)	1	0	Warning	Stack & Control	
 w	list($1, $2)	2	2	Swap	Stack & Control	
 x	NULL	1	0	Delete	Stack & Control	
+c1	NULL	1	0	ClipSave1	Stack & Control	
+c2	NULL	0	1	ClipLoad1	Stack & Control	
+c3	NULL	1	0	ClipSave2	Stack & Control	
+c4	NULL	0	1	ClipLoad2	Stack & Control	
 %	$2 %% $1	2	1	Modulo	Arithmetic & Comparison	
 &	$2 & $1	2	1	Logical AND	Arithmetic & Comparison	
 *	$2 * $1	2	1	Multiply	Arithmetic & Comparison	
@@ -27,7 +31,6 @@ x	NULL	1	0	Delete	Stack & Control
 \	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison	
 ^	$2 ^ $1	2	1	Power	Arithmetic & Comparison	
 lX	xor($2, $1)	2	1	Xor	Arithmetic & Comparison	
-mI	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison	
 |	$2 | $1	2	1	Or	Arithmetic & Comparison	
 ~	!$1	1	1	Not	Arithmetic & Comparison	
 #	$2[$1]	2	1	Filter	Array Operations	
@@ -58,10 +61,8 @@ al	tail($1, 1)	1	1	LastElem	Array Operations
 cn	is.element($2, $1)	2	1	IsIn	Array Operations	
 dS	split($2, $1)	2	1	Split	Array Operations	
 e	$2[[$1]]	2	1	Extract Element [[	Array Operations	
-es	$2[$1]	2	1	Extract Subset [	Array Operations	
 fE	head($1, 1)	1	1	FirstElem	Array Operations	
 l	length($1)	1	1	Length	Array Operations	
-r1	1:$1	1	1	Range1toN	Array Operations	
 r2	rep($2, $1)	2	1	Rep	Array Operations	
 tl	tail($2, $1)	2	1	TailN	Array Operations	
 tm	median($1)	1	1	Median	Statistics	
@@ -75,7 +76,6 @@ vW	seq($3, $2, length.out=$1)	3	1	SeqLen	Array Operations
 vX	cummax($1)	1	1	CumMax	Array Operations	
 wh	which($1)	1	1	Which	Array Operations	
 zp	unlist(Map(list, $2, $1))	2	1	Zip	Array Operations	
-atN	tail($2, $1)	2	1	TailN	Array Operations	
 bA	bitwAnd($2, $1)	2	1	BitAnd	Bitwise Operations	
 bL	bitwShiftL($2, $1)	2	1	BitShiftL	Bitwise Operations	
 bN	bitwNot($1)	1	1	BitNot	Bitwise Operations	
@@ -95,7 +95,6 @@ Tf	factor($1)	1	1	Factor	Type & Introspection
 Ti	is($2, $1)	2	1	IsType	Type & Introspection	
 Tn	names($1)	1	1	Names	Type & Introspection	
 Tt	typeof($1)	1	1	Typeof	Type & Introspection	
-Tu	unlist($1)	1	1	Unlist	Type & Introspection	
 Tv	attributes($1)	1	1	Attributes	Type & Introspection	
 ev	NULL	1	0	Eval	Type & Introspection	1
 zB	NULL	2	1	Sort By	Type & Introspection	
@@ -107,7 +106,6 @@ zT	NULL	2	1	Take While	Type & Introspection
 zW	NULL	2	1	Drop While	Type & Introspection	
 zX	NULL	1	1	Shell Exec	Type & Introspection	1
 zZ	NULL	3	1	Zip With	Type & Introspection	
-zd	as.Date($1)	1	1	To Date	Type & Introspection	
 Ts	as.character($1)	1	1	ToString	Type & Introspection	
 TN	as.numeric($1)	1	1	ToNumber	Type & Introspection	
 uA	utf8ToInt($1)	1	1	To ASCII	Type & Introspection	
@@ -143,14 +141,12 @@ vQ	qr($1)	1	1	QR Decomp	Matrix
 vR	row($1)	1	1	Row Indices	Matrix	
 vS	colSums($1)	1	1	Col Sums	Matrix	
 vV	svd($1)	1	1	SVD	Matrix	
-y!	diag($1)	1	1	Diag	Matrix	
 yD	diag($1)	1	1	Identity Matrix	Matrix	
 yc	eigen($1)$vectors	1	1	EigenVectors	Matrix	
 yd	det($1)	1	1	Determinant	Matrix	
 yf	as.matrix($1)	1	1	Full	Matrix	
 yk	kronecker($2, $1)	2	1	Kronecker	Matrix	
 yl	{x<-$1; x[upper.tri(x)]<-0; x}	1	1	TriLower	Matrix	
-ym	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix	Matrix	
 yt	sum(diag($1))	1	1	Trace	Matrix	
 yu	{x<-$1; x[lower.tri(x)]<-0; x}	1	1	TriUpper	Matrix	
 yv	eigen($1)$values	1	1	EigenValues	Matrix	
@@ -168,7 +164,6 @@ Sx	gregexpr($2, $1)	2	1	Gregexpr	String Operations
 Xc	chartr($1, $2, $3)	3	1	Char Translate	String Operations	
 j	paste($2, $1)	2	1	Join	String Operations	
 sG	grep($2, $1)	2	1	Grep	String Operations	
-sL	tolower($1)	1	1	ToLower	String Operations	
 sn	nchar($1)	1	1	NChar	String Operations	
 sr	sub($2, $1, $3)	3	1	Sub	String Operations	
 ss	substr($3, $2, $1)	3	1	Substr	String Operations	
@@ -183,9 +178,7 @@ Bx	max($1)	1	1	Max	Statistics
 E	any($1)	1	1	Any	Statistics	
 P	prod($1)	1	1	Product	Statistics	
 Sw	weighted.mean($2, $1)	2	1	WeightedMean	Statistics	
-V	max($1)	1	1	Max	Statistics	
 dX	xtabs($2, $1)	2	1	XTabs	Statistics	
-lA	any($1)	1	1	Any	Statistics	
 lZ	sum($1 != 0)	1	1	NNZ	Statistics	
 mn	min($2, $1)	2	1	Min2	Statistics	
 mx	max($2, $1)	2	1	Max2	Statistics	
@@ -209,8 +202,6 @@ tc	cor($2, $1)	2	1	Correlation	Statistics
 to	ratl_mode($1)	1	1	Mode	Statistics	
 tv	cov($2, $1)	2	1	Covariance	Statistics	
 ty	summary($1)	1	1	Summary	Statistics	
-v	min($1)	1	1	Min	Statistics	
-vA	all($1)	1	1	All	Statistics	
 vd	density($1)	1	1	Density	Statistics	
 DN	dnorm($3, $2, $1)	3	1	Density Normal	Distributions & Tests	
 KC	cor.test($2, $1)	2	1	Cor Test	Distributions & Tests	
@@ -296,12 +287,8 @@ rl	rlnorm($3, $2, $1)	3	1	Random Log-Normal	Distributions & Tests
 rp	rpois($1, lambda=1)	1	1	Random Poisson	Distributions & Tests	
 rt	rt($2, $1)	2	1	Random Student-t	Distributions & Tests	
 rw	rweibull($3, $2, $1)	3	1	Random Weibull	Distributions & Tests	
-tt	t.test($2, $1)	2	1	T-Test	Distributions & Tests	
 LG	lgamma($1)	1	1	Log Gamma	Combinatorics & Special	
 MC	choose($2, $1)	2	1	Choose	Combinatorics & Special	
-XP	ratl_prime_factors($1)	1	1	Prime Factors	Combinatorics & Special	
-Xn	choose($2, $1)	2	1	Choose (nCr)	Combinatorics & Special	
-Xq	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special	
 di	digamma($1)	1	1	Digamma	Combinatorics & Special	
 fa	ratl_factors($1)	1	1	Factors	Combinatorics & Special	
 fp	factorial($1)	1	1	Factorial	Combinatorics & Special	
@@ -309,16 +296,15 @@ lb	lbeta($2, $1)	2	1	Log Beta	Combinatorics & Special
 lc	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special	
 mB	beta($2, $1)	2	1	Beta	Combinatorics & Special	
 mf	ratl_prime_factors($1)	1	1	Prime Factors	Combinatorics & Special	
-ml	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special	
 mp	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special	
 ps	psigamma($2, $1)	2	1	Psigamma	Combinatorics & Special	
 tg	trigamma($1)	1	1	Trigamma	Combinatorics & Special	
 gC	ratl_gcd($2, $1)	2	1	GCD	Combinatorics & Special	
-xA	ratl_atbash($1)	1	1	Arg	Complex Numbers	
+cA	Arg($1)	1	1	Arg	Complex Numbers	
 cI	Im($1)	1	1	Imag Part	Complex Numbers	
 cJ	Conj($1)	1	1	Conjugate	Complex Numbers	
 cM	Mod($1)	1	1	Modulus	Complex Numbers	
-xR	ratl_rot($1)	1	1	Real Part	Complex Numbers	
+cR	Re($1)	1	1	Real Part	Complex Numbers	
 FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File	File I/O	
 fA	dirname($1)	1	1	Dirname	File I/O	
 fC	write.csv($2, $1)	2	0	Write CSV	File I/O	
@@ -366,11 +352,9 @@ av	anova($1)	1	1	Anova	Statistical Modeling
 dA	aggregate($3, $2, $1)	3	1	Aggregate	Statistical Modeling	
 dE	cut($2, $1)	2	1	Cut	Statistical Modeling	
 dY	by($3, $2, $1)	3	1	By	Statistical Modeling	
-ka	anova($1)	1	1	Anova	Statistical Modeling	
 ke	predict($2, $1)	2	1	Predict	Statistical Modeling	
 kg	glm($1)	1	1	GLM	Statistical Modeling	
 ki	AIC($1)	1	1	AIC	Statistical Modeling	
-kl	lm($1)	1	1	Linear Model	Statistical Modeling	
 kn	nls($1)	1	1	NLS	Statistical Modeling	
 ko	loess($1)	1	1	Loess	Statistical Modeling	
 lm	lm($1)	1	1	Linear Model	Statistical Modeling	
@@ -393,7 +377,6 @@ xT	ratl_columnar($2, $1)	2	1	Columnar Transpose	Ciphers
 I	Inf	0	1	Inf	Constants	
 Na	NA	0	1	NA	Constants	
 Pi	pi	0	1	Pi	Constants	
-Z	NA	0	1	NA	Constants	
 s4	logical(0)	0	1	EmptyLog	Constants	
 sQ	character(0)	0	1	EmptyChar	Constants	
 sZ	numeric(0)	0	1	EmptyNum	Constants	

@@ -97,12 +97,14 @@ def generate_test_r(symbols, tests):
 
     for s in symbols:
         src = s['src']
+        src_esc = src.replace('\\', '\\\\')
         desc = s['desc']
         cat = s['category']
         func_name = escape_test_name(f"{src}_{desc}")
 
         t = tests.get(src, {})
         test_input = t.get('test_input', '')
+        test_input_esc = test_input.replace('\\', '\\\\').replace('"', '\\"')
         expected = t.get('expected', '')
 
         if not test_input:
@@ -115,17 +117,23 @@ def generate_test_r(symbols, tests):
         lines.append(f'test_{func_name} <- function() {{')
         if s['n_in'] == 0 or any(s['r_code'].startswith(x) for x in random_symbols):
             lines.append(f'  set.seed(42)')
-        lines.append(f'  r <- run_ratl("{test_input}")')
+        lines.append(f'  r <- run_ratl("{test_input_esc}")')
         if expected:
             expected_escaped = expected.replace('\\', '\\\\').replace('"', '\\"')
-            lines.append(f'  if (grepl("Error:", r)) {{ cat("FAIL [{src}] {desc}: ", r, "\\n"); return(FALSE) }}')
-            lines.append(f'  if (r != "{expected_escaped}") {{')
-            lines.append(f'    cat("FAIL [{src}] {desc}: expected [{expected_escaped}], got [", r, "]\\n")')
-            lines.append(f'    return(FALSE)')
-            lines.append(f'  }}')
+            if expected.startswith('ERROR:'):
+                lines.append(f'  if (!grepl("{expected_escaped}", r, fixed = TRUE)) {{')
+                lines.append(f'    cat("FAIL [{src_esc}] {desc}: expected error containing [{expected_escaped}], got [", r, "]\\n")')
+                lines.append(f'    return(FALSE)')
+                lines.append(f'  }}')
+            else:
+                lines.append(f'  if (grepl("Error:", r)) {{ cat("FAIL [{src_esc}] {desc}: ", r, "\\n"); return(FALSE) }}')
+                lines.append(f'  if (r != "{expected_escaped}") {{')
+                lines.append(f'    cat("FAIL [{src_esc}] {desc}: expected [{expected_escaped}], got [", r, "]\\n")')
+                lines.append(f'    return(FALSE)')
+                lines.append(f'  }}')
             lines.append(f'  return(TRUE)')
         else:
-            lines.append(f'  if (grepl("Error:", r)) {{ cat("FAIL [{src}] {desc}: ", r, "\\n"); return(FALSE) }}')
+            lines.append(f'  if (grepl("Error:", r)) {{ cat("FAIL [{src_esc}] {desc}: ", r, "\\n"); return(FALSE) }}')
             lines.append(f'  return(TRUE)')
         lines.append(f'}}')
         lines.append('')
@@ -136,10 +144,12 @@ def generate_test_r(symbols, tests):
         t = tests.get(s['src'], {})
         if not t.get('test_input'):
             continue
-        func_name = escape_test_name(f"{s['src']}_{s['desc']}")
+        src = s['src']
+        src_esc = src.replace('\\', '\\\\')
+        func_name = escape_test_name(f"{src}_{s['desc']}")
         if not first:
             lines.append(',')
-        lines.append(f'  list(name = "{s["src"]} {s["desc"]}", fn = test_{func_name})')
+        lines.append(f'  list(name = "{src_esc} {s["desc"]}", fn = test_{func_name})')
         first = False
     lines.append(')')
     lines.append('')
@@ -157,6 +167,7 @@ def generate_test_r(symbols, tests):
     lines.append('  for (f in failures) cat(sprintf("  - %s\\n", f))')
     lines.append('  quit(status = 1)')
     lines.append('}')
+
 
     return '\n'.join(lines)
 
