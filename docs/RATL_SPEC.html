@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="RATL_SPEC_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="RATL_SPEC_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="RATL_SPEC_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-45234c23d27d175e8b00a18fce492d00.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-84c3f8f9cab20d73a7dcda44c8bf3e8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 <style>
   /* Force wider layout — override Quarto/Bootstrap */
@@ -235,7 +235,7 @@ ul.task-list li input[type="checkbox"] {
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
 <p>RATL eliminates variable names and assignment — every character counts. The stack model means <code>3 5 +</code> instead of <code>result = a + b</code>. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.</p>
-<p><strong>Total symbols: 425</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 408</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -282,15 +282,15 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>Tier 1 — Core</strong> (stack manipulation, arrays, blocks, control flow, arithmetic)</dt>
 <dd>
-111 symbols across 5 categories
+109 symbols across 5 categories
 </dd>
 <dt><strong>Tier 2 — Toolkit</strong> (grouping, mapping, reduction, matrix operations, strings, sets)</dt>
 <dd>
-66 symbols across 4 categories
+63 symbols across 4 categories
 </dd>
 <dt><strong>Tier 3 — Extensions</strong> (statistics, distributions, filesystem, shell access, meta-programming)</dt>
 <dd>
-208 symbols across 7 categories
+197 symbols across 7 categories
 </dd>
 </dl>
 <hr>
@@ -767,10 +767,10 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>425 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>408 symbols</strong> organized by category. Click a category to expand.</p>
 <details open="">
 <summary>
-<strong>Stack &amp; Control</strong> — Tier 1 (Core) — 14 symbols
+<strong>Stack &amp; Control</strong> — Tier 1 (Core) — 18 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -817,6 +817,30 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>Unpack</td>
 <td><code>for(x in $1) stack[[length(stack)+1]] &lt;- x</code></td>
 <td>1 → 0</td>
+</tr>
+<tr class="even">
+<td><code>a</code></td>
+<td>ClipSave1</td>
+<td><code>NULL</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td><code>b</code></td>
+<td>ClipLoad1</td>
+<td><code>NULL</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>c</code></td>
+<td>ClipSave2</td>
+<td><code>NULL</code></td>
+<td>1 → 0</td>
+</tr>
+<tr class="odd">
+<td><code>d</code></td>
+<td>ClipLoad2</td>
+<td><code>NULL</code></td>
+<td>0 → 1</td>
 </tr>
 <tr class="even">
 <td><code>g</code></td>
@@ -877,7 +901,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 17 symbols
+<strong>Arithmetic &amp; Comparison</strong> — Tier 1 (Core) — 16 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -974,18 +998,12 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>mI</code></td>
-<td>IntDiv</td>
-<td><code>$2 %/% $1</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
 <td><code>|</code></td>
 <td>Or</td>
 <td><code>$2 | $1</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>~</code></td>
 <td>Not</td>
 <td><code>!$1</code></td>
@@ -996,7 +1014,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Array Operations</strong> — Tier 1 (Core) — 45 symbols
+<strong>Array Operations</strong> — Tier 1 (Core) — 42 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1159,33 +1177,21 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>atN</code></td>
-<td>TailN</td>
-<td><code>tail($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>cn</code></td>
 <td>IsIn</td>
 <td><code>is.element($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>dS</code></td>
 <td>Split</td>
 <td><code>split($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>e</code></td>
 <td>Extract Element [[</td>
 <td><code>$2[[$1]]</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>es</code></td>
-<td>Extract Subset [</td>
-<td><code>$2[$1]</code></td>
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
@@ -1201,78 +1207,72 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>r1</code></td>
-<td>Range1toN</td>
-<td><code>1:$1</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>r2</code></td>
 <td>Rep</td>
 <td><code>rep($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tl</code></td>
 <td>TailN</td>
 <td><code>tail($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>u</code></td>
 <td>Unique</td>
 <td><code>unique($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vB</code></td>
 <td>PMin</td>
 <td><code>pmin($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vG</code></td>
 <td>PMax</td>
 <td><code>pmax($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vH</code></td>
 <td>WhichArr</td>
 <td><code>which($1, arr.ind=TRUE)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vI</code></td>
 <td>CumMin</td>
 <td><code>cummin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vT</code></td>
 <td>RepMat</td>
 <td><code>matrix(rep($3, $2*$1), nrow=nrow($3)*$2)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vW</code></td>
 <td>SeqLen</td>
 <td><code>seq($3, $2, length.out=$1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vX</code></td>
 <td>CumMax</td>
 <td><code>cummax($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>wh</code></td>
 <td>Which</td>
 <td><code>which($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zp</code></td>
 <td>Zip</td>
 <td><code>unlist(Map(list, $2, $1))</code></td>
@@ -1283,7 +1283,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Statistics</strong> — Tier 3 (Extensions) — 36 symbols
+<strong>Statistics</strong> — Tier 3 (Extensions) — 32 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -1338,22 +1338,10 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>V</code></td>
-<td>Max</td>
-<td><code>max($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>dX</code></td>
 <td>XTabs</td>
 <td><code>xtabs($2, $1)</code></td>
 <td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>lA</code></td>
-<td>Any</td>
-<td><code>any($1)</code></td>
-<td>1 → 1</td>
 </tr>
 <tr class="even">
 <td><code>lZ</code></td>
@@ -1500,18 +1488,6 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>v</code></td>
-<td>Min</td>
-<td><code>min($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>vA</code></td>
-<td>All</td>
-<td><code>all($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>vd</code></td>
 <td>Density</td>
 <td><code>density($1)</code></td>
@@ -1575,7 +1551,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 29 symbols
+<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 27 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1678,88 +1654,76 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="even">
-<td><code>Tu</code></td>
-<td>Unlist</td>
-<td><code>unlist($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>Tv</code></td>
 <td>Attributes</td>
 <td><code>attributes($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ev</code></td>
 <td>Eval</td>
 <td><code>NULL</code></td>
 <td>1 → 0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>uA</code></td>
 <td>To ASCII</td>
 <td><code>utf8ToInt($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zB</code></td>
 <td>Sort By</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zC</code></td>
 <td>Scan</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zD</code></td>
 <td>Dispatch List</td>
 <td><code>NULL</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zG</code></td>
 <td>Group By</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zS</code></td>
 <td>Send</td>
 <td><code>NULL</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zT</code></td>
 <td>Take While</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zW</code></td>
 <td>Drop While</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zX</code></td>
 <td>Shell Exec</td>
 <td><code>NULL</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zZ</code></td>
 <td>Zip With</td>
 <td><code>NULL</code></td>
 <td>3 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>zd</code></td>
-<td>To Date</td>
-<td><code>as.Date($1)</code></td>
-<td>1 → 1</td>
 </tr>
 </tbody>
 </table>
@@ -1879,7 +1843,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Matrix</strong> — Tier 2 (Toolkit) — 27 symbols
+<strong>Matrix</strong> — Tier 2 (Toolkit) — 25 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -1994,52 +1958,40 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>y!</code></td>
-<td>Diag</td>
-<td><code>diag($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>yD</code></td>
 <td>Identity Matrix</td>
 <td><code>diag($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>yc</code></td>
 <td>EigenVectors</td>
 <td><code>eigen($1)$vectors</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>yd</code></td>
 <td>Determinant</td>
 <td><code>det($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>yf</code></td>
 <td>Full</td>
 <td><code>as.matrix($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>yk</code></td>
 <td>Kronecker</td>
 <td><code>kronecker($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>yl</code></td>
 <td>TriLower</td>
 <td><code>{x&lt;-$1; x[upper.tri(x)]&lt;-0; x}</code></td>
 <td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>ym</code></td>
-<td>Create Matrix</td>
-<td><code>matrix($3, nrow=$2, ncol=$1)</code></td>
-<td>3 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>yt</code></td>
@@ -2064,7 +2016,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>String Operations</strong> — Tier 2 (Toolkit) — 20 symbols
+<strong>String Operations</strong> — Tier 2 (Toolkit) — 19 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -2173,30 +2125,24 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="even">
-<td><code>sL</code></td>
-<td>ToLower</td>
-<td><code>tolower($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>sn</code></td>
 <td>NChar</td>
 <td><code>nchar($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sr</code></td>
 <td>Sub</td>
 <td><code>sub($2, $1, $3)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ss</code></td>
 <td>Substr</td>
 <td><code>substr($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>st</code></td>
 <td>TrimWS</td>
 <td><code>trimws($1)</code></td>
@@ -2242,7 +2188,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Distributions &amp; Tests</strong> — Tier 3 (Extensions) — 85 symbols
+<strong>Distributions &amp; Tests</strong> — Tier 3 (Extensions) — 84 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -2758,18 +2704,12 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td><code>rweibull($3, $2, $1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
-<td><code>tt</code></td>
-<td>T-Test</td>
-<td><code>t.test($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
 </tbody>
 </table>
 </details>
 <details open="">
 <summary>
-<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 17 symbols
+<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 13 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -2794,76 +2734,52 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>XP</code></td>
-<td>Prime Factors</td>
-<td><code>ratl_prime_factors($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>Xn</code></td>
-<td>Choose (nCr)</td>
-<td><code>choose($2, $1)</code></td>
-<td>2 → 1</td>
-</tr>
-<tr class="odd">
-<td><code>Xq</code></td>
-<td>Is Prime</td>
-<td><code>ratl_is_prime($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>di</code></td>
 <td>Digamma</td>
 <td><code>digamma($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fa</code></td>
 <td>Factors</td>
 <td><code>ratl_factors($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fp</code></td>
 <td>Factorial</td>
 <td><code>factorial($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>gC</code></td>
 <td>GCD</td>
 <td><code>ratl_gcd($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>lb</code></td>
 <td>Log Beta</td>
 <td><code>lbeta($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>lc</code></td>
 <td>LCM</td>
 <td><code>ratl_lcm($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>mB</code></td>
 <td>Beta</td>
 <td><code>beta($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>mf</code></td>
 <td>Prime Factors</td>
 <td><code>ratl_prime_factors($1)</code></td>
 <td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>ml</code></td>
-<td>LCM</td>
-<td><code>ratl_lcm($2, $1)</code></td>
-<td>2 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>mp</code></td>
@@ -2901,33 +2817,33 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </thead>
 <tbody>
 <tr class="odd">
+<td><code>cA</code></td>
+<td>Arg</td>
+<td><code>Arg($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>cI</code></td>
 <td>Imag Part</td>
 <td><code>Im($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>cJ</code></td>
 <td>Conjugate</td>
 <td><code>Conj($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>cM</code></td>
 <td>Modulus</td>
 <td><code>Mod($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
-<td><code>xA</code></td>
-<td>Arg</td>
-<td><code>ratl_atbash($1)</code></td>
-<td>1 → 1</td>
-</tr>
 <tr class="odd">
-<td><code>xR</code></td>
+<td><code>cR</code></td>
 <td>Real Part</td>
-<td><code>ratl_rot($1)</code></td>
+<td><code>Re($1)</code></td>
 <td>1 → 1</td>
 </tr>
 </tbody>
@@ -3191,7 +3107,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 29 symbols
+<strong>Statistical Modeling</strong> — Tier 3 (Extensions) — 27 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3270,33 +3186,21 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>3 → 1</td>
 </tr>
 <tr class="even">
-<td><code>ka</code></td>
-<td>Anova</td>
-<td><code>anova($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="odd">
 <td><code>ke</code></td>
 <td>Predict</td>
 <td><code>predict($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>kg</code></td>
 <td>GLM</td>
 <td><code>glm($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ki</code></td>
 <td>AIC</td>
 <td><code>AIC($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
-<td><code>kl</code></td>
-<td>Linear Model</td>
-<td><code>lm($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
@@ -3435,7 +3339,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Constants</strong> — Tier 3 (Extensions) — 9 symbols
+<strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3472,30 +3376,24 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>0 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>Z</code></td>
-<td>NA</td>
-<td><code>NA</code></td>
-<td>0 → 1</td>
-</tr>
-<tr class="even">
 <td><code>az</code></td>
 <td>Lower Letters</td>
 <td><code>paste0(letters, collapse="")</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>s4</code></td>
 <td>EmptyLog</td>
 <td><code>logical(0)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>sQ</code></td>
 <td>EmptyChar</td>
 <td><code>character(0)</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>sZ</code></td>
 <td>EmptyNum</td>
 <td><code>numeric(0)</code></td>
