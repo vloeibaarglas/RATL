@@ -6,7 +6,7 @@ RATL (**R** **A**rray Manipula**T**ion **L**anguage) is a stack-based, esoteric 
 
 RATL eliminates variable names and assignment — every character counts. The stack model means `3 5 +` instead of `result = a + b`. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.
 
-**Total symbols: 408** (all 2-byte or shorter)
+**Total symbols: 465** (all 2-byte or shorter)
 
 ## Getting Started
 
@@ -57,13 +57,15 @@ RATL is designed as a **stack-based array manipulation language** for code golf.
 RATL organizes its symbol set into three conceptual tiers:
 
 **Tier 1 — Core** (stack manipulation, arrays, blocks, control flow, arithmetic)
-: 109 symbols across 5 categories
+: 113 symbols across 5 categories
 
 **Tier 2 — Toolkit** (grouping, mapping, reduction, matrix operations, strings, sets)
-: 63 symbols across 4 categories
+: 94 symbols across 5 categories
 
 **Tier 3 — Extensions** (statistics, distributions, filesystem, shell access, meta-programming)
-: 197 symbols across 7 categories
+: 258 symbols across 10 categories
+
+**Note:** This document excludes unsafe operations by default. Pass `--allow-unsafe-operations` to include them.
 
 ***
 
@@ -94,10 +96,11 @@ For example, `+` has stack effect `2 → 1`: it pops two values and pushes their
 
 ### Clipboards
 
-RATL provides four clipboards for temporary storage outside the stack:
+RATL provides two clipboard register pairs for temporary storage outside the stack:
 
 - `a` (save), `b` (load) — clipboard register 1
 - `c` (save), `d` (load) — clipboard register 2
+- Useful for saving intermediate results without stack gymnastics
 
 ***
 
@@ -105,21 +108,26 @@ RATL provides four clipboards for temporary storage outside the stack:
 
 ```
 program     ::= statement*
-statement   ::= literal | symbol | block
+statement   ::= literal | symbol | block | control
 
-literal     ::= number | array | string
-number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
-array       ::= '[' statement* ']'
-string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
+literal     ::= number | array | string | block_literal
+number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]   # float only when followed by delim; '10.' is range sugar for 1..10
+array       ::= '[' statement* ']'              # empty [] → numeric(0)
+string      ::= Apostrophe { NOT_APOSTROPHE | "''" } Apostrophe  # '' escaped as single '
 
-block       ::= '{' statement* '}'
+block_literal ::= '{' statement* '}'            # first-class, not executed on push
+control     ::= '?' statement* (';' statement*)? ']'    # if / if-else, condition on stack
+            | '"' statement* '"'               # while: pop cond before body
+            | '(' statement* ')'                 # foreach: pops array, pushes each
+            | '`' statement* '`'                 # infinite, break with X
 
-symbol      ::= <any 1-2 character token not matching the above>
-comment     ::= '#' { NOT_NEWLINE } NEWLINE
+symbol      ::= <any 1-2 character token from dispatch>
+comment     ::= spaces '#' { NOT_NEWLINE } NEWLINE   # only when # is first non-space on line; otherwise '#' is filter/index op
 
 # Whitespace rules:
-# - Space and newline act as token separators
-# - Newlines are otherwise ignored (not significant)
+# - Space, tab, newline act as token separators
+# - '10.2^s' is tokenized as 10 . 2 ^ s (range, not float) because '.' is postfix range when jammed
+# - '3.14' with surrounding delimiters is a float
 ```
 
 ***
@@ -129,19 +137,19 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 Literals are pushed onto the stack as soon as they are encountered during parsing.
 
 ### Numbers
-Standard numeric notation: `1`, `10`, `3.14`, `-5`.
+Integers: `1`, `10`, `-5`. Floats: `3.14`, `-2.5` when surrounded by delimiters (space, bracket, newline).
+Golf sugar: `10.` or `10 .` is sugar for `1..10` (range). Thus `10.2^s` → `10 . 2 ^ s` = sum of squares 1..10. To write float without space use delimiter: `0.5`, `(3.14)`, `[3.14]`.
 
 ### Numerical Arrays (Vectors)
-Enclosed in square brackets `[...]`. Elements are separated by spaces.
-Example: `[1 2 3]` pushes a numeric vector of length 3.
+Enclosed in square brackets `[...]`. Elements are statement sequences. `[]` → `numeric(0)`. Example: `[1 2 3]` pushes a numeric vector; `[1 [2 3]]` flattens via inner blocks.
 
 ### Character Arrays (Strings)
-Enclosed in single quotes `'...'`.
+Enclosed in single quotes `'...'`. Escape a single quote by doubling: `'don''t'`.
 Example: `'hello'` pushes a character vector of length 1.
 
-### Cell Arrays (Lists)
-Enclosed in curly braces `{...}`.
-Example: `{1 'a' [1 2]}` pushes an R list containing three different types.
+### Blocks (Higher-Order Values)
+Enclosed in curly braces `{...}`. They are values pushed onto stack, not executed. Example: `{2 *}` is a block that doubles.
+Array blocks `[...]` evaluate eagerly to a vector; block literals `{...}` are lazy.
 
 ***
 
@@ -161,17 +169,17 @@ Blocks are consumed by operators that pop them from the stack:
 
 | Operator | Name | Behavior |
 |----------|------|----------|
-| `{block} array q` | Map | Applies block to each element, collects results into array |
-| `{block} array e` | Filter | Keeps elements where block returns truthy |
-| `{block} array y` | Reduce | Folds array left using block as binary operator |
-| `N {block} z` | Repeat | Executes block N times, returns last result |
+| `array {block} q` (also `Fq`) | Map | Applies block to each element, collects results into array |
+| `array {block} Ft` (also `e` when block on stack) | Filter | Keeps elements where block returns truthy |
+| `array {block} y` (also `Fr`) | Reduce | Folds array left using block as binary operator |
+| `N {block} z` (also `Fx`) | Repeat | Executes block N times, returns last result |
 | `{block} @` | Execute | Pops and executes a block immediately |
-| `{block} array zB` | Sort By | Sorts array using block as key function |
-| `{block} array zG` | Group By | Groups array elements by block's return value |
-| `{block} array zC` | Scan | Like reduce, but returns all intermediate results |
-| `{block} array zT` | Take While | Takes elements while block returns truthy |
-| `{block} array zW` | Drop While | Drops elements while block returns truthy |
-| `{block} A B zZ` | Zip With | Applies block pairwise to two arrays |
+| `array {block} zB` | Sort By | Sorts array using block as key function |
+| `array {block} zG` | Group By | Groups array elements by block's return value |
+| `array {block} zC` | Scan | Like reduce, but returns all intermediate results |
+| `array {block} zT` | Take While | Takes elements while block returns truthy |
+| `array {block} zW` | Drop While | Drops elements while block returns truthy |
+| `A B {block} zZ` | Zip With | Applies block pairwise to two arrays |
 
 ### Execution Environment
 
@@ -240,10 +248,10 @@ RATL follows R's truthiness rules. Truthiness is used by control flow (`?`), fil
 
 ### Conditional Branching (`? ... ]`)
 
-- **`?`** starts a conditional block, **`]`** ends it
-- **If-Else**: `? condition ; then-branch ; else-branch ]`
+- Syntax: `cond ? then ]` or `cond ? then ; else ]`. Condition is on **stack before** `?`.
 - **Behavior**: Pops the top element. If truthy, executes until first `;` or `]`. If falsy, skips to the `;` branch (if present) or skips to `]`.
 ```
+1 'yes' 'no' ? ; ]        shorthand: cond must be on stack first
 1 ? 'yes' ; 'no' ]        → 'yes'    # truthy
 0 ? 'yes' ; 'no' ]        → 'no'     # falsy
 0 ? 'yes' ]                → (empty)  # no else branch
@@ -252,9 +260,9 @@ RATL follows R's truthiness rules. Truthiness is used by control flow (`?`), fil
 ### While/Repeat Loop (`" ... "`)
 
 - **Symbol**: `"` (opening and closing)
-- **Behavior**: Executes the loop body. At the closing `"`, pops the top element. If truthy, repeats from the opening `"`. If falsy, exits the loop.
+- **Behavior**: Pops condition **before** executing body. If falsy, exit. Repeat check after body completes. Equivalent to `while(pop()) { body }`.
 ```
-3 " 1 - D p "    → 3 2 1    # counts down
+3 " D p 1 - D "    → 3 2 1    # counts down (cond then body in single "")
 ```
 
 ### For-Each Loop (`( ... )`)
@@ -405,7 +413,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 ## Symbol Reference
 
-**408 symbols** organized by category. Click a category to expand.
+**462 symbols** organized by category. Click a category to expand.
 
 <details open><summary><strong>Stack & Control</strong> — Tier 1 (Core) — 18 symbols</summary>
 
@@ -455,7 +463,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Array Operations</strong> — Tier 1 (Core) — 42 symbols</summary>
+<details open><summary><strong>Array Operations</strong> — Tier 1 (Core) — 45 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -469,6 +477,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `SH` | Head | `head($1)` | 1 → 1 |
 | `ST` | Tail | `tail($1)` | 1 → 1 |
 | `XC` | CumSum | `cumsum($1)` | 1 → 1 |
+| `Xk` | RLELegacy | `{r <- rle($1); list(r$values, r$lengths)}` | 1 → 2 |
 | `aB` | Tabulate | `tabulate($1)` | 1 → 1 |
 | `aD` | Drop | `drop($1)` | 1 → 1 |
 | `aE` | RLE | `{r <- rle($1); list(r$values, r$lengths)}` | 1 → 2 |
@@ -488,6 +497,8 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `dS` | Split | `split($2, $1)` | 2 → 1 |
 | `e` | Extract Element [[ | `$2[[$1]]` | 2 → 1 |
 | `fE` | FirstElem | `head($1, 1)` | 1 → 1 |
+| `fu` | FlattenLegacy | `unlist($1)` | 1 → 1 |
+| `h` | HeadLegacy | `head($1, 1)` | 1 → 1 |
 | `l` | Length | `length($1)` | 1 → 1 |
 | `r2` | Rep | `rep($2, $1)` | 2 → 1 |
 | `tl` | TailN | `tail($2, $1)` | 2 → 1 |
@@ -496,7 +507,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `vG` | PMax | `pmax($2, $1)` | 2 → 1 |
 | `vH` | WhichArr | `which($1, arr.ind=TRUE)` | 1 → 1 |
 | `vI` | CumMin | `cummin($1)` | 1 → 1 |
-| `vT` | RepMat | `matrix(rep($3, $2*$1), nrow=nrow($3)*$2)` | 3 → 1 |
+| `vT` | RepMat | `matrix(rep_len($3, $2*$1), nrow=$2, ncol=$1)` | 3 → 1 |
 | `vW` | SeqLen | `seq($3, $2, length.out=$1)` | 3 → 1 |
 | `vX` | CumMax | `cummax($1)` | 1 → 1 |
 | `wh` | Which | `which($1)` | 1 → 1 |
@@ -504,18 +515,25 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 32 symbols</summary>
+<details open><summary><strong>Statistics</strong> — Tier 3 (Extensions) — 39 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `A` | All | `all($1)` | 1 → 1 |
+| `B5` | FiveNumLegacy | `fivenum($1)` | 1 → 1 |
+| `Bc` | CorLegacy | `cor($2, $1)` | 2 → 1 |
 | `Bn` | Min | `min($1)` | 1 → 1 |
+| `Bs` | StdDevLegacy | `sd($1, na.rm=TRUE)` | 1 → 1 |
 | `Bx` | Max | `max($1)` | 1 → 1 |
 | `E` | Any | `any($1)` | 1 → 1 |
 | `P` | Product | `prod($1)` | 1 → 1 |
+| `Sd` | CumSDLegacy | `ratl_cum_sd($1)` | 1 → 1 |
+| `Sm` | MeanAlias | `mean($1)` | 1 → 1 |
 | `Sw` | WeightedMean | `weighted.mean($2, $1)` | 2 → 1 |
+| `Xr` | MeanLegacy | `mean($1, na.rm=TRUE)` | 1 → 1 |
 | `dX` | XTabs | `xtabs($2, $1)` | 2 → 1 |
 | `lZ` | NNZ | `sum($1 != 0)` | 1 → 1 |
+| `m` | MeanLegacy2 | `mean($1)` | 1 → 1 |
 | `mn` | Min2 | `min($2, $1)` | 2 → 1 |
 | `mx` | Max2 | `max($2, $1)` | 2 → 1 |
 | `r` | Random (n) | `runif($1)` | 1 → 1 |
@@ -556,14 +574,13 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 27 symbols</summary>
+<details open><summary><strong>Type & Introspection</strong> — Tier 1 (Core) — 25 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `TA` | Attr | `attr($2, $1)` | 2 → 1 |
 | `TC` | Colnames | `colnames($1)` | 1 → 1 |
 | `TD` | Dim | `dim($1)` | 1 → 1 |
-| `TN` | ToNumber | `as.numeric($1)` | 1 → 1 |
 | `TN` | ToNumber | `as.numeric($1)` | 1 → 1 |
 | `TR` | Rownames | `rownames($1)` | 1 → 1 |
 | `Ta` | AsType | `as($2, $1)` | 2 → 1 |
@@ -576,16 +593,15 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `Ts` | ToString | `as.character($1)` | 1 → 1 |
 | `Tt` | Typeof | `typeof($1)` | 1 → 1 |
 | `Tv` | Attributes | `attributes($1)` | 1 → 1 |
-| `ev` | Eval | `NULL` | 1 → 0 |
+| `Xb` | ToBinaryLegacy | `ratl_bin($1)` | 1 → 1 |
+| `Xo` | ModeLegacy | `ratl_mode($1)` | 1 → 1 |
 | `uA` | To ASCII | `utf8ToInt($1)` | 1 → 1 |
 | `zB` | Sort By | `NULL` | 2 → 1 |
 | `zC` | Scan | `NULL` | 2 → 1 |
 | `zD` | Dispatch List | `NULL` | 0 → 1 |
 | `zG` | Group By | `NULL` | 2 → 1 |
-| `zS` | Send | `NULL` | 1 → 1 |
 | `zT` | Take While | `NULL` | 2 → 1 |
 | `zW` | Drop While | `NULL` | 2 → 1 |
-| `zX` | Shell Exec | `NULL` | 1 → 1 |
 | `zZ` | Zip With | `NULL` | 3 → 1 |
 
 </details>
@@ -645,24 +661,28 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 19 symbols</summary>
+<details open><summary><strong>String Operations</strong> — Tier 2 (Toolkit) — 23 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
 | `C` | Concat | `paste0($2, $1)` | 2 → 1 |
 | `J` | Join List | `paste($2, collapse=$1)` | 2 → 1 |
+| `S` | SplitLegacy | `strsplit($2, $1)[[1]]` | 2 → 1 |
+| `S!` | TranslateLegacy | `chartr($2, $1, $3)` | 3 → 1 |
 | `Sb` | Grepl | `grepl($2, $1)` | 2 → 1 |
 | `Se` | Regexpr | `regexpr($2, $1)` | 2 → 1 |
 | `Sf` | Sprintf | `sprintf($2, $1)` | 2 → 1 |
 | `Sg` | GSub | `gsub($2, $1, $3)` | 3 → 1 |
 | `Sl` | ToLower | `tolower($1)` | 1 → 1 |
 | `Sr` | ReverseString | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | 1 → 1 |
+| `Sr` | ReverseStr | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | 1 → 1 |
 | `Ss` | Split String | `strsplit($2, $1)[[1]]` | 2 → 1 |
 | `St` | Translate | `chartr($2, $1, $3)` | 3 → 1 |
 | `Su` | ToUpper | `toupper($1)` | 1 → 1 |
 | `Sx` | Gregexpr | `gregexpr($2, $1)` | 2 → 1 |
 | `Xc` | Char Translate | `chartr($1, $2, $3)` | 3 → 1 |
 | `j` | Join | `paste($2, $1)` | 2 → 1 |
+| `rv` | ReverseStrLegacy | `paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")` | 1 → 1 |
 | `sG` | Grep | `grep($2, $1)` | 2 → 1 |
 | `sn` | NChar | `nchar($1)` | 1 → 1 |
 | `sr` | Sub | `sub($2, $1, $3)` | 3 → 1 |
@@ -772,7 +792,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Combinatorics & Special</strong> — Tier 3 (Extensions) — 13 symbols</summary>
+<details open><summary><strong>Combinatorics & Special</strong> — Tier 3 (Extensions) — 14 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -785,6 +805,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `lb` | Log Beta | `lbeta($2, $1)` | 2 → 1 |
 | `lc` | LCM | `ratl_lcm($2, $1)` | 2 → 1 |
 | `mB` | Beta | `beta($2, $1)` | 2 → 1 |
+| `mF` | FactorsLegacy | `ratl_factors($1)` | 1 → 1 |
 | `mf` | Prime Factors | `ratl_prime_factors($1)` | 1 → 1 |
 | `mp` | Is Prime | `ratl_is_prime($1)` | 1 → 1 |
 | `ps` | Psigamma | `psigamma($2, $1)` | 2 → 1 |
@@ -804,10 +825,11 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols</summary>
+<details open><summary><strong>File I/O</strong> — Tier 3 (Extensions) — 19 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
+| `F` | ReadFile | `readLines($1)` | 1 → 1 |
 | `FW` | Write File | `{writeLines(as.character($2), $1); NULL}` | 2 → 0 |
 | `fA` | Dirname | `dirname($1)` | 1 → 1 |
 | `fC` | Write CSV | `write.csv($2, $1)` | 2 → 0 |
@@ -901,7 +923,7 @@ RATL propagates R errors when operations fail. Common error conditions:
 
 </details>
 
-<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols</summary>
+<details open><summary><strong>Constants</strong> — Tier 3 (Extensions) — 21 symbols</summary>
 
 | Symbol | Description | R Code | Stack Effect |
 |--------|-------------|--------|--------------|
@@ -910,9 +932,22 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `Na` | NA | `NA` | 0 → 1 |
 | `Pi` | Pi | `pi` | 0 → 1 |
 | `az` | Lower Letters | `paste0(letters, collapse="")` | 0 → 1 |
+| `eS` | EmptyStr | `""` | 0 → 1 |
+| `n0` | Const0 | `0` | 0 → 1 |
+| `n1` | Const1 | `1` | 0 → 1 |
+| `n2` | Const2 | `2` | 0 → 1 |
+| `n3` | Const3 | `3` | 0 → 1 |
+| `n4` | Const4 | `4` | 0 → 1 |
+| `n5` | Const5 | `5` | 0 → 1 |
+| `n6` | Const6 | `6` | 0 → 1 |
+| `n7` | Const7 | `7` | 0 → 1 |
+| `n8` | Const8 | `8` | 0 → 1 |
+| `n9` | Const9 | `9` | 0 → 1 |
+| `nL` | Newline | `"\n"` | 0 → 1 |
 | `s4` | EmptyLog | `logical(0)` | 0 → 1 |
 | `sQ` | EmptyChar | `character(0)` | 0 → 1 |
 | `sZ` | EmptyNum | `numeric(0)` | 0 → 1 |
+| `z_` | Space | `" "` | 0 → 1 |
 
 </details>
 
@@ -945,6 +980,40 @@ RATL propagates R errors when operations fail. Common error conditions:
 | `th` | Tanh | `tanh($1)` | 1 → 1 |
 | `tp` | Tan(pi*x) | `tanpi($1)` | 1 → 1 |
 | `tr` | Trunc | `trunc($1)` | 1 → 1 |
+
+</details>
+
+<details open><summary><strong>Golf</strong> — Tier 2 (Toolkit) — 27 symbols</summary>
+
+| Symbol | Description | R Code | Stack Effect |
+|--------|-------------|--------|--------------|
+| `aF` | Freq | `ratl_freq($1)` | 1 → 1 |
+| `aH` | Tuck | `c($2, $1, $2)` | 2 → 1 |
+| `aK` | Chunks | `ratl_chunks($2, $1)` | 2 → 1 |
+| `aW` | Windows | `ratl_windows($2, $1)` | 2 → 1 |
+| `bC` | Popcount | `ratl_popcount($1)` | 1 → 1 |
+| `bD` | BaseDec | `ratl_base_decode($2, $1)` | 2 → 1 |
+| `bE` | BaseEnc | `ratl_base_encode($2, $1)` | 2 → 1 |
+| `bP` | NextPrime | `ratl_next_prime($1)` | 1 → 1 |
+| `bQ` | PrevPrime | `ratl_prev_prime($1)` | 1 → 1 |
+| `cO` | Chr | `intToUtf8($1)` | 1 → 1 |
+| `cP` | Cartesian | `ratl_cartesian($2, $1)` | 2 → 1 |
+| `d2` | DigitSum | `ratl_digit_sum($1)` | 1 → 1 |
+| `d3` | DigitProd | `ratl_digit_prod($1)` | 1 → 1 |
+| `i2` | StrToInt | `strtoi($2, base=$1)` | 2 → 1 |
+| `jN` | JoinNL | `paste($2, collapse="\n")` | 1 → 1 |
+| `kC` | BaseEncode | `ratl_base_encode($2, $1)` | 2 → 1 |
+| `kC` | BaseEncodeK | `ratl_base_encode($2, $1)` | 2 → 1 |
+| `kD` | BaseDecode | `ratl_base_decode($2, $1)` | 2 → 1 |
+| `kD` | BaseDecodeK | `ratl_base_decode($2, $1)` | 2 → 1 |
+| `kH` | CharsK | `strsplit(as.character($1), "")[[1]]` | 1 → 1 |
+| `kO` | ChrK | `intToUtf8($1)` | 1 → 1 |
+| `nP` | Nip | `$1` | 2 → 1 |
+| `p2` | PowersetAlias | `ratl_powerset($1)` | 1 → 1 |
+| `pR` | PrimeRange | `ratl_prime_range($1)` | 1 → 1 |
+| `pW2` | PasteWrap | `paste($2, collapse=$1)` | 2 → 1 |
+| `sL` | Chars | `strsplit(as.character($1), "")[[1]]` | 1 → 1 |
+| `tF` | Powerset | `ratl_powerset($1)` | 1 → 1 |
 
 </details>
 

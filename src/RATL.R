@@ -58,7 +58,7 @@ if (interactive) {
     if (line == "quit" || line == "exit") break
     if (line == "/stack") { show_stack(); next }
     if (line == "/clip") {
-      for (nm in c("c1", "c3")) {
+      for (nm in c("a", "c")) {
         val <- ctx$clipboards[[nm]]
         if (is.null(val)) cat("  ", nm, ": (empty)\n", sep = "")
         else { cat("  ", nm, ": ", sep = ""); print(val) }

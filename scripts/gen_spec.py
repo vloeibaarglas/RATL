@@ -16,10 +16,14 @@ TIER_MAP = {
     'Matrix': 2,
     'String Operations': 2,
     'Set Operations': 2,
+    'Golf': 2,
     'Statistics': 3,
     'Distributions & Tests': 3,
     'Combinatorics & Special': 3,
     'Complex Numbers': 3,
+    'Constants': 3,
+    'Math Functions': 3,
+    'Ciphers': 3,
     'File I/O': 3,
     'System': 3,
     'Statistical Modeling': 3,
@@ -41,7 +45,11 @@ def load_def(path):
         for line in f:
             parts = line.rstrip('\n').split('\t')
             if len(parts) >= 6:
-                unsafe = parts[8].strip() == '1' if len(parts) > 8 else False
+                # col: src r_code n_in n_out desc category [Golf] [unsafe] – unsafe is last if present
+                # file is tab separated: 0:src 1:r_code 2:n_in 3:n_out 4:desc 5:category 6:optional 7:optional
+                # unsafe flag: if any extra column == '1'
+                extra = parts[6:] if len(parts) > 6 else []
+                unsafe = any(p.strip() == '1' for p in extra)
                 symbols.append({
                     'src': parts[0],
                     'r_code': parts[1],
@@ -187,9 +195,10 @@ def generate_spec(symbols, include_unsafe):
     lines.append("")
     lines.append("### Clipboards")
     lines.append("")
-    lines.append("RATL provides four clipboards for temporary storage outside the stack:")
+    lines.append("RATL provides two clipboard register pairs for temporary storage outside the stack:")
     lines.append("")
-    lines.append("- `H`, `G`, `L`, `M` — each holds one value independently of the stack")
+    lines.append("- `a` (save), `b` (load) — clipboard register 1")
+    lines.append("- `c` (save), `d` (load) — clipboard register 2")
     lines.append("- Useful for saving intermediate results without stack gymnastics")
     lines.append("")
 
@@ -202,27 +211,29 @@ def generate_spec(symbols, include_unsafe):
     lines.append("")
     lines.append("```")
     lines.append("program     ::= statement*")
-    lines.append("statement   ::= literal | symbol | block")
+    lines.append("statement   ::= literal | symbol | block | control")
     lines.append("")
-    lines.append("literal     ::= number | array | string")
-    lines.append("number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]")
-    lines.append("array       ::= '[' statement* ']'")
-    lines.append("string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe")
+    lines.append("literal     ::= number | array | string | block_literal")
+    lines.append("number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]   # float only when followed by delim; '10.' is range sugar for 1..10")
+    lines.append("array       ::= '[' statement* ']'              # empty [] → numeric(0)")
+    lines.append("string      ::= Apostrophe { NOT_APOSTROPHE | \"''\" } Apostrophe  # '' escaped as single '")
     lines.append("")
-    lines.append("block       ::= '{' statement* '}'")
+    lines.append("block_literal ::= '{' statement* '}'            # first-class, not executed on push")
+    lines.append("control     ::= '?' statement* (';' statement*)? ']'    # if / if-else, condition on stack")
+    lines.append("            | '\"' statement* '\"'               # while: pop cond before body")
+    lines.append("            | '(' statement* ')'                 # foreach: pops array, pushes each")
+    lines.append("            | '`' statement* '`'                 # infinite, break with X")
     lines.append("")
-    lines.append("symbol      ::= <any 1-2 character token not matching the above>")
-    lines.append("comment     ::= '#' { NOT_NEWLINE } NEWLINE")
+    lines.append("symbol      ::= <any 1-2 character token from dispatch>")
+    lines.append("comment     ::= spaces '#' { NOT_NEWLINE } NEWLINE   # only when # is first non-space on line; otherwise '#' is filter/index op")
     lines.append("")
     lines.append("# Whitespace rules:")
-    lines.append("# - Space and newline act as token separators")
-    lines.append("# - Newlines are otherwise ignored (not significant)")
+    lines.append("# - Space, tab, newline act as token separators")
+    lines.append("# - '10.2^s' is tokenized as 10 . 2 ^ s (range, not float) because '.' is postfix range when jammed")
+    lines.append("# - '3.14' with surrounding delimiters is a float")
     lines.append("```")
     lines.append("")
 
-    # =========================================================================
-    # 4. LITERALS
-    # =========================================================================
     lines.append(hr())
     lines.append("")
     lines.append("## Literals")
@@ -230,19 +241,19 @@ def generate_spec(symbols, include_unsafe):
     lines.append("Literals are pushed onto the stack as soon as they are encountered during parsing.")
     lines.append("")
     lines.append("### Numbers")
-    lines.append("Standard numeric notation: `1`, `10`, `3.14`, `-5`.")
+    lines.append("Integers: `1`, `10`, `-5`. Floats: `3.14`, `-2.5` when surrounded by delimiters (space, bracket, newline).")
+    lines.append("Golf sugar: `10.` or `10 .` is sugar for `1..10` (range). Thus `10.2^s` → `10 . 2 ^ s` = sum of squares 1..10. To write float without space use delimiter: `0.5`, `(3.14)`, `[3.14]`.")
     lines.append("")
     lines.append("### Numerical Arrays (Vectors)")
-    lines.append("Enclosed in square brackets `[...]`. Elements are separated by spaces.")
-    lines.append("Example: `[1 2 3]` pushes a numeric vector of length 3.")
+    lines.append("Enclosed in square brackets `[...]`. Elements are statement sequences. `[]` → `numeric(0)`. Example: `[1 2 3]` pushes a numeric vector; `[1 [2 3]]` flattens via inner blocks.")
     lines.append("")
     lines.append("### Character Arrays (Strings)")
-    lines.append("Enclosed in single quotes `'...'`.")
+    lines.append("Enclosed in single quotes `'...'`. Escape a single quote by doubling: `'don''t'`.")
     lines.append("Example: `'hello'` pushes a character vector of length 1.")
     lines.append("")
-    lines.append("### Cell Arrays (Lists)")
-    lines.append("Enclosed in curly braces `{...}`.")
-    lines.append("Example: `{1 'a' [1 2]}` pushes an R list containing three different types.")
+    lines.append("### Blocks (Higher-Order Values)")
+    lines.append("Enclosed in curly braces `{...}`. They are values pushed onto stack, not executed. Example: `{2 *}` is a block that doubles.")
+    lines.append("Array blocks `[...]` evaluate eagerly to a vector; block literals `{...}` are lazy.")
     lines.append("")
 
     # =========================================================================
@@ -266,17 +277,17 @@ def generate_spec(symbols, include_unsafe):
     lines.append("")
     lines.append("| Operator | Name | Behavior |")
     lines.append("|----------|------|----------|")
-    lines.append("| `{block} array q` | Map | Applies block to each element, collects results into array |")
-    lines.append("| `{block} array e` | Filter | Keeps elements where block returns truthy |")
-    lines.append("| `{block} array y` | Reduce | Folds array left using block as binary operator |")
-    lines.append("| `N {block} z` | Repeat | Executes block N times, returns last result |")
+    lines.append("| `array {block} q` (also `Fq`) | Map | Applies block to each element, collects results into array |")
+    lines.append("| `array {block} Ft` (also `e` when block on stack) | Filter | Keeps elements where block returns truthy |")
+    lines.append("| `array {block} y` (also `Fr`) | Reduce | Folds array left using block as binary operator |")
+    lines.append("| `N {block} z` (also `Fx`) | Repeat | Executes block N times, returns last result |")
     lines.append("| `{block} @` | Execute | Pops and executes a block immediately |")
-    lines.append("| `{block} array zB` | Sort By | Sorts array using block as key function |")
-    lines.append("| `{block} array zG` | Group By | Groups array elements by block's return value |")
-    lines.append("| `{block} array zC` | Scan | Like reduce, but returns all intermediate results |")
-    lines.append("| `{block} array zT` | Take While | Takes elements while block returns truthy |")
-    lines.append("| `{block} array zW` | Drop While | Drops elements while block returns truthy |")
-    lines.append("| `{block} A B zZ` | Zip With | Applies block pairwise to two arrays |")
+    lines.append("| `array {block} zB` | Sort By | Sorts array using block as key function |")
+    lines.append("| `array {block} zG` | Group By | Groups array elements by block's return value |")
+    lines.append("| `array {block} zC` | Scan | Like reduce, but returns all intermediate results |")
+    lines.append("| `array {block} zT` | Take While | Takes elements while block returns truthy |")
+    lines.append("| `array {block} zW` | Drop While | Drops elements while block returns truthy |")
+    lines.append("| `A B {block} zZ` | Zip With | Applies block pairwise to two arrays |")
     lines.append("")
     lines.append("### Execution Environment")
     lines.append("")
@@ -353,10 +364,10 @@ def generate_spec(symbols, include_unsafe):
     lines.append("")
     lines.append("### Conditional Branching (`? ... ]`)")
     lines.append("")
-    lines.append("- **`?`** starts a conditional block, **`]`** ends it")
-    lines.append("- **If-Else**: `? condition ; then-branch ; else-branch ]`")
+    lines.append("- Syntax: `cond ? then ]` or `cond ? then ; else ]`. Condition is on **stack before** `?`.")
     lines.append("- **Behavior**: Pops the top element. If truthy, executes until first `;` or `]`. If falsy, skips to the `;` branch (if present) or skips to `]`.")
     lines.append("```")
+    lines.append("1 'yes' 'no' ? ; ]        shorthand: cond must be on stack first")
     lines.append("1 ? 'yes' ; 'no' ]        → 'yes'    # truthy")
     lines.append("0 ? 'yes' ; 'no' ]        → 'no'     # falsy")
     lines.append("0 ? 'yes' ]                → (empty)  # no else branch")
@@ -365,9 +376,9 @@ def generate_spec(symbols, include_unsafe):
     lines.append("### While/Repeat Loop (`\" ... \"`)")
     lines.append("")
     lines.append("- **Symbol**: `\"` (opening and closing)")
-    lines.append("- **Behavior**: Executes the loop body. At the closing `\"`, pops the top element. If truthy, repeats from the opening `\"`. If falsy, exits the loop.")
+    lines.append("- **Behavior**: Pops condition **before** executing body. If falsy, exit. Repeat check after body completes. Equivalent to `while(pop()) { body }`.")
     lines.append("```")
-    lines.append("3 \" 1 - D p \"    → 3 2 1    # counts down")
+    lines.append("3 \" D p 1 - D \"    → 3 2 1    # counts down (cond then body in single \"\")")
     lines.append("```")
     lines.append("")
     lines.append("### For-Each Loop (`( ... )`)")

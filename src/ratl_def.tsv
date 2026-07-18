@@ -1,409 +1,466 @@
 src	r_code	n_in	n_out	desc	category	unsafe
-D	list($1, $1)	1	2	Duplicate	Stack & Control	
-L	NULL	0	1	Stack Length	Stack & Control	
-N	list($2, $1, $3)	3	3	Rotate	Stack & Control	
-Q	list($2, $1, $2)	2	3	Over	Stack & Control	
-U	for(x in $1) stack[[length(stack)+1]] <- x	1	0	Unpack	Stack & Control	
-g	NULL	2	3	Pick	Stack & Control	
-i	scan(ratl_stdin, what=character(), n=1, quiet=TRUE)	0	1	Input	Stack & Control	
-p	ratl_print($1)	1	0	Print	Stack & Control	
-sC	cat($1)	1	0	Cat	Stack & Control	
-sM	message($1)	1	0	Message	Stack & Control	
-sS	stop($1)	1	0	Stop	Stack & Control	
-sW	warning($1)	1	0	Warning	Stack & Control	
-w	list($1, $2)	2	2	Swap	Stack & Control	
-x	NULL	1	0	Delete	Stack & Control	
-a	NULL	1	0	ClipSave1	Stack & Control	
-b	NULL	0	1	ClipLoad1	Stack & Control	
-c	NULL	1	0	ClipSave2	Stack & Control	
-d	NULL	0	1	ClipLoad2	Stack & Control	
-%	$2 %% $1	2	1	Modulo	Arithmetic & Comparison	
-&	$2 & $1	2	1	Logical AND	Arithmetic & Comparison	
-*	$2 * $1	2	1	Multiply	Arithmetic & Comparison	
-+	$2 + $1	2	1	Add	Arithmetic & Comparison	
--	$2 - $1	2	1	Subtract	Arithmetic & Comparison	
-/	$2 / $1	2	1	Divide	Arithmetic & Comparison	
-<	$2 < $1	2	1	Less	Arithmetic & Comparison	
-<=	$2 <= $1	2	1	LessEqual	Arithmetic & Comparison	
-=	$2 == $1	2	1	Equal	Arithmetic & Comparison	
->	$2 > $1	2	1	Greater	Arithmetic & Comparison	
->=	$2 >= $1	2	1	GreatEqual	Arithmetic & Comparison	
-\	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison	
-^	$2 ^ $1	2	1	Power	Arithmetic & Comparison	
-lX	xor($2, $1)	2	1	Xor	Arithmetic & Comparison	
-|	$2 | $1	2	1	Or	Arithmetic & Comparison	
-~	!$1	1	1	Not	Arithmetic & Comparison	
-#	$2[$1]	2	1	Filter	Array Operations	
-,	c($2, $1)	2	1	Concat Vectors	Array Operations	
-.	1:$1	1	1	Range 1 to N	Array Operations	
-..	list($2, $1)	2	1	Pair	Array Operations	
-:	seq($2, $1)	2	1	Sequence	Array Operations	
-O	sort($1)	1	1	Sort	Array Operations	
-R	rev($1)	1	1	Reverse	Array Operations	
-SH	head($1)	1	1	Head	Array Operations	
-ST	tail($1)	1	1	Tail	Array Operations	
-XC	cumsum($1)	1	1	CumSum	Array Operations	
-aB	tabulate($1)	1	1	Tabulate	Array Operations	
-aD	drop($1)	1	1	Drop	Array Operations	
-aE	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE	Array Operations	
-aL	unlist($1)	1	1	Flatten	Array Operations	
-aM	match($2, $1)	2	1	IndexOf	Array Operations	
-aN	$2[[as.character($1)]]	2	1	ExtractName	Array Operations	
-aO	order($1)	1	1	Order	Array Operations	
-aP	cumprod($1)	1	1	CumProd	Array Operations	
-aQ	length(unique($1))	1	1	UniqueN	Array Operations	
-aR	rank($1)	1	1	Rank	Array Operations	
-aU	unsplit($2, $1)	2	1	Unsplit	Array Operations	
-aV	diff($1)	1	1	Diff	Array Operations	
-aX	$2[length($2)+1-$1]	2	1	NegSlice	Array Operations	
-ah	head($2, $1)	2	1	HeadN	Array Operations	
-al	tail($1, 1)	1	1	LastElem	Array Operations	
-cn	is.element($2, $1)	2	1	IsIn	Array Operations	
-dS	split($2, $1)	2	1	Split	Array Operations	
-e	$2[[$1]]	2	1	Extract Element [[	Array Operations	
-fE	head($1, 1)	1	1	FirstElem	Array Operations	
-l	length($1)	1	1	Length	Array Operations	
-r2	rep($2, $1)	2	1	Rep	Array Operations	
-tl	tail($2, $1)	2	1	TailN	Array Operations	
-tm	median($1)	1	1	Median	Statistics	
-u	unique($1)	1	1	Unique	Array Operations	
-vB	pmin($2, $1)	2	1	PMin	Array Operations	
-vG	pmax($2, $1)	2	1	PMax	Array Operations	
-vH	which($1, arr.ind=TRUE)	1	1	WhichArr	Array Operations	
-vI	cummin($1)	1	1	CumMin	Array Operations	
-vT	matrix(rep($3, $2*$1), nrow=nrow($3)*$2)	3	1	RepMat	Array Operations	
-vW	seq($3, $2, length.out=$1)	3	1	SeqLen	Array Operations	
-vX	cummax($1)	1	1	CumMax	Array Operations	
-wh	which($1)	1	1	Which	Array Operations	
-zp	unlist(Map(list, $2, $1))	2	1	Zip	Array Operations	
-bA	bitwAnd($2, $1)	2	1	BitAnd	Bitwise Operations	
-bL	bitwShiftL($2, $1)	2	1	BitShiftL	Bitwise Operations	
-bN	bitwNot($1)	1	1	BitNot	Bitwise Operations	
-bO	bitwOr($2, $1)	2	1	BitOr	Bitwise Operations	
-bR	bitwShiftR($2, $1)	2	1	BitShiftR	Bitwise Operations	
-bX	bitwXor($2, $1)	2	1	BitXor	Bitwise Operations	
-TA	attr($2, $1)	2	1	Attr	Type & Introspection	
-TC	colnames($1)	1	1	Colnames	Type & Introspection	
-TD	dim($1)	1	1	Dim	Type & Introspection	
-TN	as.numeric($1)	1	1	ToNumber	Type & Introspection	
-TR	rownames($1)	1	1	Rownames	Type & Introspection	
-Ta	as($2, $1)	2	1	AsType	Type & Introspection	
-Tb	ratl_bin($1)	1	1	ToBinary	Type & Introspection	
-Tc	class($1)	1	1	Class	Type & Introspection	
-Td	as.Date($1)	1	1	ToDate	Type & Introspection	
-Tf	factor($1)	1	1	Factor	Type & Introspection	
-Ti	is($2, $1)	2	1	IsType	Type & Introspection	
-Tn	names($1)	1	1	Names	Type & Introspection	
-Tt	typeof($1)	1	1	Typeof	Type & Introspection	
-Tv	attributes($1)	1	1	Attributes	Type & Introspection	
+D	list($1, $1)	1	2	Duplicate	Stack & Control
+L	NULL	0	1	Stack Length	Stack & Control
+N	list($2, $1, $3)	3	3	Rotate	Stack & Control
+Q	list($2, $1, $2)	2	3	Over	Stack & Control
+U	for(x in $1) stack[[length(stack)+1]] <- x	1	0	Unpack	Stack & Control
+g	NULL	2	3	Pick	Stack & Control
+i	scan(ratl_stdin, what=character(), n=1, quiet=TRUE)	0	1	Input	Stack & Control
+p	ratl_print($1)	1	0	Print	Stack & Control
+sC	cat($1)	1	0	Cat	Stack & Control
+sM	message($1)	1	0	Message	Stack & Control
+sS	stop($1)	1	0	Stop	Stack & Control
+sW	warning($1)	1	0	Warning	Stack & Control
+w	list($1, $2)	2	2	Swap	Stack & Control
+x	NULL	1	0	Delete	Stack & Control
+a	NULL	1	0	ClipSave1	Stack & Control
+b	NULL	0	1	ClipLoad1	Stack & Control
+c	NULL	1	0	ClipSave2	Stack & Control
+d	NULL	0	1	ClipLoad2	Stack & Control
+%	$2 %% $1	2	1	Modulo	Arithmetic & Comparison
+&	$2 & $1	2	1	Logical AND	Arithmetic & Comparison
+*	$2 * $1	2	1	Multiply	Arithmetic & Comparison
++	$2 + $1	2	1	Add	Arithmetic & Comparison
+-	$2 - $1	2	1	Subtract	Arithmetic & Comparison
+/	$2 / $1	2	1	Divide	Arithmetic & Comparison
+<	$2 < $1	2	1	Less	Arithmetic & Comparison
+<=	$2 <= $1	2	1	LessEqual	Arithmetic & Comparison
+=	$2 == $1	2	1	Equal	Arithmetic & Comparison
+>	$2 > $1	2	1	Greater	Arithmetic & Comparison
+>=	$2 >= $1	2	1	GreatEqual	Arithmetic & Comparison
+\	$2 %/% $1	2	1	IntDiv	Arithmetic & Comparison
+^	$2 ^ $1	2	1	Power	Arithmetic & Comparison
+lX	xor($2, $1)	2	1	Xor	Arithmetic & Comparison
+|	$2 | $1	2	1	Or	Arithmetic & Comparison
+~	!$1	1	1	Not	Arithmetic & Comparison
+#	$2[$1]	2	1	Filter	Array Operations
+,	c($2, $1)	2	1	Concat Vectors	Array Operations
+.	1:$1	1	1	Range 1 to N	Array Operations
+..	list($2, $1)	2	1	Pair	Array Operations
+:	seq($2, $1)	2	1	Sequence	Array Operations
+O	sort($1)	1	1	Sort	Array Operations
+R	rev($1)	1	1	Reverse	Array Operations
+SH	head($1)	1	1	Head	Array Operations
+ST	tail($1)	1	1	Tail	Array Operations
+XC	cumsum($1)	1	1	CumSum	Array Operations
+aB	tabulate($1)	1	1	Tabulate	Array Operations
+aD	drop($1)	1	1	Drop	Array Operations
+aE	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLE	Array Operations
+aL	unlist($1)	1	1	Flatten	Array Operations
+aM	match($2, $1)	2	1	IndexOf	Array Operations
+aN	$2[[as.character($1)]]	2	1	ExtractName	Array Operations
+aO	order($1)	1	1	Order	Array Operations
+aP	cumprod($1)	1	1	CumProd	Array Operations
+aQ	length(unique($1))	1	1	UniqueN	Array Operations
+aR	rank($1)	1	1	Rank	Array Operations
+aU	unsplit($2, $1)	2	1	Unsplit	Array Operations
+aV	diff($1)	1	1	Diff	Array Operations
+aX	$2[length($2)+1-$1]	2	1	NegSlice	Array Operations
+ah	head($2, $1)	2	1	HeadN	Array Operations
+al	tail($1, 1)	1	1	LastElem	Array Operations
+cn	is.element($2, $1)	2	1	IsIn	Array Operations
+dS	split($2, $1)	2	1	Split	Array Operations
+e	$2[[$1]]	2	1	Extract Element [[	Array Operations
+fE	head($1, 1)	1	1	FirstElem	Array Operations
+l	length($1)	1	1	Length	Array Operations
+r2	rep($2, $1)	2	1	Rep	Array Operations
+tl	tail($2, $1)	2	1	TailN	Array Operations
+tm	median($1)	1	1	Median	Statistics
+u	unique($1)	1	1	Unique	Array Operations
+vB	pmin($2, $1)	2	1	PMin	Array Operations
+vG	pmax($2, $1)	2	1	PMax	Array Operations
+vH	which($1, arr.ind=TRUE)	1	1	WhichArr	Array Operations
+vI	cummin($1)	1	1	CumMin	Array Operations
+vT	matrix(rep_len($3, $2*$1), nrow=$2, ncol=$1)	3	1	RepMat	Array Operations
+vW	seq($3, $2, length.out=$1)	3	1	SeqLen	Array Operations
+vX	cummax($1)	1	1	CumMax	Array Operations
+wh	which($1)	1	1	Which	Array Operations
+zp	unlist(Map(list, $2, $1))	2	1	Zip	Array Operations
+bA	bitwAnd($2, $1)	2	1	BitAnd	Bitwise Operations
+bL	bitwShiftL($2, $1)	2	1	BitShiftL	Bitwise Operations
+bN	bitwNot($1)	1	1	BitNot	Bitwise Operations
+bO	bitwOr($2, $1)	2	1	BitOr	Bitwise Operations
+bR	bitwShiftR($2, $1)	2	1	BitShiftR	Bitwise Operations
+bX	bitwXor($2, $1)	2	1	BitXor	Bitwise Operations
+TA	attr($2, $1)	2	1	Attr	Type & Introspection
+TC	colnames($1)	1	1	Colnames	Type & Introspection
+TD	dim($1)	1	1	Dim	Type & Introspection
+TN	as.numeric($1)	1	1	ToNumber	Type & Introspection
+TR	rownames($1)	1	1	Rownames	Type & Introspection
+Ta	as($2, $1)	2	1	AsType	Type & Introspection
+Tb	ratl_bin($1)	1	1	ToBinary	Type & Introspection
+Tc	class($1)	1	1	Class	Type & Introspection
+Td	as.Date($1)	1	1	ToDate	Type & Introspection
+Tf	factor($1)	1	1	Factor	Type & Introspection
+Ti	is($2, $1)	2	1	IsType	Type & Introspection
+Tn	names($1)	1	1	Names	Type & Introspection
+Tt	typeof($1)	1	1	Typeof	Type & Introspection
+Tv	attributes($1)	1	1	Attributes	Type & Introspection
 ev	NULL	1	0	Eval	Type & Introspection	1
-zB	NULL	2	1	Sort By	Type & Introspection	
-zC	NULL	2	1	Scan	Type & Introspection	
-zD	NULL	0	1	Dispatch List	Type & Introspection	
-zG	NULL	2	1	Group By	Type & Introspection	
+zB	NULL	2	1	Sort By	Type & Introspection
+zC	NULL	2	1	Scan	Type & Introspection
+zD	NULL	0	1	Dispatch List	Type & Introspection
+zG	NULL	2	1	Group By	Type & Introspection
 zS	NULL	1	1	Send	Type & Introspection	1
-zT	NULL	2	1	Take While	Type & Introspection	
-zW	NULL	2	1	Drop While	Type & Introspection	
+zT	NULL	2	1	Take While	Type & Introspection
+zW	NULL	2	1	Drop While	Type & Introspection
 zX	NULL	1	1	Shell Exec	Type & Introspection	1
-zZ	NULL	3	1	Zip With	Type & Introspection	
-Ts	as.character($1)	1	1	ToString	Type & Introspection	
-TN	as.numeric($1)	1	1	ToNumber	Type & Introspection	
-uA	utf8ToInt($1)	1	1	To ASCII	Type & Introspection	
-Fa	apply($3, $2, $1)	3	1	Apply	Higher-Order Functions	
-Ff	Filter($2, $1)	2	1	Filter (Func)	Higher-Order Functions	
-Fl	lapply($2, $1)	2	1	Lapply	Higher-Order Functions	
-Fm	mapply($1, ...)	1	1	Mapply	Higher-Order Functions	
-Fn	Find($2, $1)	2	1	Find (Func)	Higher-Order Functions	
-Fp	Position($2, $1)	2	1	Position	Higher-Order Functions	
-Fq	NULL	0	1	Map (evaluator)	Higher-Order Functions	
-Fr	Reduce($2, $1)	2	1	Reduce	Higher-Order Functions	
-Fs	sapply($2, $1)	2	1	Sapply	Higher-Order Functions	
-Ft	NULL	0	1	Filter (evaluator)	Higher-Order Functions	
-Fv	vapply($3, $2, $1)	3	1	Vapply	Higher-Order Functions	
-Fx	NULL	0	1	Repeat (evaluator)	Higher-Order Functions	
-fn	Negate($1)	1	1	Negate	Higher-Order Functions	
-q	NULL	0	1	Map (evaluator)	Higher-Order Functions	
-y	NULL	0	1	Reduce (evaluator)	Higher-Order Functions	
-z	NULL	0	1	Repeat (evaluator)	Higher-Order Functions	
-!	t($1)	1	1	Transpose	Matrix	
-BT	{idx<-c(1,4,3,2,5); $1[idx,idx]}	1	1	Bingo Twin	Matrix	
-R9	apply(t($1), 2, rev)	1	1	Rot90	Matrix	
-Y!	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix	Matrix	
-Y*	$2 %*% $1	2	1	Matrix Mult	Matrix	
-YM	matrix($3, nrow=$2, ncol=$1, byrow=TRUE)	3	1	Matrix ByRow	Matrix	
-v2	solve($2, $1)	2	1	Solve 2	Matrix	
-vC	col($1)	1	1	Col Indices	Matrix	
-vE	rowSums($1)	1	1	Row Sums	Matrix	
-vL	solve($1)	1	1	Solve	Matrix	
-vM	colMeans($1)	1	1	Col Means	Matrix	
-vN	rowMeans($1)	1	1	Row Means	Matrix	
-vQ	qr($1)	1	1	QR Decomp	Matrix	
-vR	row($1)	1	1	Row Indices	Matrix	
-vS	colSums($1)	1	1	Col Sums	Matrix	
-vV	svd($1)	1	1	SVD	Matrix	
-yD	diag($1)	1	1	Identity Matrix	Matrix	
-yc	eigen($1)$vectors	1	1	EigenVectors	Matrix	
-yd	det($1)	1	1	Determinant	Matrix	
-yf	as.matrix($1)	1	1	Full	Matrix	
-yk	kronecker($2, $1)	2	1	Kronecker	Matrix	
-yl	{x<-$1; x[upper.tri(x)]<-0; x}	1	1	TriLower	Matrix	
-yt	sum(diag($1))	1	1	Trace	Matrix	
-yu	{x<-$1; x[lower.tri(x)]<-0; x}	1	1	TriUpper	Matrix	
-yv	eigen($1)$values	1	1	EigenValues	Matrix	
-C	paste0($2, $1)	2	1	Concat	String Operations	
-J	paste($2, collapse=$1)	2	1	Join List	String Operations	
-Sb	grepl($2, $1)	2	1	Grepl	String Operations	
-Se	regexpr($2, $1)	2	1	Regexpr	String Operations	
-Sf	sprintf($2, $1)	2	1	Sprintf	String Operations	
-Sg	gsub($2, $1, $3)	3	1	GSub	String Operations	
-Sl	tolower($1)	1	1	ToLower	String Operations	
-Sr	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	ReverseString	String Operations	
-St	chartr($2, $1, $3)	3	1	Translate	String Operations	
-Su	toupper($1)	1	1	ToUpper	String Operations	
-Sx	gregexpr($2, $1)	2	1	Gregexpr	String Operations	
-Xc	chartr($1, $2, $3)	3	1	Char Translate	String Operations	
-j	paste($2, $1)	2	1	Join	String Operations	
-sG	grep($2, $1)	2	1	Grep	String Operations	
-sn	nchar($1)	1	1	NChar	String Operations	
-sr	sub($2, $1, $3)	3	1	Sub	String Operations	
-ss	substr($3, $2, $1)	3	1	Substr	String Operations	
-st	trimws($1)	1	1	TrimWS	String Operations	
-Ss	strsplit($2, $1)[[1]]	2	1	Split String	String Operations	
-Ud	setdiff($2, $1)	2	1	SetDiff	Set Operations	
-Ui	intersect($2, $1)	2	1	Intersect	Set Operations	
-Uu	union($2, $1)	2	1	Union	Set Operations	
-A	all($1)	1	1	All	Statistics	
-Bn	min($1)	1	1	Min	Statistics	
-Bx	max($1)	1	1	Max	Statistics	
-E	any($1)	1	1	Any	Statistics	
-P	prod($1)	1	1	Product	Statistics	
-Sw	weighted.mean($2, $1)	2	1	WeightedMean	Statistics	
-dX	xtabs($2, $1)	2	1	XTabs	Statistics	
-lZ	sum($1 != 0)	1	1	NNZ	Statistics	
-mn	min($2, $1)	2	1	Min2	Statistics	
-mx	max($2, $1)	2	1	Max2	Statistics	
-r	runif($1)	1	1	Random (n)	Statistics	
-rm	ratl_rms($1)	1	1	RMS	Statistics	
-s	sum($1)	1	1	Sum	Statistics	
-t5	fivenum($1)	1	1	FiveNum	Statistics	
-tA	mad($1)	1	1	MAD	Statistics	
-tC	ratl_cum_sd($1)	1	1	CumSD	Statistics	
-tI	IQR($1)	1	1	IQR	Statistics	
-tK	sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)	1	1	Kurtosis	Statistics	
-tM	mean($1)	1	1	Mean	Statistics	
-tN	mean($1, na.rm=TRUE)	1	1	MeanNA	Statistics	
-tR	range($1)	1	1	Range	Statistics	
-tS	sd($1)	1	1	StdDev	Statistics	
-tT	table($1)	1	1	Table	Statistics	
-tU	sum($1, na.rm=TRUE)	1	1	SumNA	Statistics	
-tW	sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)	1	1	Skewness	Statistics	
-tZ	scale($1)	1	1	Scale	Statistics	
-tc	cor($2, $1)	2	1	Correlation	Statistics	
-to	ratl_mode($1)	1	1	Mode	Statistics	
-tv	cov($2, $1)	2	1	Covariance	Statistics	
-ty	summary($1)	1	1	Summary	Statistics	
-vd	density($1)	1	1	Density	Statistics	
-DN	dnorm($3, $2, $1)	3	1	Density Normal	Distributions & Tests	
-KC	cor.test($2, $1)	2	1	Cor Test	Distributions & Tests	
-KK	kruskal.test($1)	1	1	Kruskal-Wallis	Distributions & Tests	
-PN	pnorm($3, $2, $1)	3	1	Prob Normal	Distributions & Tests	
-QN	qnorm($3, $2, $1)	3	1	Quantile Normal	Distributions & Tests	
-RB	rbeta($3, $2, $1)	3	1	Random Beta	Distributions & Tests	
-RE	rexp($2, $1)	2	1	Random Exponential	Distributions & Tests	
-RN	rnorm($3, $2, $1)	3	1	Random Normal	Distributions & Tests	
-RU	runif($3, $2, $1)	3	1	Random Uniform	Distributions & Tests	
-dB	dbinom($3, $2, $1)	3	1	Density Binomial	Distributions & Tests	
-dC	dchisq($2, $1)	2	1	Density Chi-Square	Distributions & Tests	
-dG	dgeom($2, $1)	2	1	Density Geometric	Distributions & Tests	
-dL	dlogis($3, $2, $1)	3	1	Density Logistic	Distributions & Tests	
-dN	dnbinom($3, $2, $1)	3	1	Density Neg-Binomial	Distributions & Tests	
-dP	dpois($2, $1)	2	1	Density Poisson	Distributions & Tests	
-db	dbeta($3, $2, $1)	3	1	Density Beta	Distributions & Tests	
-dc	dcauchy($3, $2, $1)	3	1	Density Cauchy	Distributions & Tests	
-de	dexp($2, $1)	2	1	Density Exponential	Distributions & Tests	
-df	df($3, $2, $1)	3	1	Density F	Distributions & Tests	
-dg	dgamma($3, $2, $1)	3	1	Density Gamma	Distributions & Tests	
-dh	dhyper($4, $3, $2, $1)	4	1	Density Hypergeometric	Distributions & Tests	
-dl	dlnorm($3, $2, $1)	3	1	Density Log-Normal	Distributions & Tests	
-dn	dnorm($1)	1	1	Density Normal	Distributions & Tests	
-dt	dt($2, $1)	2	1	Density Student-t	Distributions & Tests	
-du	dunif($3, $2, $1)	3	1	Density Uniform	Distributions & Tests	
-kb	bartlett.test($1)	1	1	Bartlett Test	Distributions & Tests	
-kc	chisq.test($1)	1	1	Chi-Square Test	Distributions & Tests	
-kf	fisher.test($1)	1	1	Fisher Test	Distributions & Tests	
-kk	ks.test($2, $1)	2	1	KS Test	Distributions & Tests	
-kp	prop.test($2, $1)	2	1	Prop Test	Distributions & Tests	
-ks	shapiro.test($1)	1	1	Shapiro-Wilk	Distributions & Tests	
-kt	t.test($2, $1)	2	1	T-Test	Distributions & Tests	
-kv	var.test($2, $1)	2	1	F-Test Var	Distributions & Tests	
-kw	wilcox.test($2, $1)	2	1	Wilcoxon Test	Distributions & Tests	
-pB	pbinom($3, $2, $1)	3	1	Prob Binomial	Distributions & Tests	
-pC	pchisq($2, $1)	2	1	Prob Chi-Square	Distributions & Tests	
-pG	pgeom($2, $1)	2	1	Prob Geometric	Distributions & Tests	
-pL	plogis($3, $2, $1)	3	1	Prob Logistic	Distributions & Tests	
-pN	pnbinom($3, $2, $1)	3	1	Prob Neg-Binomial	Distributions & Tests	
-pP	ppois($2, $1)	2	1	Prob Poisson	Distributions & Tests	
-pb	pbeta($3, $2, $1)	3	1	Prob Beta	Distributions & Tests	
-pc	pcauchy($3, $2, $1)	3	1	Prob Cauchy	Distributions & Tests	
-pe	pexp($2, $1)	2	1	Prob Exponential	Distributions & Tests	
-pf	pf($3, $2, $1)	3	1	Prob F	Distributions & Tests	
-pg	pgamma($3, $2, $1)	3	1	Prob Gamma	Distributions & Tests	
-ph	phyper($4, $3, $2, $1)	4	1	Prob Hypergeometric	Distributions & Tests	
-pl	plnorm($3, $2, $1)	3	1	Prob Log-Normal	Distributions & Tests	
-pn	pnorm($1)	1	1	Prob Normal	Distributions & Tests	
-pt	pt($2, $1)	2	1	Prob Student-t	Distributions & Tests	
-pu	punif($3, $2, $1)	3	1	Prob Uniform	Distributions & Tests	
-pw	pweibull($3, $2, $1)	3	1	Prob Weibull	Distributions & Tests	
-qB	qbinom($3, $2, $1)	3	1	Quantile Binomial	Distributions & Tests	
-qC	qchisq($2, $1)	2	1	Quantile Chi-Square	Distributions & Tests	
-qG	qgeom($2, $1)	2	1	Quantile Geometric	Distributions & Tests	
-qL	qlogis($3, $2, $1)	3	1	Quantile Logistic	Distributions & Tests	
-qN	qnbinom($3, $2, $1)	3	1	Quantile Neg-Binomial	Distributions & Tests	
-qP	qpois($2, $1)	2	1	Quantile Poisson	Distributions & Tests	
-qb	qbeta($3, $2, $1)	3	1	Quantile Beta	Distributions & Tests	
-qc	qcauchy($3, $2, $1)	3	1	Quantile Cauchy	Distributions & Tests	
-qe	qexp($2, $1)	2	1	Quantile Exponential	Distributions & Tests	
-qf	qf($3, $2, $1)	3	1	Quantile F	Distributions & Tests	
-qg	qgamma($3, $2, $1)	3	1	Quantile Gamma	Distributions & Tests	
-qh	qhyper($4, $3, $2, $1)	4	1	Quantile Hypergeometric	Distributions & Tests	
-ql	qlnorm($3, $2, $1)	3	1	Quantile Log-Normal	Distributions & Tests	
-qn	qnorm($1)	1	1	Quantile Normal	Distributions & Tests	
-qt	qt($2, $1)	2	1	Quantile Student-t	Distributions & Tests	
-qu	qunif($3, $2, $1)	3	1	Quantile Uniform	Distributions & Tests	
-qw	qweibull($3, $2, $1)	3	1	Quantile Weibull	Distributions & Tests	
-rB	rbinom($3, $2, $1)	3	1	Random Binomial	Distributions & Tests	
-rC	rchisq($2, $1)	2	1	Random Chi-Square	Distributions & Tests	
-rG	rgeom($2, $1)	2	1	Random Geometric	Distributions & Tests	
-rL	rlogis($3, $2, $1)	3	1	Random Logistic	Distributions & Tests	
-rN	rnbinom($3, $2, $1)	3	1	Random Neg-Binomial	Distributions & Tests	
-rP	rpois($2, $1)	2	1	Random Poisson	Distributions & Tests	
-rb	rbinom($1, size=1, prob=0.5)	1	1	Random Binomial	Distributions & Tests	
-rc	rcauchy($3, $2, $1)	3	1	Random Cauchy	Distributions & Tests	
-re	rexp($1)	1	1	Random Exp	Distributions & Tests	
-rf	rf($3, $2, $1)	3	1	Random F	Distributions & Tests	
-rg	rgamma($3, $2, $1)	3	1	Random Gamma	Distributions & Tests	
-rh	rhyper($4, $3, $2, $1)	4	1	Random Hypergeometric	Distributions & Tests	
-rl	rlnorm($3, $2, $1)	3	1	Random Log-Normal	Distributions & Tests	
-rp	rpois($1, lambda=1)	1	1	Random Poisson	Distributions & Tests	
-rt	rt($2, $1)	2	1	Random Student-t	Distributions & Tests	
-rw	rweibull($3, $2, $1)	3	1	Random Weibull	Distributions & Tests	
-LG	lgamma($1)	1	1	Log Gamma	Combinatorics & Special	
-MC	choose($2, $1)	2	1	Choose	Combinatorics & Special	
-di	digamma($1)	1	1	Digamma	Combinatorics & Special	
-fa	ratl_factors($1)	1	1	Factors	Combinatorics & Special	
-fp	factorial($1)	1	1	Factorial	Combinatorics & Special	
-lb	lbeta($2, $1)	2	1	Log Beta	Combinatorics & Special	
-lc	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special	
-mB	beta($2, $1)	2	1	Beta	Combinatorics & Special	
-mf	ratl_prime_factors($1)	1	1	Prime Factors	Combinatorics & Special	
-mp	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special	
-ps	psigamma($2, $1)	2	1	Psigamma	Combinatorics & Special	
-tg	trigamma($1)	1	1	Trigamma	Combinatorics & Special	
-gC	ratl_gcd($2, $1)	2	1	GCD	Combinatorics & Special	
-cA	Arg($1)	1	1	Arg	Complex Numbers	
-cI	Im($1)	1	1	Imag Part	Complex Numbers	
-cJ	Conj($1)	1	1	Conjugate	Complex Numbers	
-cM	Mod($1)	1	1	Modulus	Complex Numbers	
-cR	Re($1)	1	1	Real Part	Complex Numbers	
-FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File	File I/O	
-fA	dirname($1)	1	1	Dirname	File I/O	
-fC	write.csv($2, $1)	2	0	Write CSV	File I/O	
-fD	list.dirs($1)	1	1	List Dirs	File I/O	
-fL	list.files($1)	1	1	ListFiles	File I/O	
-fM	dir.create($1)	1	1	DirCreate	File I/O	
-fN	file.create($1)	1	1	File Create	File I/O	
-fP	normalizePath($1)	1	1	Abs Path	File I/O	
-fT	tempfile()	0	1	TempFile	File I/O	
-fX	dir.exists($1)	1	1	Dir Exists	File I/O	
-fb	basename($1)	1	1	Basename	File I/O	
-fc	read.csv($1)	1	1	Read CSV	File I/O	
-fe	file.exists($1)	1	1	File Exists	File I/O	
-fi	file.info($1)	1	1	File Info	File I/O	
-fm	file.remove($1)	1	1	File Remove	File I/O	
-fr	read.table($1)	1	1	Read Table	File I/O	
-ft	tempdir()	0	1	Temp Dir	File I/O	
-fw	write.table($2, $1)	2	0	Write Table	File I/O	
-sE	date()	0	1	Date	System	
-sP	Sys.sleep($1)	1	0	Sleep	System	
-se	Sys.setenv(...)	1	0	Setenv	System	
-um	Sys.umask($1)	1	1	Umask	System	
-yE	Sys.getenv($1)	1	1	Getenv	System	
-yF	options(prompt=$1)	1	0	SetPrompt	System	
-yJ	setwd($1)	1	0	SetWD	System	
-yK	proc.time() - $1	1	1	Toc	System	
-yP	Sys.getpid()	0	1	GetPID	System	
-yV	R.version.string	0	1	Version	System	
-yW	getwd()	0	1	GetWD	System	
-yY	options(scipen=$1)	1	0	SetScipen	System	
-yZ	Sys.timezone()	0	1	Timezone	System	
-zg	gc()	0	1	GC	System	
-zl	Sys.localeconv()	0	1	Locale	System	
-zo	options()	0	1	Options	System	
-zt	Sys.time()	0	1	SysTime	System	
-zv	version	0	1	Version	System	
-K!	coef($1)	1	1	Coef	Statistical Modeling	
-KA	aov($1)	1	1	AOV	Statistical Modeling	
-KB	BIC($1)	1	1	BIC	Statistical Modeling	
-KE	residuals($1)	1	1	Residuals	Statistical Modeling	
-KF	fitted($1)	1	1	Fitted	Statistical Modeling	
-KL	logLik($1)	1	1	LogLik	Statistical Modeling	
-KV	vcov($1)	1	1	VCov	Statistical Modeling	
-av	anova($1)	1	1	Anova	Statistical Modeling	
-dA	aggregate($3, $2, $1)	3	1	Aggregate	Statistical Modeling	
-dE	cut($2, $1)	2	1	Cut	Statistical Modeling	
-dY	by($3, $2, $1)	3	1	By	Statistical Modeling	
-ke	predict($2, $1)	2	1	Predict	Statistical Modeling	
-kg	glm($1)	1	1	GLM	Statistical Modeling	
-ki	AIC($1)	1	1	AIC	Statistical Modeling	
-kn	nls($1)	1	1	NLS	Statistical Modeling	
-ko	loess($1)	1	1	Loess	Statistical Modeling	
-lm	lm($1)	1	1	Linear Model	Statistical Modeling	
-mC	confint($1)	1	1	Conf Int	Statistical Modeling	
-mL	lm($2 ~ $1)	2	1	LM Simple	Statistical Modeling	
-mM	model.matrix($1)	1	1	Model Matrix	Statistical Modeling	
-mO	offset($1)	1	1	Offset	Statistical Modeling	
-mP	predict($1)	1	1	Predict	Statistical Modeling	
-mR	model.frame($1)	1	1	Model Frame	Statistical Modeling	
-mT	terms($1)	1	1	Terms	Statistical Modeling	
-mU	update($2, $1)	2	1	Update	Statistical Modeling	
-mW	formula($1)	1	1	Formula	Statistical Modeling	
-vp	prcomp($1)	1	1	PCA	Statistical Modeling	
-xR	ratl_rot($1)	1	1	ROT13	Ciphers	
-xC	ratl_caesar($2, $1)	2	1	Caesar	Ciphers	
-xA	ratl_atbash($1)	1	1	Atbash	Ciphers	
-xV	ratl_vigenere($2, $1)	2	1	Vigenere	Ciphers	
-xF	ratl_rail_fence($2, $1)	2	1	Rail Fence	Ciphers	
-xT	ratl_columnar($2, $1)	2	1	Columnar Transpose	Ciphers	
-I	Inf	0	1	Inf	Constants	
-Na	NA	0	1	NA	Constants	
-Pi	pi	0	1	Pi	Constants	
-s4	logical(0)	0	1	EmptyLog	Constants	
-sQ	character(0)	0	1	EmptyChar	Constants	
-sZ	numeric(0)	0	1	EmptyNum	Constants	
-AZ	paste0(LETTERS, collapse="")	0	1	Upper Letters	Constants	
-az	paste0(letters, collapse="")	0	1	Lower Letters	Constants	
-SP	sinpi($1)	1	1	Sin(pi*x)	Math Functions	
-a2	atan2($2, $1)	2	1	ArcTan2	Math Functions	
-aC	acos($1)	1	1	ArcCos	Math Functions	
-aS	asin($1)	1	1	ArcSin	Math Functions	
-aT	atan($1)	1	1	ArcTan	Math Functions	
-ac	acosh($1)	1	1	ArcCosh	Math Functions	
-as	asinh($1)	1	1	ArcSinh	Math Functions	
-at	atanh($1)	1	1	ArcTanh	Math Functions	
-ch	cosh($1)	1	1	Cosh	Math Functions	
-cp	cospi($1)	1	1	Cos(pi*x)	Math Functions	
-e-	expm1($1)	1	1	Exp(x)-1	Math Functions	
-l+	log1p($1)	1	1	Log(1+x)	Math Functions	
-l1	log10($1)	1	1	Log 10	Math Functions	
-l2	log2($1)	1	1	Log 2	Math Functions	
-lg	log($1)	1	1	Log Natural	Math Functions	
-mc	cos($1)	1	1	Cos	Math Functions	
-ms	sin($1)	1	1	Sin	Math Functions	
-mt	tan($1)	1	1	Tan	Math Functions	
-ro	round($1)	1	1	Round	Math Functions	
-sg	sign($1)	1	1	Sign	Math Functions	
-sh	sinh($1)	1	1	Sinh	Math Functions	
-th	tanh($1)	1	1	Tanh	Math Functions	
-tp	tanpi($1)	1	1	Tan(pi*x)	Math Functions	
-tr	trunc($1)	1	1	Trunc	Math Functions	
-mQ	sqrt($1)	1	1	Sqrt	Math Functions	
+zZ	NULL	3	1	Zip With	Type & Introspection
+Ts	as.character($1)	1	1	ToString	Type & Introspection
+uA	utf8ToInt($1)	1	1	To ASCII	Type & Introspection
+Fa	apply($3, $2, $1)	3	1	Apply	Higher-Order Functions
+Ff	Filter($2, $1)	2	1	Filter (Func)	Higher-Order Functions
+Fl	lapply($2, $1)	2	1	Lapply	Higher-Order Functions
+Fm	mapply($1, ...)	1	1	Mapply	Higher-Order Functions
+Fn	Find($2, $1)	2	1	Find (Func)	Higher-Order Functions
+Fp	Position($2, $1)	2	1	Position	Higher-Order Functions
+Fq	NULL	0	1	Map (evaluator)	Higher-Order Functions
+Fr	Reduce($2, $1)	2	1	Reduce	Higher-Order Functions
+Fs	sapply($2, $1)	2	1	Sapply	Higher-Order Functions
+Ft	NULL	0	1	Filter (evaluator)	Higher-Order Functions
+Fv	vapply($3, $2, $1)	3	1	Vapply	Higher-Order Functions
+Fx	NULL	0	1	Repeat (evaluator)	Higher-Order Functions
+fn	Negate($1)	1	1	Negate	Higher-Order Functions
+q	NULL	0	1	Map (evaluator)	Higher-Order Functions
+y	NULL	0	1	Reduce (evaluator)	Higher-Order Functions
+z	NULL	0	1	Repeat (evaluator)	Higher-Order Functions
+!	t($1)	1	1	Transpose	Matrix
+BT	{idx<-c(1,4,3,2,5); $1[idx,idx]}	1	1	Bingo Twin	Matrix
+R9	apply(t($1), 2, rev)	1	1	Rot90	Matrix
+Y!	matrix($3, nrow=$2, ncol=$1)	3	1	Create Matrix	Matrix
+Y*	$2 %*% $1	2	1	Matrix Mult	Matrix
+YM	matrix($3, nrow=$2, ncol=$1, byrow=TRUE)	3	1	Matrix ByRow	Matrix
+v2	solve($2, $1)	2	1	Solve 2	Matrix
+vC	col($1)	1	1	Col Indices	Matrix
+vE	rowSums($1)	1	1	Row Sums	Matrix
+vL	solve($1)	1	1	Solve	Matrix
+vM	colMeans($1)	1	1	Col Means	Matrix
+vN	rowMeans($1)	1	1	Row Means	Matrix
+vQ	qr($1)	1	1	QR Decomp	Matrix
+vR	row($1)	1	1	Row Indices	Matrix
+vS	colSums($1)	1	1	Col Sums	Matrix
+vV	svd($1)	1	1	SVD	Matrix
+yD	diag($1)	1	1	Identity Matrix	Matrix
+yc	eigen($1)$vectors	1	1	EigenVectors	Matrix
+yd	det($1)	1	1	Determinant	Matrix
+yf	as.matrix($1)	1	1	Full	Matrix
+yk	kronecker($2, $1)	2	1	Kronecker	Matrix
+yl	{x<-$1; x[upper.tri(x)]<-0; x}	1	1	TriLower	Matrix
+yt	sum(diag($1))	1	1	Trace	Matrix
+yu	{x<-$1; x[lower.tri(x)]<-0; x}	1	1	TriUpper	Matrix
+yv	eigen($1)$values	1	1	EigenValues	Matrix
+C	paste0($2, $1)	2	1	Concat	String Operations
+J	paste($2, collapse=$1)	2	1	Join List	String Operations
+Sb	grepl($2, $1)	2	1	Grepl	String Operations
+Se	regexpr($2, $1)	2	1	Regexpr	String Operations
+Sf	sprintf($2, $1)	2	1	Sprintf	String Operations
+Sg	gsub($2, $1, $3)	3	1	GSub	String Operations
+Sl	tolower($1)	1	1	ToLower	String Operations
+Sr	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	ReverseString	String Operations
+St	chartr($2, $1, $3)	3	1	Translate	String Operations
+Su	toupper($1)	1	1	ToUpper	String Operations
+Sx	gregexpr($2, $1)	2	1	Gregexpr	String Operations
+Xc	chartr($1, $2, $3)	3	1	Char Translate	String Operations
+j	paste($2, $1)	2	1	Join	String Operations
+sG	grep($2, $1)	2	1	Grep	String Operations
+sn	nchar($1)	1	1	NChar	String Operations
+sr	sub($2, $1, $3)	3	1	Sub	String Operations
+ss	substr($3, $2, $1)	3	1	Substr	String Operations
+st	trimws($1)	1	1	TrimWS	String Operations
+Ss	strsplit($2, $1)[[1]]	2	1	Split String	String Operations
+Ud	setdiff($2, $1)	2	1	SetDiff	Set Operations
+Ui	intersect($2, $1)	2	1	Intersect	Set Operations
+Uu	union($2, $1)	2	1	Union	Set Operations
+A	all($1)	1	1	All	Statistics
+Bn	min($1)	1	1	Min	Statistics
+Bx	max($1)	1	1	Max	Statistics
+E	any($1)	1	1	Any	Statistics
+P	prod($1)	1	1	Product	Statistics
+Sw	weighted.mean($2, $1)	2	1	WeightedMean	Statistics
+dX	xtabs($2, $1)	2	1	XTabs	Statistics
+lZ	sum($1 != 0)	1	1	NNZ	Statistics
+mn	min($2, $1)	2	1	Min2	Statistics
+mx	max($2, $1)	2	1	Max2	Statistics
+r	runif($1)	1	1	Random (n)	Statistics
+rm	ratl_rms($1)	1	1	RMS	Statistics
+s	sum($1)	1	1	Sum	Statistics
+t5	fivenum($1)	1	1	FiveNum	Statistics
+tA	mad($1)	1	1	MAD	Statistics
+tC	ratl_cum_sd($1)	1	1	CumSD	Statistics
+tI	IQR($1)	1	1	IQR	Statistics
+tK	sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)	1	1	Kurtosis	Statistics
+tM	mean($1)	1	1	Mean	Statistics
+tN	mean($1, na.rm=TRUE)	1	1	MeanNA	Statistics
+tR	range($1)	1	1	Range	Statistics
+tS	sd($1)	1	1	StdDev	Statistics
+tT	table($1)	1	1	Table	Statistics
+tU	sum($1, na.rm=TRUE)	1	1	SumNA	Statistics
+tW	sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)	1	1	Skewness	Statistics
+tZ	scale($1)	1	1	Scale	Statistics
+tc	cor($2, $1)	2	1	Correlation	Statistics
+to	ratl_mode($1)	1	1	Mode	Statistics
+tv	cov($2, $1)	2	1	Covariance	Statistics
+ty	summary($1)	1	1	Summary	Statistics
+vd	density($1)	1	1	Density	Statistics
+DN	dnorm($3, $2, $1)	3	1	Density Normal	Distributions & Tests
+KC	cor.test($2, $1)	2	1	Cor Test	Distributions & Tests
+KK	kruskal.test($1)	1	1	Kruskal-Wallis	Distributions & Tests
+PN	pnorm($3, $2, $1)	3	1	Prob Normal	Distributions & Tests
+QN	qnorm($3, $2, $1)	3	1	Quantile Normal	Distributions & Tests
+RB	rbeta($3, $2, $1)	3	1	Random Beta	Distributions & Tests
+RE	rexp($2, $1)	2	1	Random Exponential	Distributions & Tests
+RN	rnorm($3, $2, $1)	3	1	Random Normal	Distributions & Tests
+RU	runif($3, $2, $1)	3	1	Random Uniform	Distributions & Tests
+dB	dbinom($3, $2, $1)	3	1	Density Binomial	Distributions & Tests
+dC	dchisq($2, $1)	2	1	Density Chi-Square	Distributions & Tests
+dG	dgeom($2, $1)	2	1	Density Geometric	Distributions & Tests
+dL	dlogis($3, $2, $1)	3	1	Density Logistic	Distributions & Tests
+dN	dnbinom($3, $2, $1)	3	1	Density Neg-Binomial	Distributions & Tests
+dP	dpois($2, $1)	2	1	Density Poisson	Distributions & Tests
+db	dbeta($3, $2, $1)	3	1	Density Beta	Distributions & Tests
+dc	dcauchy($3, $2, $1)	3	1	Density Cauchy	Distributions & Tests
+de	dexp($2, $1)	2	1	Density Exponential	Distributions & Tests
+df	df($3, $2, $1)	3	1	Density F	Distributions & Tests
+dg	dgamma($3, $2, $1)	3	1	Density Gamma	Distributions & Tests
+dh	dhyper($4, $3, $2, $1)	4	1	Density Hypergeometric	Distributions & Tests
+dl	dlnorm($3, $2, $1)	3	1	Density Log-Normal	Distributions & Tests
+dn	dnorm($1)	1	1	Density Normal	Distributions & Tests
+dt	dt($2, $1)	2	1	Density Student-t	Distributions & Tests
+du	dunif($3, $2, $1)	3	1	Density Uniform	Distributions & Tests
+kb	bartlett.test($1)	1	1	Bartlett Test	Distributions & Tests
+kc	chisq.test($1)	1	1	Chi-Square Test	Distributions & Tests
+kf	fisher.test($1)	1	1	Fisher Test	Distributions & Tests
+kk	ks.test($2, $1)	2	1	KS Test	Distributions & Tests
+kp	prop.test($2, $1)	2	1	Prop Test	Distributions & Tests
+ks	shapiro.test($1)	1	1	Shapiro-Wilk	Distributions & Tests
+kt	t.test($2, $1)	2	1	T-Test	Distributions & Tests
+kv	var.test($2, $1)	2	1	F-Test Var	Distributions & Tests
+kw	wilcox.test($2, $1)	2	1	Wilcoxon Test	Distributions & Tests
+pB	pbinom($3, $2, $1)	3	1	Prob Binomial	Distributions & Tests
+pC	pchisq($2, $1)	2	1	Prob Chi-Square	Distributions & Tests
+pG	pgeom($2, $1)	2	1	Prob Geometric	Distributions & Tests
+pL	plogis($3, $2, $1)	3	1	Prob Logistic	Distributions & Tests
+pN	pnbinom($3, $2, $1)	3	1	Prob Neg-Binomial	Distributions & Tests
+pP	ppois($2, $1)	2	1	Prob Poisson	Distributions & Tests
+pb	pbeta($3, $2, $1)	3	1	Prob Beta	Distributions & Tests
+pc	pcauchy($3, $2, $1)	3	1	Prob Cauchy	Distributions & Tests
+pe	pexp($2, $1)	2	1	Prob Exponential	Distributions & Tests
+pf	pf($3, $2, $1)	3	1	Prob F	Distributions & Tests
+pg	pgamma($3, $2, $1)	3	1	Prob Gamma	Distributions & Tests
+ph	phyper($4, $3, $2, $1)	4	1	Prob Hypergeometric	Distributions & Tests
+pl	plnorm($3, $2, $1)	3	1	Prob Log-Normal	Distributions & Tests
+pn	pnorm($1)	1	1	Prob Normal	Distributions & Tests
+pt	pt($2, $1)	2	1	Prob Student-t	Distributions & Tests
+pu	punif($3, $2, $1)	3	1	Prob Uniform	Distributions & Tests
+pw	pweibull($3, $2, $1)	3	1	Prob Weibull	Distributions & Tests
+qB	qbinom($3, $2, $1)	3	1	Quantile Binomial	Distributions & Tests
+qC	qchisq($2, $1)	2	1	Quantile Chi-Square	Distributions & Tests
+qG	qgeom($2, $1)	2	1	Quantile Geometric	Distributions & Tests
+qL	qlogis($3, $2, $1)	3	1	Quantile Logistic	Distributions & Tests
+qN	qnbinom($3, $2, $1)	3	1	Quantile Neg-Binomial	Distributions & Tests
+qP	qpois($2, $1)	2	1	Quantile Poisson	Distributions & Tests
+qb	qbeta($3, $2, $1)	3	1	Quantile Beta	Distributions & Tests
+qc	qcauchy($3, $2, $1)	3	1	Quantile Cauchy	Distributions & Tests
+qe	qexp($2, $1)	2	1	Quantile Exponential	Distributions & Tests
+qf	qf($3, $2, $1)	3	1	Quantile F	Distributions & Tests
+qg	qgamma($3, $2, $1)	3	1	Quantile Gamma	Distributions & Tests
+qh	qhyper($4, $3, $2, $1)	4	1	Quantile Hypergeometric	Distributions & Tests
+ql	qlnorm($3, $2, $1)	3	1	Quantile Log-Normal	Distributions & Tests
+qn	qnorm($1)	1	1	Quantile Normal	Distributions & Tests
+qt	qt($2, $1)	2	1	Quantile Student-t	Distributions & Tests
+qu	qunif($3, $2, $1)	3	1	Quantile Uniform	Distributions & Tests
+qw	qweibull($3, $2, $1)	3	1	Quantile Weibull	Distributions & Tests
+rB	rbinom($3, $2, $1)	3	1	Random Binomial	Distributions & Tests
+rC	rchisq($2, $1)	2	1	Random Chi-Square	Distributions & Tests
+rG	rgeom($2, $1)	2	1	Random Geometric	Distributions & Tests
+rL	rlogis($3, $2, $1)	3	1	Random Logistic	Distributions & Tests
+rN	rnbinom($3, $2, $1)	3	1	Random Neg-Binomial	Distributions & Tests
+rP	rpois($2, $1)	2	1	Random Poisson	Distributions & Tests
+rb	rbinom($1, size=1, prob=0.5)	1	1	Random Binomial	Distributions & Tests
+rc	rcauchy($3, $2, $1)	3	1	Random Cauchy	Distributions & Tests
+re	rexp($1)	1	1	Random Exp	Distributions & Tests
+rf	rf($3, $2, $1)	3	1	Random F	Distributions & Tests
+rg	rgamma($3, $2, $1)	3	1	Random Gamma	Distributions & Tests
+rh	rhyper($4, $3, $2, $1)	4	1	Random Hypergeometric	Distributions & Tests
+rl	rlnorm($3, $2, $1)	3	1	Random Log-Normal	Distributions & Tests
+rp	rpois($1, lambda=1)	1	1	Random Poisson	Distributions & Tests
+rt	rt($2, $1)	2	1	Random Student-t	Distributions & Tests
+rw	rweibull($3, $2, $1)	3	1	Random Weibull	Distributions & Tests
+LG	lgamma($1)	1	1	Log Gamma	Combinatorics & Special
+MC	choose($2, $1)	2	1	Choose	Combinatorics & Special
+di	digamma($1)	1	1	Digamma	Combinatorics & Special
+fa	ratl_factors($1)	1	1	Factors	Combinatorics & Special
+fp	factorial($1)	1	1	Factorial	Combinatorics & Special
+lb	lbeta($2, $1)	2	1	Log Beta	Combinatorics & Special
+lc	ratl_lcm($2, $1)	2	1	LCM	Combinatorics & Special
+mB	beta($2, $1)	2	1	Beta	Combinatorics & Special
+mf	ratl_prime_factors($1)	1	1	Prime Factors	Combinatorics & Special
+mp	ratl_is_prime($1)	1	1	Is Prime	Combinatorics & Special
+ps	psigamma($2, $1)	2	1	Psigamma	Combinatorics & Special
+tg	trigamma($1)	1	1	Trigamma	Combinatorics & Special
+gC	ratl_gcd($2, $1)	2	1	GCD	Combinatorics & Special
+cA	Arg($1)	1	1	Arg	Complex Numbers
+cI	Im($1)	1	1	Imag Part	Complex Numbers
+cJ	Conj($1)	1	1	Conjugate	Complex Numbers
+cM	Mod($1)	1	1	Modulus	Complex Numbers
+cR	Re($1)	1	1	Real Part	Complex Numbers
+FW	{writeLines(as.character($2), $1); NULL}	2	0	Write File	File I/O
+fA	dirname($1)	1	1	Dirname	File I/O
+fC	write.csv($2, $1)	2	0	Write CSV	File I/O
+fD	list.dirs($1)	1	1	List Dirs	File I/O
+fL	list.files($1)	1	1	ListFiles	File I/O
+fM	dir.create($1)	1	1	DirCreate	File I/O
+fN	file.create($1)	1	1	File Create	File I/O
+fP	normalizePath($1)	1	1	Abs Path	File I/O
+fT	tempfile()	0	1	TempFile	File I/O
+fX	dir.exists($1)	1	1	Dir Exists	File I/O
+fb	basename($1)	1	1	Basename	File I/O
+fc	read.csv($1)	1	1	Read CSV	File I/O
+fe	file.exists($1)	1	1	File Exists	File I/O
+fi	file.info($1)	1	1	File Info	File I/O
+fm	file.remove($1)	1	1	File Remove	File I/O
+fr	read.table($1)	1	1	Read Table	File I/O
+ft	tempdir()	0	1	Temp Dir	File I/O
+fw	write.table($2, $1)	2	0	Write Table	File I/O
+sE	date()	0	1	Date	System
+sP	Sys.sleep($1)	1	0	Sleep	System
+se	Sys.setenv(...)	1	0	Setenv	System
+um	Sys.umask($1)	1	1	Umask	System
+yE	Sys.getenv($1)	1	1	Getenv	System
+yF	options(prompt=$1)	1	0	SetPrompt	System
+yJ	setwd($1)	1	0	SetWD	System
+yK	proc.time() - $1	1	1	Toc	System
+yP	Sys.getpid()	0	1	GetPID	System
+yV	R.version.string	0	1	Version	System
+yW	getwd()	0	1	GetWD	System
+yY	options(scipen=$1)	1	0	SetScipen	System
+yZ	Sys.timezone()	0	1	Timezone	System
+zg	gc()	0	1	GC	System
+zl	Sys.localeconv()	0	1	Locale	System
+zo	options()	0	1	Options	System
+zt	Sys.time()	0	1	SysTime	System
+zv	version	0	1	Version	System
+K!	coef($1)	1	1	Coef	Statistical Modeling
+KA	aov($1)	1	1	AOV	Statistical Modeling
+KB	BIC($1)	1	1	BIC	Statistical Modeling
+KE	residuals($1)	1	1	Residuals	Statistical Modeling
+KF	fitted($1)	1	1	Fitted	Statistical Modeling
+KL	logLik($1)	1	1	LogLik	Statistical Modeling
+KV	vcov($1)	1	1	VCov	Statistical Modeling
+av	anova($1)	1	1	Anova	Statistical Modeling
+dA	aggregate($3, $2, $1)	3	1	Aggregate	Statistical Modeling
+dE	cut($2, $1)	2	1	Cut	Statistical Modeling
+dY	by($3, $2, $1)	3	1	By	Statistical Modeling
+ke	predict($2, $1)	2	1	Predict	Statistical Modeling
+kg	glm($1)	1	1	GLM	Statistical Modeling
+ki	AIC($1)	1	1	AIC	Statistical Modeling
+kn	nls($1)	1	1	NLS	Statistical Modeling
+ko	loess($1)	1	1	Loess	Statistical Modeling
+lm	lm($1)	1	1	Linear Model	Statistical Modeling
+mC	confint($1)	1	1	Conf Int	Statistical Modeling
+mL	lm($2 ~ $1)	2	1	LM Simple	Statistical Modeling
+mM	model.matrix($1)	1	1	Model Matrix	Statistical Modeling
+mO	offset($1)	1	1	Offset	Statistical Modeling
+mP	predict($1)	1	1	Predict	Statistical Modeling
+mR	model.frame($1)	1	1	Model Frame	Statistical Modeling
+mT	terms($1)	1	1	Terms	Statistical Modeling
+mU	update($2, $1)	2	1	Update	Statistical Modeling
+mW	formula($1)	1	1	Formula	Statistical Modeling
+vp	prcomp($1)	1	1	PCA	Statistical Modeling
+xR	ratl_rot($1)	1	1	ROT13	Ciphers
+xC	ratl_caesar($2, $1)	2	1	Caesar	Ciphers
+xA	ratl_atbash($1)	1	1	Atbash	Ciphers
+xV	ratl_vigenere($2, $1)	2	1	Vigenere	Ciphers
+xF	ratl_rail_fence($2, $1)	2	1	Rail Fence	Ciphers
+xT	ratl_columnar($2, $1)	2	1	Columnar Transpose	Ciphers
+I	Inf	0	1	Inf	Constants
+Na	NA	0	1	NA	Constants
+Pi	pi	0	1	Pi	Constants
+s4	logical(0)	0	1	EmptyLog	Constants
+sQ	character(0)	0	1	EmptyChar	Constants
+sZ	numeric(0)	0	1	EmptyNum	Constants
+AZ	paste0(LETTERS, collapse="")	0	1	Upper Letters	Constants
+az	paste0(letters, collapse="")	0	1	Lower Letters	Constants
+n0	0	0	1	Const0	Constants
+n1	1	0	1	Const1	Constants
+n2	2	0	1	Const2	Constants
+n3	3	0	1	Const3	Constants
+n4	4	0	1	Const4	Constants
+n5	5	0	1	Const5	Constants
+n6	6	0	1	Const6	Constants
+n7	7	0	1	Const7	Constants
+n8	8	0	1	Const8	Constants
+n9	9	0	1	Const9	Constants
+nL	"\n"	0	1	Newline	Constants
+z_	" "	0	1	Space	Constants
+eS	""	0	1	EmptyStr	Constants
+SP	sinpi($1)	1	1	Sin(pi*x)	Math Functions
+a2	atan2($2, $1)	2	1	ArcTan2	Math Functions
+aC	acos($1)	1	1	ArcCos	Math Functions
+aS	asin($1)	1	1	ArcSin	Math Functions
+aT	atan($1)	1	1	ArcTan	Math Functions
+ac	acosh($1)	1	1	ArcCosh	Math Functions
+as	asinh($1)	1	1	ArcSinh	Math Functions
+at	atanh($1)	1	1	ArcTanh	Math Functions
+ch	cosh($1)	1	1	Cosh	Math Functions
+cp	cospi($1)	1	1	Cos(pi*x)	Math Functions
+e-	expm1($1)	1	1	Exp(x)-1	Math Functions
+l+	log1p($1)	1	1	Log(1+x)	Math Functions
+l1	log10($1)	1	1	Log 10	Math Functions
+l2	log2($1)	1	1	Log 2	Math Functions
+lg	log($1)	1	1	Log Natural	Math Functions
+mc	cos($1)	1	1	Cos	Math Functions
+ms	sin($1)	1	1	Sin	Math Functions
+mt	tan($1)	1	1	Tan	Math Functions
+ro	round($1)	1	1	Round	Math Functions
+sg	sign($1)	1	1	Sign	Math Functions
+sh	sinh($1)	1	1	Sinh	Math Functions
+th	tanh($1)	1	1	Tanh	Math Functions
+tp	tanpi($1)	1	1	Tan(pi*x)	Math Functions
+tr	trunc($1)	1	1	Trunc	Math Functions
+mQ	sqrt($1)	1	1	Sqrt	Math Functions
+bC	ratl_popcount($1)	1	1	Popcount	Golf
+bP	ratl_next_prime($1)	1	1	NextPrime	Golf
+bQ	ratl_prev_prime($1)	1	1	PrevPrime	Golf
+pR	ratl_prime_range($1)	1	1	PrimeRange	Golf
+d2	ratl_digit_sum($1)	1	1	DigitSum	Golf
+d3	ratl_digit_prod($1)	1	1	DigitProd	Golf
+aK	ratl_chunks($2, $1)	2	1	Chunks	Golf
+aW	ratl_windows($2, $1)	2	1	Windows	Golf
+aF	ratl_freq($1)	1	1	Freq	Golf
+tF	ratl_powerset($1)	1	1	Powerset	Golf
+cP	ratl_cartesian($2, $1)	2	1	Cartesian	Golf
+kC	ratl_base_encode($2, $1)	2	1	BaseEncode	Golf
+kD	ratl_base_decode($2, $1)	2	1	BaseDecode	Golf
+sL	strsplit(as.character($1), "")[[1]]	1	1	Chars	Golf
+cO	intToUtf8($1)	1	1	Chr	Golf
+jN	paste($2, collapse="\n")	1	1	JoinNL	Golf
+pW2	paste($2, collapse=$1)	2	1	PasteWrap	Golf
+bE	ratl_base_encode($2, $1)	2	1	BaseEnc	Golf
+bD	ratl_base_decode($2, $1)	2	1	BaseDec	Golf
+i2	strtoi($2, base=$1)	2	1	StrToInt	Golf
+aH	c($2, $1, $2)	2	1	Tuck	Golf
+nP	$1	2	1	Nip	Golf
+p2	ratl_powerset($1)	1	1	PowersetAlias	Golf
+kH	strsplit(as.character($1), "")[[1]]	1	1	CharsK	Golf
+kO	intToUtf8($1)	1	1	ChrK	Golf
+kC	ratl_base_encode($2, $1)	2	1	BaseEncodeK	Golf
+kD	ratl_base_decode($2, $1)	2	1	BaseDecodeK	Golf
+Xb	ratl_bin($1)	1	1	ToBinaryLegacy	Type & Introspection
+Xo	ratl_mode($1)	1	1	ModeLegacy	Type & Introspection
+Xk	{r <- rle($1); list(r$values, r$lengths)}	1	2	RLELegacy	Array Operations
+Xr	mean($1, na.rm=TRUE)	1	1	MeanLegacy	Statistics
+m	mean($1)	1	1	MeanLegacy2	Statistics
+Bs	sd($1, na.rm=TRUE)	1	1	StdDevLegacy	Statistics
+B5	fivenum($1)	1	1	FiveNumLegacy	Statistics
+Bc	cor($2, $1)	2	1	CorLegacy	Statistics
+Sd	ratl_cum_sd($1)	1	1	CumSDLegacy	Statistics
+Sm	mean($1)	1	1	MeanAlias	Statistics
+h	head($1, 1)	1	1	HeadLegacy	Array Operations
+S	strsplit($2, $1)[[1]]	2	1	SplitLegacy	String Operations
+S!	chartr($2, $1, $3)	3	1	TranslateLegacy	String Operations
+mF	ratl_factors($1)	1	1	FactorsLegacy	Combinatorics & Special
+fu	unlist($1)	1	1	FlattenLegacy	Array Operations
+rv	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	ReverseStrLegacy	String Operations
+Sr	paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")	1	1	ReverseStr	String Operations
+F	readLines($1)	1	1	ReadFile	File I/O

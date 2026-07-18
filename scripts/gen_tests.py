@@ -13,7 +13,8 @@ def load_def(path):
         for line in f:
             parts = line.rstrip('\n').split('\t')
             if len(parts) >= 6:
-                unsafe = parts[6].strip() == '1' if len(parts) > 6 else False
+                extra = parts[6:] if len(parts) > 6 else []
+                unsafe = any(p.strip() == '1' for p in extra)
                 symbols.append({
                     'src': parts[0],
                     'r_code': parts[1],

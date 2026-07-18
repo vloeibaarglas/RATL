@@ -62,6 +62,95 @@ ratl_prime_factors <- function(n) {
   return(factors)
 }
 
+ratl_next_prime <- function(n) {
+  if (n < 2) return(2)
+  cand <- floor(n) + 1
+  if (cand %% 2 == 0) cand <- cand + 1L
+  if (cand == 3) return(3)
+  while (!ratl_is_prime(cand)) cand <- cand + 2L
+  cand
+}
+
+ratl_prev_prime <- function(n) {
+  cand <- ceiling(n) - 1
+  if (cand < 2) return(numeric(0))
+  while (cand >= 2 && !ratl_is_prime(cand)) cand <- cand - 1L
+  if (cand < 2) numeric(0) else cand
+}
+
+ratl_prime_range <- function(n) {
+  if (n < 2) return(numeric(0))
+  sieve <- rep(TRUE, n)
+  sieve[1] <- FALSE
+  for (i in 2:floor(sqrt(n))) {
+    if (sieve[i]) sieve[seq(i*i, n, i)] <- FALSE
+  }
+  which(sieve)
+}
+
+ratl_popcount <- function(x) {
+  vapply(x, function(v) {
+    n <- as.integer(v)
+    count <- 0L
+    while (n != 0) { count <- count + bitwAnd(n, 1L); n <- bitwShiftR(n, 1L) }
+    count
+  }, integer(1))
+}
+
+ratl_base_encode <- function(n, b) {
+  if (n == 0) return(0)
+  neg <- n < 0
+  n <- abs(as.integer(n))
+  digits <- c()
+  while (n > 0) { digits <- c(n %% b, digits); n <- n %/% b }
+  if (neg) digits <- c(-digits[1], digits[-1])
+  digits
+}
+
+ratl_base_decode <- function(digits, b) {
+  sum(digits * b ^ rev(seq_along(digits) - 1))
+}
+
+ratl_chunks <- function(x, n) {
+  if (length(x) == 0) return(list())
+  n <- as.integer(n)
+  split(x, ceiling(seq_along(x) / n))
+}
+
+ratl_windows <- function(x, n) {
+  n <- as.integer(n)
+  lx <- length(x)
+  if (lx < n) return(list())
+  lapply(1:(lx - n + 1), function(i) x[i:(i + n - 1)])
+}
+
+ratl_freq <- function(x) {
+  table(x)
+}
+
+ratl_digit_sum <- function(n) {
+  sum(as.integer(strsplit(as.character(abs(as.integer(n))), "")[[1]]))
+}
+
+ratl_digit_prod <- function(n) {
+  prod(as.integer(strsplit(as.character(abs(as.integer(n))), "")[[1]]))
+}
+
+ratl_powerset <- function(x) {
+  n <- length(x)
+  lapply(0:(2^n - 1), function(mask) {
+    x[as.logical(intToBits(mask)[1:n])]
+  })
+}
+
+ratl_cartesian <- function(a, b) {
+  asplit(expand.grid(a, b), 1)
+}
+
+ratl_flatmap <- function(x) {
+  unlist(x, recursive = FALSE)
+}
+
 ratl_cum_sd <- function(x) {
   sapply(seq_along(x), function(i) if(i==1) NA else sd(x[1:i]))
 }
@@ -77,8 +166,6 @@ ratl_print <- function(x) {
     print(x)
   }
 }
-
-# --- Ciphers ---
 
 ratl_rot <- function(x, n = 13) {
   chars <- utf8ToInt(x)

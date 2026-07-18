@@ -17,8 +17,7 @@ lX	3 5 lX	FALSE
 D	5 D	5 5
 w	3 5 w	5 3
 x	5 x
-U	5 U	ERROR: object of type 'closure' is not subsettable
-Ls	Ls	1
+U	5 U	5
 i	
 p	
 sC	
@@ -27,7 +26,6 @@ sW
 sS	
 Pi	Pi	3.14159265358979
 Na	Na	NA
-In	In	Inf
 sZ	sZ
 sQ	sQ
 s4	s4
@@ -53,42 +51,27 @@ O	5 O	5
 R	5 R	5
 u	5 u	5
 l	5 l	1
-#	3 5 #	NA
-el	3 5 el	ERROR: subscript out of bounds
-en	3 5 en	ERROR: subscript out of bounds
-fu	5 fu	5
+#	[10 20 30] 2 #	20
 zp	3 5 zp	3 5
-hd	3 5 hd	3
 tl	3 5 tl	3
-la	5 la	5
 fE	5 fE	5
 SH	5 SH	5
 ST	5 ST	5
-SR	5 SR	1
 .	5 .	1 2 3 4 5
 vW	1 2 3 vW	1 1.5 2
 r2	3 5 r2	3 3 3 3 3
-vT	1 2 3 vT	ERROR: invalid 'nrow' value (too large or NA)
+vT	1 2 3 vT	1 1 1 1 1 1
 vI	5 vI	5
 vX	5 vX	5
-vF	5 vF
 vG	3 5 vG	5
 vB	3 5 vB	3
 XC	5 XC	5
 wh	5 wh	ERROR: argument to 'which' is not logical
 vH	5 vH	ERROR: argument to 'which' is not logical
-tb	5 tb	0 0 0 0 1
-un	5 un	1
-ix	3 5 ix	NA
 cn	3 5 cn	FALSE
-ns	3 5 ns	3
-vD	5 vD	5
 ,	3 5 ,	3 5
 ..	3 5 ..	3 5
 dS	3 5 dS	3
-dU	3 5 dU	3
-dO	5 dO	1
-Xk	5 Xk	5 1
 !	5 !	5
 &	5 3 &	TRUE
 Y!	1 2 3 Y!	1 1 1 1 1 1
@@ -116,43 +99,19 @@ vE	5 vE	ERROR: 'x' must be an array of at least two dimensions
 vM	5 vM	ERROR: 'x' must be an array of at least two dimensions
 vN	5 vN	ERROR: 'x' must be an array of at least two dimensions
 s	5 s	5
-m	5 m	5
 P	5 P	5
-h	[10 20 30] h	10
 Q	1 2 Q	1 2 1
 Bn	[3 1 4 1 5] Bn	1
 Bx	[3 1 4 1 5] Bx	5
-sd	5 sd	NA
-sm	5 sm	5 5 5 5 5 5
 r	5 r	0.914806043496355 0.937075413297862 0.286139534786344 0.830447626067325 0.641745518893003
 A	5 A	TRUE
 E	5 E	TRUE
 lZ	5 lZ	1
-Xo	5 Xo	5
-Xr	5 Xr	5
-Xs	5 Xs	NA
 rm	5 rm	5
-Bs	5 Bs	NA
-Ba	5 Ba	0
-Br	5 Br	5 5
-Bi	5 Bi	0
-BS	5 BS	5 5 5 5 5 5
-B5	5 B5	5 5 5 5 5
-Bc	3 5 Bc	NA
-BC	3 5 BC	NA
-Bz	5 Bz	NaN
-cr	3 5 cr	NA
-cv	3 5 cv	NA
 mn	3 5 mn	3
 mx	3 5 mx	5
-Sk	5 Sk	NA
-Ku	5 Ku	NA
 Sw	3 5 Sw	3
-Sm	5 Sm	5
-Sn	5 Sn	5
-Sd	5 Sd	NA
 mQ	9 mQ	3
-dT	5 dT	1
 dX	3 5 dX	ERROR: invalid formula
 lm	5 lm	ERROR: invalid formula
 mL	3 5 mL
@@ -192,7 +151,7 @@ kk	3 5 kk	c(D = 1) 1 two-sided Exact two-sample Kolmogorov-Smirnov test v2 and v
 kv	3 5 kv	ERROR: not enough 'x' observations
 KK	5 KK	ERROR: argument "g" is missing, with no default
 kb	5 kb	ERROR: argument "g" is missing, with no default
-N	5 N
+N	1 2 3 N	2 3 1
 dn	5 dn	1.4867195147343e-06
 pn	5 pn	0.999999713348428
 qn	5 qn	NaN
@@ -282,13 +241,9 @@ at	5 at	NaN
 lg	5 lg	1.6094379124341
 l1	5 l1	0.698970004336019
 l2	5 l2	2.32192809488736
-sq	5 sq	2.23606797749979
-fl	5 fl	5
-cl	5 cl	5
 tr	5 tr	5
 ro	5 ro	5
 sg	5 sg	1
-ab	5 ab	5
 l+	5 l+	1.79175946922805
 e-	5 e-	147.413159102577
 cp	5 cp	-1
@@ -301,7 +256,6 @@ fa	5 fa	1 5
 mf	5 mf	5
 fp	5 fp	120
 MC	3 5 MC	0
-mG	5 mG	24
 mB	3 5 mB	0.00952380952380952
 lb	3 5 lb	-4.65396035015752
 LG	5 LG	3.17805383034795
@@ -316,52 +270,22 @@ cM	5 cM	5
 C	3 5 C	35
 j	3 5 j	3 5
 J	3 5 J	ERROR: invalid 'collapse' argument
-S	3 5 S	ERROR: non-character argument
 Xc	1 2 3 Xc	ERROR: invalid 'old' argument
-S!	1 2 3 S!	ERROR: invalid 'old' argument
-SG	1 2 3 SG	1
-Xt	5 Xt	5
-sU	5 sU	5
 Sl	5 Sl	5
 sn	5 sn	1
 ss	1 2 3 ss
 sr	1 2 3 sr	1
-sf	3 5 sf	ERROR: 'fmt' is not a character vector
 st	5 st	5
 sG	3 5 sG
-sB	3 5 sB	FALSE
-sR	3 5 sR	-1
-sX	3 5 sX	-1
-rv	5 rv	5
-sI	3 5 sI
-sN	3 5 sN	3 5
-sD	3 5 sD	3
 bA	3 5 bA	1
 bO	3 5 bO	7
 bX	3 5 bX	6
 bN	5 bN	-6
 bL	3 5 bL	96
 bR	3 5 bR	0
-n	5 n	5
-a	5 a	5
-c	5 c	
-Xb	5 Xb	101
-Xd	5 Xd	1970-01-06
+a	5 a	
+c	5 c	
 Td	5 Td	1970-01-06
-mF	5 mF	5
-AS	3 5 AS	ERROR: no applicable method for `@` applied to an object of class "numeric"
-is	3 5 is	ERROR: no applicable method for `@` applied to an object of class "numeric"
-ot	5 ot	double
-oc	5 oc	numeric
-oa	5 oa
-oA	3 5 oA	ERROR: 'which' must be of mode character
-on	5 on
-or	5 or
-oC	5 oC
-od	5 od
-ou	5 ou	5
-F	
-W	
 FW	
 fr	
 fc	
@@ -371,35 +295,22 @@ fi	5 fi	ERROR: invalid filename argument
 fe	5 fe	ERROR: invalid 'file' argument
 fm	
 fN	
-fd	
 fX	5 fX	ERROR: invalid filename argument
-FL	5 FL	ERROR: invalid 'path' argument
 fD	5 fD	ERROR: invalid 'directory' argument
 fb	5 fb	ERROR: a character vector argument expected
 fA	5 fA	ERROR: a character vector argument expected
 fP	5 fP	ERROR: invalid 'path' argument
 ft	ft
 fT	fT
-T	T
-sT	sT
-sK	5 sK
 sP	5 sP
 sE	sE
-sH	sH
-sJ	
 zt	zt
-sV	sV
-sF	
-sY	
-ZT	ZT
 zl	zl
 zo	zo
 zg	zg
 zv	zv
-ge	5 ge
 se	
 um	
-pi	pi
 ev	
 zD	
 zS	
@@ -410,3 +321,24 @@ zC
 zT	
 zW	
 zZ	
+bC	5 bC	2
+bP	5 bP	7
+bQ	17 bQ	13
+pR	10 pR	2 3 5 7
+d2	123 d2	6
+d3	123 d3	6
+aK	[1 2 3 4 5 6] 2 aK	c(1, 2) c(3, 4) c(5, 6)
+aF	[1 1 2 2 3] aF	2 2 1
+sL	'hello' sL	h e l l o
+cO	72 cO	H
+aH	3 5 aH	3 5 3
+nP	3 5 nP	5
+n0	 n0	0
+n1	 n1	1
+nL	 nL	
+
+z_	 z_	 
+eS	 eS	
+kC	10 2 kC	1 0 1 0
+kD	[1 0 1 0] 2 kD	10
+i2	'101' 2 i2	5

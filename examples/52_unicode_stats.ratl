@@ -1,7 +1,7 @@
 # Testing Unicode stats
 5.
-D m p 
-D Bs p 
-D h p 
-3. 2 4: kt p 
-10 N p
+D tM p
+D tS p
+D fE p
+[1 2 3] [2 3 4] kt p
+10 r p

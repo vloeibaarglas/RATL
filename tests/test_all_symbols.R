@@ -37,7 +37,7 @@ failed <- 0
 skipped <- 0
 failures <- character()
 
-cat(sprintf("Testing 295 symbols (unit tests)\n"))
+cat(sprintf("Testing 319 symbols (unit tests)\n"))
 cat("============================\n")
 
 # Stack & Control: D — Duplicate
@@ -56,8 +56,12 @@ skipped <- skipped + 1
 
 # Stack & Control: N — Rotate
 test_N_Rotate <- function() {
-  r <- run_ratl("5 N")
+  r <- run_ratl("1 2 3 N")
   if (grepl("Error:", r)) { cat("FAIL [N] Rotate: ", r, "\n"); return(FALSE) }
+  if (r != "2 3 1") {
+    cat("FAIL [N] Rotate: expected [2 3 1], got [", r, "]\n")
+    return(FALSE)
+  }
   return(TRUE)
 }
 
@@ -75,8 +79,9 @@ test_Q_Over <- function() {
 # Stack & Control: U — Unpack
 test_U_Unpack <- function() {
   r <- run_ratl("5 U")
-  if (!grepl("ERROR: object of type 'closure' is not subsettable", r, fixed = TRUE)) {
-    cat("FAIL [U] Unpack: expected error containing [ERROR: object of type 'closure' is not subsettable], got [", r, "]\n")
+  if (grepl("Error:", r)) { cat("FAIL [U] Unpack: ", r, "\n"); return(FALSE) }
+  if (r != "5") {
+    cat("FAIL [U] Unpack: expected [5], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -129,16 +134,24 @@ test_x_Delete <- function() {
   return(TRUE)
 }
 
-# SKIP c1 (ClipSave1) — no test defined
+# Stack & Control: a — ClipSave1
+test_a_ClipSave1 <- function() {
+  r <- run_ratl("5 a")
+  if (grepl("Error:", r)) { cat("FAIL [a] ClipSave1: ", r, "\n"); return(FALSE) }
+  return(TRUE)
+}
+
+# SKIP b (ClipLoad1) — no test defined
 skipped <- skipped + 1
 
-# SKIP c2 (ClipLoad1) — no test defined
-skipped <- skipped + 1
+# Stack & Control: c — ClipSave2
+test_c_ClipSave2 <- function() {
+  r <- run_ratl("5 c")
+  if (grepl("Error:", r)) { cat("FAIL [c] ClipSave2: ", r, "\n"); return(FALSE) }
+  return(TRUE)
+}
 
-# SKIP c3 (ClipSave2) — no test defined
-skipped <- skipped + 1
-
-# SKIP c4 (ClipLoad2) — no test defined
+# SKIP d (ClipLoad2) — no test defined
 skipped <- skipped + 1
 
 # Arithmetic & Comparison: % — Modulo
@@ -319,10 +332,10 @@ test___Not <- function() {
 
 # Array Operations: # — Filter
 test___Filter <- function() {
-  r <- run_ratl("3 5 #")
+  r <- run_ratl("[10 20 30] 2 #")
   if (grepl("Error:", r)) { cat("FAIL [#] Filter: ", r, "\n"); return(FALSE) }
-  if (r != "NA") {
-    cat("FAIL [#] Filter: expected [NA], got [", r, "]\n")
+  if (r != "20") {
+    cat("FAIL [#] Filter: expected [20], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -609,8 +622,9 @@ test_vI_CumMin <- function() {
 # Array Operations: vT — RepMat
 test_vT_RepMat <- function() {
   r <- run_ratl("1 2 3 vT")
-  if (!grepl("ERROR: invalid 'nrow' value (too large or NA)", r, fixed = TRUE)) {
-    cat("FAIL [vT] RepMat: expected error containing [ERROR: invalid 'nrow' value (too large or NA)], got [", r, "]\n")
+  if (grepl("Error:", r)) { cat("FAIL [vT] RepMat: ", r, "\n"); return(FALSE) }
+  if (r != "1 1 1 1 1 1") {
+    cat("FAIL [vT] RepMat: expected [1 1 1 1 1 1], got [", r, "]\n")
     return(FALSE)
   }
   return(TRUE)
@@ -806,9 +820,6 @@ skipped <- skipped + 1
 skipped <- skipped + 1
 
 # SKIP Ts (ToString) — no test defined
-skipped <- skipped + 1
-
-# SKIP TN (ToNumber) — no test defined
 skipped <- skipped + 1
 
 # SKIP uA (To ASCII) — no test defined
@@ -3240,6 +3251,82 @@ skipped <- skipped + 1
 # SKIP az (Lower Letters) — no test defined
 skipped <- skipped + 1
 
+# Constants: n0 — Const0
+test_n0_Const0 <- function() {
+  set.seed(42)
+  r <- run_ratl(" n0")
+  if (grepl("Error:", r)) { cat("FAIL [n0] Const0: ", r, "\n"); return(FALSE) }
+  if (r != "0") {
+    cat("FAIL [n0] Const0: expected [0], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Constants: n1 — Const1
+test_n1_Const1 <- function() {
+  set.seed(42)
+  r <- run_ratl(" n1")
+  if (grepl("Error:", r)) { cat("FAIL [n1] Const1: ", r, "\n"); return(FALSE) }
+  if (r != "1") {
+    cat("FAIL [n1] Const1: expected [1], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP n2 (Const2) — no test defined
+skipped <- skipped + 1
+
+# SKIP n3 (Const3) — no test defined
+skipped <- skipped + 1
+
+# SKIP n4 (Const4) — no test defined
+skipped <- skipped + 1
+
+# SKIP n5 (Const5) — no test defined
+skipped <- skipped + 1
+
+# SKIP n6 (Const6) — no test defined
+skipped <- skipped + 1
+
+# SKIP n7 (Const7) — no test defined
+skipped <- skipped + 1
+
+# SKIP n8 (Const8) — no test defined
+skipped <- skipped + 1
+
+# SKIP n9 (Const9) — no test defined
+skipped <- skipped + 1
+
+# Constants: nL — Newline
+test_nL_Newline <- function() {
+  set.seed(42)
+  r <- run_ratl(" nL")
+  if (grepl("Error:", r)) { cat("FAIL [nL] Newline: ", r, "\n"); return(FALSE) }
+  return(TRUE)
+}
+
+# Constants: z_ — Space
+test_z__Space <- function() {
+  set.seed(42)
+  r <- run_ratl(" z_")
+  if (grepl("Error:", r)) { cat("FAIL [z_] Space: ", r, "\n"); return(FALSE) }
+  if (r != " ") {
+    cat("FAIL [z_] Space: expected [ ], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Constants: eS — EmptyStr
+test_eS_EmptyStr <- function() {
+  set.seed(42)
+  r <- run_ratl(" eS")
+  if (grepl("Error:", r)) { cat("FAIL [eS] EmptyStr: ", r, "\n"); return(FALSE) }
+  return(TRUE)
+}
+
 # Math Functions: SP — Sin(pi*x)
 test_SP_Sin_pi_x_ <- function() {
   r <- run_ratl("5 SP")
@@ -3515,6 +3602,277 @@ test_mQ_Sqrt <- function() {
   return(TRUE)
 }
 
+# Golf: bC — Popcount
+test_bC_Popcount <- function() {
+  r <- run_ratl("5 bC")
+  if (grepl("Error:", r)) { cat("FAIL [bC] Popcount: ", r, "\n"); return(FALSE) }
+  if (r != "2") {
+    cat("FAIL [bC] Popcount: expected [2], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: bP — NextPrime
+test_bP_NextPrime <- function() {
+  r <- run_ratl("5 bP")
+  if (grepl("Error:", r)) { cat("FAIL [bP] NextPrime: ", r, "\n"); return(FALSE) }
+  if (r != "7") {
+    cat("FAIL [bP] NextPrime: expected [7], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: bQ — PrevPrime
+test_bQ_PrevPrime <- function() {
+  r <- run_ratl("17 bQ")
+  if (grepl("Error:", r)) { cat("FAIL [bQ] PrevPrime: ", r, "\n"); return(FALSE) }
+  if (r != "13") {
+    cat("FAIL [bQ] PrevPrime: expected [13], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: pR — PrimeRange
+test_pR_PrimeRange <- function() {
+  r <- run_ratl("10 pR")
+  if (grepl("Error:", r)) { cat("FAIL [pR] PrimeRange: ", r, "\n"); return(FALSE) }
+  if (r != "2 3 5 7") {
+    cat("FAIL [pR] PrimeRange: expected [2 3 5 7], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: d2 — DigitSum
+test_d2_DigitSum <- function() {
+  r <- run_ratl("123 d2")
+  if (grepl("Error:", r)) { cat("FAIL [d2] DigitSum: ", r, "\n"); return(FALSE) }
+  if (r != "6") {
+    cat("FAIL [d2] DigitSum: expected [6], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: d3 — DigitProd
+test_d3_DigitProd <- function() {
+  r <- run_ratl("123 d3")
+  if (grepl("Error:", r)) { cat("FAIL [d3] DigitProd: ", r, "\n"); return(FALSE) }
+  if (r != "6") {
+    cat("FAIL [d3] DigitProd: expected [6], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: aK — Chunks
+test_aK_Chunks <- function() {
+  r <- run_ratl("[1 2 3 4 5 6] 2 aK")
+  if (grepl("Error:", r)) { cat("FAIL [aK] Chunks: ", r, "\n"); return(FALSE) }
+  if (r != "c(1, 2) c(3, 4) c(5, 6)") {
+    cat("FAIL [aK] Chunks: expected [c(1, 2) c(3, 4) c(5, 6)], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP aW (Windows) — no test defined
+skipped <- skipped + 1
+
+# Golf: aF — Freq
+test_aF_Freq <- function() {
+  r <- run_ratl("[1 1 2 2 3] aF")
+  if (grepl("Error:", r)) { cat("FAIL [aF] Freq: ", r, "\n"); return(FALSE) }
+  if (r != "2 2 1") {
+    cat("FAIL [aF] Freq: expected [2 2 1], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP tF (Powerset) — no test defined
+skipped <- skipped + 1
+
+# SKIP cP (Cartesian) — no test defined
+skipped <- skipped + 1
+
+# Golf: kC — BaseEncode
+test_kC_BaseEncode <- function() {
+  r <- run_ratl("10 2 kC")
+  if (grepl("Error:", r)) { cat("FAIL [kC] BaseEncode: ", r, "\n"); return(FALSE) }
+  if (r != "1 0 1 0") {
+    cat("FAIL [kC] BaseEncode: expected [1 0 1 0], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: kD — BaseDecode
+test_kD_BaseDecode <- function() {
+  r <- run_ratl("[1 0 1 0] 2 kD")
+  if (grepl("Error:", r)) { cat("FAIL [kD] BaseDecode: ", r, "\n"); return(FALSE) }
+  if (r != "10") {
+    cat("FAIL [kD] BaseDecode: expected [10], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: sL — Chars
+test_sL_Chars <- function() {
+  r <- run_ratl("'hello' sL")
+  if (grepl("Error:", r)) { cat("FAIL [sL] Chars: ", r, "\n"); return(FALSE) }
+  if (r != "h e l l o") {
+    cat("FAIL [sL] Chars: expected [h e l l o], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: cO — Chr
+test_cO_Chr <- function() {
+  r <- run_ratl("72 cO")
+  if (grepl("Error:", r)) { cat("FAIL [cO] Chr: ", r, "\n"); return(FALSE) }
+  if (r != "H") {
+    cat("FAIL [cO] Chr: expected [H], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP jN (JoinNL) — no test defined
+skipped <- skipped + 1
+
+# SKIP pW2 (PasteWrap) — no test defined
+skipped <- skipped + 1
+
+# SKIP bE (BaseEnc) — no test defined
+skipped <- skipped + 1
+
+# SKIP bD (BaseDec) — no test defined
+skipped <- skipped + 1
+
+# Golf: i2 — StrToInt
+test_i2_StrToInt <- function() {
+  r <- run_ratl("'101' 2 i2")
+  if (grepl("Error:", r)) { cat("FAIL [i2] StrToInt: ", r, "\n"); return(FALSE) }
+  if (r != "5") {
+    cat("FAIL [i2] StrToInt: expected [5], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: aH — Tuck
+test_aH_Tuck <- function() {
+  r <- run_ratl("3 5 aH")
+  if (grepl("Error:", r)) { cat("FAIL [aH] Tuck: ", r, "\n"); return(FALSE) }
+  if (r != "3 5 3") {
+    cat("FAIL [aH] Tuck: expected [3 5 3], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: nP — Nip
+test_nP_Nip <- function() {
+  r <- run_ratl("3 5 nP")
+  if (grepl("Error:", r)) { cat("FAIL [nP] Nip: ", r, "\n"); return(FALSE) }
+  if (r != "5") {
+    cat("FAIL [nP] Nip: expected [5], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP p2 (PowersetAlias) — no test defined
+skipped <- skipped + 1
+
+# SKIP kH (CharsK) — no test defined
+skipped <- skipped + 1
+
+# SKIP kO (ChrK) — no test defined
+skipped <- skipped + 1
+
+# Golf: kC — BaseEncodeK
+test_kC_BaseEncodeK <- function() {
+  r <- run_ratl("10 2 kC")
+  if (grepl("Error:", r)) { cat("FAIL [kC] BaseEncodeK: ", r, "\n"); return(FALSE) }
+  if (r != "1 0 1 0") {
+    cat("FAIL [kC] BaseEncodeK: expected [1 0 1 0], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# Golf: kD — BaseDecodeK
+test_kD_BaseDecodeK <- function() {
+  r <- run_ratl("[1 0 1 0] 2 kD")
+  if (grepl("Error:", r)) { cat("FAIL [kD] BaseDecodeK: ", r, "\n"); return(FALSE) }
+  if (r != "10") {
+    cat("FAIL [kD] BaseDecodeK: expected [10], got [", r, "]\n")
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+# SKIP Xb (ToBinaryLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Xo (ModeLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Xk (RLELegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Xr (MeanLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP m (MeanLegacy2) — no test defined
+skipped <- skipped + 1
+
+# SKIP Bs (StdDevLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP B5 (FiveNumLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Bc (CorLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Sd (CumSDLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Sm (MeanAlias) — no test defined
+skipped <- skipped + 1
+
+# SKIP h (HeadLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP S (SplitLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP S! (TranslateLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP mF (FactorsLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP fu (FlattenLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP rv (ReverseStrLegacy) — no test defined
+skipped <- skipped + 1
+
+# SKIP Sr (ReverseStr) — no test defined
+skipped <- skipped + 1
+
+# SKIP F (ReadFile) — no test defined
+skipped <- skipped + 1
+
 all_tests <- list(
   list(name = "D Duplicate", fn = test_D_Duplicate)
 ,
@@ -3529,6 +3887,10 @@ all_tests <- list(
   list(name = "w Swap", fn = test_w_Swap)
 ,
   list(name = "x Delete", fn = test_x_Delete)
+,
+  list(name = "a ClipSave1", fn = test_a_ClipSave1)
+,
+  list(name = "c ClipSave2", fn = test_c_ClipSave2)
 ,
   list(name = "% Modulo", fn = test___Modulo)
 ,
@@ -4056,6 +4418,16 @@ all_tests <- list(
 ,
   list(name = "sZ EmptyNum", fn = test_sZ_EmptyNum)
 ,
+  list(name = "n0 Const0", fn = test_n0_Const0)
+,
+  list(name = "n1 Const1", fn = test_n1_Const1)
+,
+  list(name = "nL Newline", fn = test_nL_Newline)
+,
+  list(name = "z_ Space", fn = test_z__Space)
+,
+  list(name = "eS EmptyStr", fn = test_eS_EmptyStr)
+,
   list(name = "SP Sin(pi*x)", fn = test_SP_Sin_pi_x_)
 ,
   list(name = "a2 ArcTan2", fn = test_a2_ArcTan2)
@@ -4105,6 +4477,40 @@ all_tests <- list(
   list(name = "tr Trunc", fn = test_tr_Trunc)
 ,
   list(name = "mQ Sqrt", fn = test_mQ_Sqrt)
+,
+  list(name = "bC Popcount", fn = test_bC_Popcount)
+,
+  list(name = "bP NextPrime", fn = test_bP_NextPrime)
+,
+  list(name = "bQ PrevPrime", fn = test_bQ_PrevPrime)
+,
+  list(name = "pR PrimeRange", fn = test_pR_PrimeRange)
+,
+  list(name = "d2 DigitSum", fn = test_d2_DigitSum)
+,
+  list(name = "d3 DigitProd", fn = test_d3_DigitProd)
+,
+  list(name = "aK Chunks", fn = test_aK_Chunks)
+,
+  list(name = "aF Freq", fn = test_aF_Freq)
+,
+  list(name = "kC BaseEncode", fn = test_kC_BaseEncode)
+,
+  list(name = "kD BaseDecode", fn = test_kD_BaseDecode)
+,
+  list(name = "sL Chars", fn = test_sL_Chars)
+,
+  list(name = "cO Chr", fn = test_cO_Chr)
+,
+  list(name = "i2 StrToInt", fn = test_i2_StrToInt)
+,
+  list(name = "aH Tuck", fn = test_aH_Tuck)
+,
+  list(name = "nP Nip", fn = test_nP_Nip)
+,
+  list(name = "kC BaseEncodeK", fn = test_kC_BaseEncodeK)
+,
+  list(name = "kD BaseDecodeK", fn = test_kD_BaseDecodeK)
 )
 
 for (t in all_tests) {

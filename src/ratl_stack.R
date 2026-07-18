@@ -8,11 +8,10 @@ make_stack <- function(capacity = 64L) {
 
 stack_push <- function(s, val) {
   s$top <- s$top + 1L
-  # Resize if necessary (double capacity)
   if (s$top > length(s$data)) {
     length(s$data) <- 2L * length(s$data)
   }
-  s$data[[s$top]] <- val
+  s$data[s$top] <- list(val)
   invisible(NULL)
 }
 
@@ -21,6 +20,11 @@ stack_pop <- function(s) {
   val <- s$data[[s$top]]
   s$top <- s$top - 1L
   val
+}
+
+stack_set <- function(s, idx, val) {
+  s$data[idx] <- list(val)
+  invisible(NULL)
 }
 
 stack_peek <- function(s) {
