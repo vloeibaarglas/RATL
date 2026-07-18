@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="RATL_SPEC_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="RATL_SPEC_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="RATL_SPEC_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-84c3f8f9cab20d73a7dcda44c8bf3e8e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="RATL_SPEC_files/libs/bootstrap/bootstrap-9b7a7401f4b25f16fab518238f30cb8c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
 <style>
   /* Force wider layout — override Quarto/Bootstrap */
@@ -169,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#numbers" id="toc-numbers" class="nav-link" data-scroll-target="#numbers">Numbers</a></li>
   <li><a href="#numerical-arrays-vectors" id="toc-numerical-arrays-vectors" class="nav-link" data-scroll-target="#numerical-arrays-vectors">Numerical Arrays (Vectors)</a></li>
   <li><a href="#character-arrays-strings" id="toc-character-arrays-strings" class="nav-link" data-scroll-target="#character-arrays-strings">Character Arrays (Strings)</a></li>
-  <li><a href="#cell-arrays-lists" id="toc-cell-arrays-lists" class="nav-link" data-scroll-target="#cell-arrays-lists">Cell Arrays (Lists)</a></li>
+  <li><a href="#blocks-higher-order-values" id="toc-blocks-higher-order-values" class="nav-link" data-scroll-target="#blocks-higher-order-values">Blocks (Higher-Order Values)</a></li>
   </ul></li>
   <li><a href="#blocks-and-evaluation-model" id="toc-blocks-and-evaluation-model" class="nav-link" data-scroll-target="#blocks-and-evaluation-model">Blocks and Evaluation Model</a>
   <ul class="collapse">
@@ -235,7 +235,7 @@ ul.task-list li input[type="checkbox"] {
 
 <p>RATL (<strong>R</strong> <strong>A</strong>rray Manipula<strong>T</strong>ion <strong>L</strong>anguage) is a stack-based, esoteric programming language inspired by <a href="https://github.com/lmendo/MATL">MATL</a>. It leverages R’s powerful statistical and matrix capabilities through a concise, postfix syntax, making it highly suitable for code golf.</p>
 <p>RATL eliminates variable names and assignment — every character counts. The stack model means <code>3 5 +</code> instead of <code>result = a + b</code>. Single-byte tokens are reserved for the most frequent golf operations (arithmetic, stack manipulation, array transforms), while 2-byte namespaced tokens cover everything else. The implementation translates RATL to R, then evaluates.</p>
-<p><strong>Total symbols: 408</strong> (all 2-byte or shorter)</p>
+<p><strong>Total symbols: 465</strong> (all 2-byte or shorter)</p>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>RATL programs are sequences of tokens evaluated left to right on a stack. No variable declarations, no semicolons — just push values and apply operations.</p>
@@ -282,17 +282,18 @@ ul.task-list li input[type="checkbox"] {
 <dl>
 <dt><strong>Tier 1 — Core</strong> (stack manipulation, arrays, blocks, control flow, arithmetic)</dt>
 <dd>
-109 symbols across 5 categories
+113 symbols across 5 categories
 </dd>
 <dt><strong>Tier 2 — Toolkit</strong> (grouping, mapping, reduction, matrix operations, strings, sets)</dt>
 <dd>
-63 symbols across 4 categories
+94 symbols across 5 categories
 </dd>
 <dt><strong>Tier 3 — Extensions</strong> (statistics, distributions, filesystem, shell access, meta-programming)</dt>
 <dd>
-197 symbols across 7 categories
+258 symbols across 10 categories
 </dd>
 </dl>
+<p><strong>Note:</strong> This document excludes unsafe operations by default. Pass <code>--allow-unsafe-operations</code> to include them.</p>
 <hr>
 </section>
 </section>
@@ -363,9 +364,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="clipboards" class="level3">
 <h3 class="anchored" data-anchor-id="clipboards">Clipboards</h3>
-<p>RATL provides four clipboards for temporary storage outside the stack:</p>
+<p>RATL provides two clipboard register pairs for temporary storage outside the stack:</p>
 <ul>
-<li><code>H</code>, <code>G</code>, <code>L</code>, <code>M</code> — each holds one value independently of the stack</li>
+<li><code>a</code> (save), <code>b</code> (load) — clipboard register 1</li>
+<li><code>c</code> (save), <code>d</code> (load) — clipboard register 2</li>
 <li>Useful for saving intermediate results without stack gymnastics</li>
 </ul>
 <hr>
@@ -374,21 +376,26 @@ ul.task-list li input[type="checkbox"] {
 <section id="formal-grammar" class="level2">
 <h2 class="anchored" data-anchor-id="formal-grammar">Formal Grammar</h2>
 <pre><code>program     ::= statement*
-statement   ::= literal | symbol | block
+statement   ::= literal | symbol | block | control
 
-literal     ::= number | array | string
-number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]
-array       ::= '[' statement* ']'
-string      ::= Apostrophe { NOT_APOSTROPHE } Apostrophe
+literal     ::= number | array | string | block_literal
+number      ::= [ '-' ] DIGIT+ [ '.' DIGIT+ ]   # float only when followed by delim; '10.' is range sugar for 1..10
+array       ::= '[' statement* ']'              # empty [] → numeric(0)
+string      ::= Apostrophe { NOT_APOSTROPHE | "''" } Apostrophe  # '' escaped as single '
 
-block       ::= '{' statement* '}'
+block_literal ::= '{' statement* '}'            # first-class, not executed on push
+control     ::= '?' statement* (';' statement*)? ']'    # if / if-else, condition on stack
+            | '"' statement* '"'               # while: pop cond before body
+            | '(' statement* ')'                 # foreach: pops array, pushes each
+            | '`' statement* '`'                 # infinite, break with X
 
-symbol      ::= &lt;any 1-2 character token not matching the above&gt;
-comment     ::= '#' { NOT_NEWLINE } NEWLINE
+symbol      ::= &lt;any 1-2 character token from dispatch&gt;
+comment     ::= spaces '#' { NOT_NEWLINE } NEWLINE   # only when # is first non-space on line; otherwise '#' is filter/index op
 
 # Whitespace rules:
-# - Space and newline act as token separators
-# - Newlines are otherwise ignored (not significant)</code></pre>
+# - Space, tab, newline act as token separators
+# - '10.2^s' is tokenized as 10 . 2 ^ s (range, not float) because '.' is postfix range when jammed
+# - '3.14' with surrounding delimiters is a float</code></pre>
 <hr>
 </section>
 <section id="literals" class="level2">
@@ -396,19 +403,19 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <p>Literals are pushed onto the stack as soon as they are encountered during parsing.</p>
 <section id="numbers" class="level3">
 <h3 class="anchored" data-anchor-id="numbers">Numbers</h3>
-<p>Standard numeric notation: <code>1</code>, <code>10</code>, <code>3.14</code>, <code>-5</code>.</p>
+<p>Integers: <code>1</code>, <code>10</code>, <code>-5</code>. Floats: <code>3.14</code>, <code>-2.5</code> when surrounded by delimiters (space, bracket, newline). Golf sugar: <code>10.</code> or <code>10 .</code> is sugar for <code>1..10</code> (range). Thus <code>10.2^s</code> → <code>10 . 2 ^ s</code> = sum of squares 1..10. To write float without space use delimiter: <code>0.5</code>, <code>(3.14)</code>, <code>[3.14]</code>.</p>
 </section>
 <section id="numerical-arrays-vectors" class="level3">
 <h3 class="anchored" data-anchor-id="numerical-arrays-vectors">Numerical Arrays (Vectors)</h3>
-<p>Enclosed in square brackets <code>[...]</code>. Elements are separated by spaces. Example: <code>[1 2 3]</code> pushes a numeric vector of length 3.</p>
+<p>Enclosed in square brackets <code>[...]</code>. Elements are statement sequences. <code>[]</code> → <code>numeric(0)</code>. Example: <code>[1 2 3]</code> pushes a numeric vector; <code>[1 [2 3]]</code> flattens via inner blocks.</p>
 </section>
 <section id="character-arrays-strings" class="level3">
 <h3 class="anchored" data-anchor-id="character-arrays-strings">Character Arrays (Strings)</h3>
-<p>Enclosed in single quotes <code>'...'</code>. Example: <code>'hello'</code> pushes a character vector of length 1.</p>
+<p>Enclosed in single quotes <code>'...'</code>. Escape a single quote by doubling: <code>'don''t'</code>. Example: <code>'hello'</code> pushes a character vector of length 1.</p>
 </section>
-<section id="cell-arrays-lists" class="level3">
-<h3 class="anchored" data-anchor-id="cell-arrays-lists">Cell Arrays (Lists)</h3>
-<p>Enclosed in curly braces <code>{...}</code>. Example: <code>{1 'a' [1 2]}</code> pushes an R list containing three different types.</p>
+<section id="blocks-higher-order-values" class="level3">
+<h3 class="anchored" data-anchor-id="blocks-higher-order-values">Blocks (Higher-Order Values)</h3>
+<p>Enclosed in curly braces <code>{...}</code>. They are values pushed onto stack, not executed. Example: <code>{2 *}</code> is a block that doubles. Array blocks <code>[...]</code> evaluate eagerly to a vector; block literals <code>{...}</code> are lazy.</p>
 <hr>
 </section>
 </section>
@@ -438,22 +445,22 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>{block} array q</code></td>
+<td><code>array {block} q</code> (also <code>Fq</code>)</td>
 <td>Map</td>
 <td>Applies block to each element, collects results into array</td>
 </tr>
 <tr class="even">
-<td><code>{block} array e</code></td>
+<td><code>array {block} Ft</code> (also <code>e</code> when block on stack)</td>
 <td>Filter</td>
 <td>Keeps elements where block returns truthy</td>
 </tr>
 <tr class="odd">
-<td><code>{block} array y</code></td>
+<td><code>array {block} y</code> (also <code>Fr</code>)</td>
 <td>Reduce</td>
 <td>Folds array left using block as binary operator</td>
 </tr>
 <tr class="even">
-<td><code>N {block} z</code></td>
+<td><code>N {block} z</code> (also <code>Fx</code>)</td>
 <td>Repeat</td>
 <td>Executes block N times, returns last result</td>
 </tr>
@@ -463,32 +470,32 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>Pops and executes a block immediately</td>
 </tr>
 <tr class="even">
-<td><code>{block} array zB</code></td>
+<td><code>array {block} zB</code></td>
 <td>Sort By</td>
 <td>Sorts array using block as key function</td>
 </tr>
 <tr class="odd">
-<td><code>{block} array zG</code></td>
+<td><code>array {block} zG</code></td>
 <td>Group By</td>
 <td>Groups array elements by block’s return value</td>
 </tr>
 <tr class="even">
-<td><code>{block} array zC</code></td>
+<td><code>array {block} zC</code></td>
 <td>Scan</td>
 <td>Like reduce, but returns all intermediate results</td>
 </tr>
 <tr class="odd">
-<td><code>{block} array zT</code></td>
+<td><code>array {block} zT</code></td>
 <td>Take While</td>
 <td>Takes elements while block returns truthy</td>
 </tr>
 <tr class="even">
-<td><code>{block} array zW</code></td>
+<td><code>array {block} zW</code></td>
 <td>Drop While</td>
 <td>Drops elements while block returns truthy</td>
 </tr>
 <tr class="odd">
-<td><code>{block} A B zZ</code></td>
+<td><code>A B {block} zZ</code></td>
 <td>Zip With</td>
 <td>Applies block pairwise to two arrays</td>
 </tr>
@@ -591,11 +598,11 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <section id="conditional-branching-..." class="level3">
 <h3 class="anchored" data-anchor-id="conditional-branching-...">Conditional Branching (<code>? ... ]</code>)</h3>
 <ul>
-<li><strong><code>?</code></strong> starts a conditional block, <strong><code>]</code></strong> ends it</li>
-<li><strong>If-Else</strong>: <code>? condition ; then-branch ; else-branch ]</code></li>
+<li>Syntax: <code>cond ? then ]</code> or <code>cond ? then ; else ]</code>. Condition is on <strong>stack before</strong> <code>?</code>.</li>
 <li><strong>Behavior</strong>: Pops the top element. If truthy, executes until first <code>;</code> or <code>]</code>. If falsy, skips to the <code>;</code> branch (if present) or skips to <code>]</code>.</li>
 </ul>
-<pre><code>1 ? 'yes' ; 'no' ]        → 'yes'    # truthy
+<pre><code>1 'yes' 'no' ? ; ]        shorthand: cond must be on stack first
+1 ? 'yes' ; 'no' ]        → 'yes'    # truthy
 0 ? 'yes' ; 'no' ]        → 'no'     # falsy
 0 ? 'yes' ]                → (empty)  # no else branch</code></pre>
 </section>
@@ -603,9 +610,9 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <h3 class="anchored" data-anchor-id="whilerepeat-loop-...">While/Repeat Loop (<code>" ... "</code>)</h3>
 <ul>
 <li><strong>Symbol</strong>: <code>"</code> (opening and closing)</li>
-<li><strong>Behavior</strong>: Executes the loop body. At the closing <code>"</code>, pops the top element. If truthy, repeats from the opening <code>"</code>. If falsy, exits the loop.</li>
+<li><strong>Behavior</strong>: Pops condition <strong>before</strong> executing body. If falsy, exit. Repeat check after body completes. Equivalent to <code>while(pop()) { body }</code>.</li>
 </ul>
-<pre><code>3 " 1 - D p "    → 3 2 1    # counts down</code></pre>
+<pre><code>3 " D p 1 - D "    → 3 2 1    # counts down (cond then body in single "")</code></pre>
 </section>
 <section id="for-each-loop-..." class="level3">
 <h3 class="anchored" data-anchor-id="for-each-loop-...">For-Each Loop (<code>( ... )</code>)</h3>
@@ -767,7 +774,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </section>
 <section id="symbol-reference" class="level2">
 <h2 class="anchored" data-anchor-id="symbol-reference">Symbol Reference</h2>
-<p><strong>408 symbols</strong> organized by category. Click a category to expand.</p>
+<p><strong>462 symbols</strong> organized by category. Click a category to expand.</p>
 <details open="">
 <summary>
 <strong>Stack &amp; Control</strong> — Tier 1 (Core) — 18 symbols
@@ -1014,9 +1021,15 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Array Operations</strong> — Tier 1 (Core) — 42 symbols
+<strong>Array Operations</strong> — Tier 1 (Core) — 45 symbols
 </summary>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 30%">
+<col style="width: 18%">
+<col style="width: 32%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Symbol</th>
@@ -1087,192 +1100,210 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>Xk</code></td>
+<td>RLELegacy</td>
+<td><code>{r &lt;- rle($1); list(r$values, r$lengths)}</code></td>
+<td>1 → 2</td>
+</tr>
+<tr class="even">
 <td><code>aB</code></td>
 <td>Tabulate</td>
 <td><code>tabulate($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aD</code></td>
 <td>Drop</td>
 <td><code>drop($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aE</code></td>
 <td>RLE</td>
 <td><code>{r &lt;- rle($1); list(r$values, r$lengths)}</code></td>
 <td>1 → 2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aL</code></td>
 <td>Flatten</td>
 <td><code>unlist($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aM</code></td>
 <td>IndexOf</td>
 <td><code>match($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aN</code></td>
 <td>ExtractName</td>
 <td><code>$2[[as.character($1)]]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aO</code></td>
 <td>Order</td>
 <td><code>order($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aP</code></td>
 <td>CumProd</td>
 <td><code>cumprod($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aQ</code></td>
 <td>UniqueN</td>
 <td><code>length(unique($1))</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aR</code></td>
 <td>Rank</td>
 <td><code>rank($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aU</code></td>
 <td>Unsplit</td>
 <td><code>unsplit($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>aV</code></td>
 <td>Diff</td>
 <td><code>diff($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>aX</code></td>
 <td>NegSlice</td>
 <td><code>$2[length($2)+1-$1]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ah</code></td>
 <td>HeadN</td>
 <td><code>head($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>al</code></td>
 <td>LastElem</td>
 <td><code>tail($1, 1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>cn</code></td>
 <td>IsIn</td>
 <td><code>is.element($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>dS</code></td>
 <td>Split</td>
 <td><code>split($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>e</code></td>
 <td>Extract Element [[</td>
 <td><code>$2[[$1]]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fE</code></td>
 <td>FirstElem</td>
 <td><code>head($1, 1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>fu</code></td>
+<td>FlattenLegacy</td>
+<td><code>unlist($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="even">
+<td><code>h</code></td>
+<td>HeadLegacy</td>
+<td><code>head($1, 1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>l</code></td>
 <td>Length</td>
 <td><code>length($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>r2</code></td>
 <td>Rep</td>
 <td><code>rep($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tl</code></td>
 <td>TailN</td>
 <td><code>tail($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>u</code></td>
 <td>Unique</td>
 <td><code>unique($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vB</code></td>
 <td>PMin</td>
 <td><code>pmin($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vG</code></td>
 <td>PMax</td>
 <td><code>pmax($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vH</code></td>
 <td>WhichArr</td>
 <td><code>which($1, arr.ind=TRUE)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vI</code></td>
 <td>CumMin</td>
 <td><code>cummin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vT</code></td>
 <td>RepMat</td>
-<td><code>matrix(rep($3, $2*$1), nrow=nrow($3)*$2)</code></td>
+<td><code>matrix(rep_len($3, $2*$1), nrow=$2, ncol=$1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>vW</code></td>
 <td>SeqLen</td>
 <td><code>seq($3, $2, length.out=$1)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vX</code></td>
 <td>CumMax</td>
 <td><code>cummax($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>wh</code></td>
 <td>Which</td>
 <td><code>which($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>zp</code></td>
 <td>Zip</td>
 <td><code>unlist(Map(list, $2, $1))</code></td>
@@ -1283,7 +1314,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Statistics</strong> — Tier 3 (Extensions) — 32 symbols
+<strong>Statistics</strong> — Tier 3 (Extensions) — 39 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -1308,34 +1339,70 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="even">
+<td><code>B5</code></td>
+<td>FiveNumLegacy</td>
+<td><code>fivenum($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>Bc</code></td>
+<td>CorLegacy</td>
+<td><code>cor($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
 <td><code>Bn</code></td>
 <td>Min</td>
 <td><code>min($1)</code></td>
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>Bs</code></td>
+<td>StdDevLegacy</td>
+<td><code>sd($1, na.rm=TRUE)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>Bx</code></td>
 <td>Max</td>
 <td><code>max($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>E</code></td>
 <td>Any</td>
 <td><code>any($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>P</code></td>
 <td>Product</td>
 <td><code>prod($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="odd">
+<td><code>Sd</code></td>
+<td>CumSDLegacy</td>
+<td><code>ratl_cum_sd($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="even">
+<td><code>Sm</code></td>
+<td>MeanAlias</td>
+<td><code>mean($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>Sw</code></td>
 <td>WeightedMean</td>
 <td><code>weighted.mean($2, $1)</code></td>
 <td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>Xr</code></td>
+<td>MeanLegacy</td>
+<td><code>mean($1, na.rm=TRUE)</code></td>
+<td>1 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>dX</code></td>
@@ -1350,144 +1417,150 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>m</code></td>
+<td>MeanLegacy2</td>
+<td><code>mean($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>mn</code></td>
 <td>Min2</td>
 <td><code>min($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>mx</code></td>
 <td>Max2</td>
 <td><code>max($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>r</code></td>
 <td>Random (n)</td>
 <td><code>runif($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rm</code></td>
 <td>RMS</td>
 <td><code>ratl_rms($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>s</code></td>
 <td>Sum</td>
 <td><code>sum($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>t5</code></td>
 <td>FiveNum</td>
 <td><code>fivenum($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tA</code></td>
 <td>MAD</td>
 <td><code>mad($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tC</code></td>
 <td>CumSD</td>
 <td><code>ratl_cum_sd($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tI</code></td>
 <td>IQR</td>
 <td><code>IQR($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tK</code></td>
 <td>Kurtosis</td>
 <td><code>sum(($1-mean($1))^4)/((length($1)-1)*sd($1)^4)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tM</code></td>
 <td>Mean</td>
 <td><code>mean($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tN</code></td>
 <td>MeanNA</td>
 <td><code>mean($1, na.rm=TRUE)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tR</code></td>
 <td>Range</td>
 <td><code>range($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tS</code></td>
 <td>StdDev</td>
 <td><code>sd($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tT</code></td>
 <td>Table</td>
 <td><code>table($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tU</code></td>
 <td>SumNA</td>
 <td><code>sum($1, na.rm=TRUE)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tW</code></td>
 <td>Skewness</td>
 <td><code>sum(($1-mean($1))^3)/((length($1)-1)*sd($1)^3)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tZ</code></td>
 <td>Scale</td>
 <td><code>scale($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tc</code></td>
 <td>Correlation</td>
 <td><code>cor($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tm</code></td>
 <td>Median</td>
 <td><code>median($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>to</code></td>
 <td>Mode</td>
 <td><code>ratl_mode($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>tv</code></td>
 <td>Covariance</td>
 <td><code>cov($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ty</code></td>
 <td>Summary</td>
 <td><code>summary($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>vd</code></td>
 <td>Density</td>
 <td><code>density($1)</code></td>
@@ -1551,7 +1624,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 27 symbols
+<strong>Type &amp; Introspection</strong> — Tier 1 (Core) — 25 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -1588,82 +1661,82 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>TN</code></td>
-<td>ToNumber</td>
-<td><code>as.numeric($1)</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>TR</code></td>
 <td>Rownames</td>
 <td><code>rownames($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Ta</code></td>
 <td>AsType</td>
 <td><code>as($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Tb</code></td>
 <td>ToBinary</td>
 <td><code>ratl_bin($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Tc</code></td>
 <td>Class</td>
 <td><code>class($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Td</code></td>
 <td>ToDate</td>
 <td><code>as.Date($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Tf</code></td>
 <td>Factor</td>
 <td><code>factor($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Ti</code></td>
 <td>IsType</td>
 <td><code>is($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Tn</code></td>
 <td>Names</td>
 <td><code>names($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Ts</code></td>
 <td>ToString</td>
 <td><code>as.character($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Tt</code></td>
 <td>Typeof</td>
 <td><code>typeof($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Tv</code></td>
 <td>Attributes</td>
 <td><code>attributes($1)</code></td>
 <td>1 → 1</td>
 </tr>
+<tr class="even">
+<td><code>Xb</code></td>
+<td>ToBinaryLegacy</td>
+<td><code>ratl_bin($1)</code></td>
+<td>1 → 1</td>
+</tr>
 <tr class="odd">
-<td><code>ev</code></td>
-<td>Eval</td>
-<td><code>NULL</code></td>
-<td>1 → 0</td>
+<td><code>Xo</code></td>
+<td>ModeLegacy</td>
+<td><code>ratl_mode($1)</code></td>
+<td>1 → 1</td>
 </tr>
 <tr class="even">
 <td><code>uA</code></td>
@@ -1696,28 +1769,16 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="odd">
-<td><code>zS</code></td>
-<td>Send</td>
-<td><code>NULL</code></td>
-<td>1 → 1</td>
-</tr>
-<tr class="even">
 <td><code>zT</code></td>
 <td>Take While</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>zW</code></td>
 <td>Drop While</td>
 <td><code>NULL</code></td>
 <td>2 → 1</td>
-</tr>
-<tr class="even">
-<td><code>zX</code></td>
-<td>Shell Exec</td>
-<td><code>NULL</code></td>
-<td>1 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>zZ</code></td>
@@ -2016,7 +2077,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>String Operations</strong> — Tier 2 (Toolkit) — 19 symbols
+<strong>String Operations</strong> — Tier 2 (Toolkit) — 23 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -2045,6 +2106,18 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>Join List</td>
 <td><code>paste($2, collapse=$1)</code></td>
 <td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>S</code></td>
+<td>SplitLegacy</td>
+<td><code>strsplit($2, $1)[[1]]</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>S!</code></td>
+<td>TranslateLegacy</td>
+<td><code>chartr($2, $1, $3)</code></td>
+<td>3 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>Sb</code></td>
@@ -2083,40 +2156,52 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>1 → 1</td>
 </tr>
 <tr class="odd">
+<td><code>Sr</code></td>
+<td>ReverseStr</td>
+<td><code>paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>Ss</code></td>
 <td>Split String</td>
 <td><code>strsplit($2, $1)[[1]]</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>St</code></td>
 <td>Translate</td>
 <td><code>chartr($2, $1, $3)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Su</code></td>
 <td>ToUpper</td>
 <td><code>toupper($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>Sx</code></td>
 <td>Gregexpr</td>
 <td><code>gregexpr($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>Xc</code></td>
 <td>Char Translate</td>
 <td><code>chartr($1, $2, $3)</code></td>
 <td>3 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>j</code></td>
 <td>Join</td>
 <td><code>paste($2, $1)</code></td>
 <td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>rv</code></td>
+<td>ReverseStrLegacy</td>
+<td><code>paste(rev(strsplit(as.character($1), "")[[1]]), collapse="")</code></td>
+<td>1 → 1</td>
 </tr>
 <tr class="odd">
 <td><code>sG</code></td>
@@ -2709,7 +2794,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 13 symbols
+<strong>Combinatorics &amp; Special</strong> — Tier 3 (Extensions) — 14 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -2776,24 +2861,30 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>2 → 1</td>
 </tr>
 <tr class="even">
+<td><code>mF</code></td>
+<td>FactorsLegacy</td>
+<td><code>ratl_factors($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
 <td><code>mf</code></td>
 <td>Prime Factors</td>
 <td><code>ratl_prime_factors($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>mp</code></td>
 <td>Is Prime</td>
 <td><code>ratl_is_prime($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>ps</code></td>
 <td>Psigamma</td>
 <td><code>psigamma($2, $1)</code></td>
 <td>2 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>tg</code></td>
 <td>Trigamma</td>
 <td><code>trigamma($1)</code></td>
@@ -2851,7 +2942,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>File I/O</strong> — Tier 3 (Extensions) — 18 symbols
+<strong>File I/O</strong> — Tier 3 (Extensions) — 19 symbols
 </summary>
 <table class="caption-top table">
 <colgroup>
@@ -2870,108 +2961,114 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </thead>
 <tbody>
 <tr class="odd">
+<td><code>F</code></td>
+<td>ReadFile</td>
+<td><code>readLines($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
 <td><code>FW</code></td>
 <td>Write File</td>
 <td><code>{writeLines(as.character($2), $1); NULL}</code></td>
 <td>2 → 0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fA</code></td>
 <td>Dirname</td>
 <td><code>dirname($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fC</code></td>
 <td>Write CSV</td>
 <td><code>write.csv($2, $1)</code></td>
 <td>2 → 0</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fD</code></td>
 <td>List Dirs</td>
 <td><code>list.dirs($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fL</code></td>
 <td>ListFiles</td>
 <td><code>list.files($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fM</code></td>
 <td>DirCreate</td>
 <td><code>dir.create($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fN</code></td>
 <td>File Create</td>
 <td><code>file.create($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fP</code></td>
 <td>Abs Path</td>
 <td><code>normalizePath($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fT</code></td>
 <td>TempFile</td>
 <td><code>tempfile()</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fX</code></td>
 <td>Dir Exists</td>
 <td><code>dir.exists($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fb</code></td>
 <td>Basename</td>
 <td><code>basename($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fc</code></td>
 <td>Read CSV</td>
 <td><code>read.csv($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fe</code></td>
 <td>File Exists</td>
 <td><code>file.exists($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fi</code></td>
 <td>File Info</td>
 <td><code>file.info($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>fm</code></td>
 <td>File Remove</td>
 <td><code>file.remove($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fr</code></td>
 <td>Read Table</td>
 <td><code>read.table($1)</code></td>
 <td>1 → 1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>ft</code></td>
 <td>Temp Dir</td>
 <td><code>tempdir()</code></td>
 <td>0 → 1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>fw</code></td>
 <td>Write Table</td>
 <td><code>write.table($2, $1)</code></td>
@@ -3339,7 +3436,7 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 </details>
 <details open="">
 <summary>
-<strong>Constants</strong> — Tier 3 (Extensions) — 8 symbols
+<strong>Constants</strong> — Tier 3 (Extensions) — 21 symbols
 </summary>
 <table class="caption-top table">
 <thead>
@@ -3382,6 +3479,78 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td>0 → 1</td>
 </tr>
 <tr class="even">
+<td><code>eS</code></td>
+<td>EmptyStr</td>
+<td><code>""</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>n0</code></td>
+<td>Const0</td>
+<td><code>0</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>n1</code></td>
+<td>Const1</td>
+<td><code>1</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>n2</code></td>
+<td>Const2</td>
+<td><code>2</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>n3</code></td>
+<td>Const3</td>
+<td><code>3</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>n4</code></td>
+<td>Const4</td>
+<td><code>4</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>n5</code></td>
+<td>Const5</td>
+<td><code>5</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>n6</code></td>
+<td>Const6</td>
+<td><code>6</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>n7</code></td>
+<td>Const7</td>
+<td><code>7</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>n8</code></td>
+<td>Const8</td>
+<td><code>8</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
+<td><code>n9</code></td>
+<td>Const9</td>
+<td><code>9</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>nL</code></td>
+<td>Newline</td>
+<td><code>"\n"</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="even">
 <td><code>s4</code></td>
 <td>EmptyLog</td>
 <td><code>logical(0)</code></td>
@@ -3397,6 +3566,12 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td><code>sZ</code></td>
 <td>EmptyNum</td>
 <td><code>numeric(0)</code></td>
+<td>0 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>z_</code></td>
+<td>Space</td>
+<td><code>" "</code></td>
 <td>0 → 1</td>
 </tr>
 </tbody>
@@ -3564,6 +3739,185 @@ comment     ::= '#' { NOT_NEWLINE } NEWLINE
 <td><code>tr</code></td>
 <td>Trunc</td>
 <td><code>trunc($1)</code></td>
+<td>1 → 1</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details open="">
+<summary>
+<strong>Golf</strong> — Tier 2 (Toolkit) — 27 symbols
+</summary>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Description</th>
+<th>R Code</th>
+<th>Stack Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>aF</code></td>
+<td>Freq</td>
+<td><code>ratl_freq($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>aH</code></td>
+<td>Tuck</td>
+<td><code>c($2, $1, $2)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>aK</code></td>
+<td>Chunks</td>
+<td><code>ratl_chunks($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>aW</code></td>
+<td>Windows</td>
+<td><code>ratl_windows($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>bC</code></td>
+<td>Popcount</td>
+<td><code>ratl_popcount($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>bD</code></td>
+<td>BaseDec</td>
+<td><code>ratl_base_decode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>bE</code></td>
+<td>BaseEnc</td>
+<td><code>ratl_base_encode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>bP</code></td>
+<td>NextPrime</td>
+<td><code>ratl_next_prime($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>bQ</code></td>
+<td>PrevPrime</td>
+<td><code>ratl_prev_prime($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>cO</code></td>
+<td>Chr</td>
+<td><code>intToUtf8($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>cP</code></td>
+<td>Cartesian</td>
+<td><code>ratl_cartesian($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>d2</code></td>
+<td>DigitSum</td>
+<td><code>ratl_digit_sum($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>d3</code></td>
+<td>DigitProd</td>
+<td><code>ratl_digit_prod($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>i2</code></td>
+<td>StrToInt</td>
+<td><code>strtoi($2, base=$1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>jN</code></td>
+<td>JoinNL</td>
+<td><code>paste($2, collapse="\n")</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>kC</code></td>
+<td>BaseEncode</td>
+<td><code>ratl_base_encode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>kC</code></td>
+<td>BaseEncodeK</td>
+<td><code>ratl_base_encode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>kD</code></td>
+<td>BaseDecode</td>
+<td><code>ratl_base_decode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>kD</code></td>
+<td>BaseDecodeK</td>
+<td><code>ratl_base_decode($2, $1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>kH</code></td>
+<td>CharsK</td>
+<td><code>strsplit(as.character($1), "")[[1]]</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>kO</code></td>
+<td>ChrK</td>
+<td><code>intToUtf8($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>nP</code></td>
+<td>Nip</td>
+<td><code>$1</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>p2</code></td>
+<td>PowersetAlias</td>
+<td><code>ratl_powerset($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="even">
+<td><code>pR</code></td>
+<td>PrimeRange</td>
+<td><code>ratl_prime_range($1)</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>pW2</code></td>
+<td>PasteWrap</td>
+<td><code>paste($2, collapse=$1)</code></td>
+<td>2 → 1</td>
+</tr>
+<tr class="even">
+<td><code>sL</code></td>
+<td>Chars</td>
+<td><code>strsplit(as.character($1), "")[[1]]</code></td>
+<td>1 → 1</td>
+</tr>
+<tr class="odd">
+<td><code>tF</code></td>
+<td>Powerset</td>
+<td><code>ratl_powerset($1)</code></td>
 <td>1 → 1</td>
 </tr>
 </tbody>
